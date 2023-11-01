@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="d616960f-21f4-4e8a-8dc8-093b989c9e90" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradlew.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/settings.gradle.kts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Game/Actions.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Game/CharacterGetters/Accessiable.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Game/CharacterGetters/AlliesAccessor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Game/CharacterGetters/CompositeAccessor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Game/CharacterGetters/EnemiesAccessor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Game/CharacterGetters/UnitsAccessor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Game/Characters/Attackable.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Game/Characters/Barbarian.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Game/Characters/GameUnit.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Game/Characters/Healer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Game/Characters/Heallable.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Game/Characters/Magicable.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Game/Characters/Magician.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Game/Effects/Effectable.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Game/Effects/Healling.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Game/Effects/Poisoning.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Game/Event/Eventable.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Game/Exceptions/InvalidActionException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Game/Game.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Game/GameCycle.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Game/Move.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Helpers/SafeInput.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/GameData.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/Main.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ui/Action.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ui/ActionFabric.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ui/GameScreen.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ui/MainMenu.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ui/Screen.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ui/Side.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ui/event/CurrentUnitChangedEvent.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ui/event/MoveCompletedEvent.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ui/event/SelectEvent.kt" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Kotlin Class" />
+        <option value="Enum" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="2XaBmieJJmgUoP79MmXonMbwKlu" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "E:/Code/IntelliJ IDEA/GameWhereGuysFightYeah",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "preferences.editor.code.editing",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="ui.event" />
+      <recent name="" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="" />
+    </key>
+    <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
+      <recent name="ui.event" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="MainKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="MainKt" />
+      <module name="GameWhereGuysFightYeah.main" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Kotlin.MainKt" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d616960f-21f4-4e8a-8dc8-093b989c9e90" name="Changes" comment="" />
+      <created>1698857471043</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1698857471043</updated>
+      <workItem from="1698857472065" duration="1490000" />
+      <workItem from="1698859031861" duration="14044000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

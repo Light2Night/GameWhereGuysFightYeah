@@ -10,6 +10,6 @@ class SelectEvent(
 ) : Eventable {
 
     override fun onEvent() {
-        gameData.selectedUnit.value = game.getUnitById(game.selectedUnitIndex)
+        gameData.selectedUnit.value = game.getUnitById(game.selectedUnitIndex) ?: return
     }
 }

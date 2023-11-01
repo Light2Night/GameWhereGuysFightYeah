@@ -1,44 +1,38 @@
 package Game.Characters;
 
+import Game.Actions;
 import Game.CharacterGetters.CompositeAccessor;
 import Game.Effects.Effectable;
 import Game.Effects.Healling;
+import Game.Exceptions.InvalidActionException;
+import Game.Move;
 import Helpers.SafeInput;
 
 import java.util.Random;
 
 public class Healer extends GameUnit implements Heallable {
-    public Healer() {
-        super("Цілитель", 125);
+    public Healer(CompositeAccessor accessor, int id) {
+        super(accessor, id, "Цілитель", 125);
     }
 
     @Override
-    public void Move(CompositeAccessor accessor) {
-        int selectedAction;
-        do {
-            System.out.println("Вибір дії:");
-            System.out.println("1. Миттєве лікування");
-            System.out.println("2. Накласти лікувальний ефект");
-            selectedAction = SafeInput.getInt();
-        } while (!(1 <= selectedAction && selectedAction <= 2));
+    public void move(Move move) throws InvalidActionException {
+        if (!(move.getAction().equals(Actions.Healing) || move.getAction().equals(Actions.InstantHealing)))
+            throw new InvalidActionException();
 
-        System.out.println("Кого лікувати?");
+        GameUnit target = accessor.getUnitsAccessor().getUnitById(move.getTargetId());
 
-        int number = inputUnitNumber(accessor.getUnitsAccessor());
-
-        GameUnit target = accessor.getUnitsAccessor().getUnit(number - 1);
-
-        if (selectedAction == 1) target.heal(getHeal());
-        else if (selectedAction == 2) target.takeEffect(getHealingEffect());
+        if (move.getAction().equals(Actions.InstantHealing)) target.heal(getHeal());
+        else if (move.getAction().equals(Actions.Healing)) target.takeEffect(getHealingEffect());
     }
 
     @Override
-    public void MoveAI(CompositeAccessor accessor) {
+    public void moveAI() {
         Random random = new Random();
         int selectedAction = random.nextInt(1, 3);
         int index = random.nextInt(0, accessor.getEnemiesAccessor().getQuantity());
 
-        GameUnit target = accessor.getEnemiesAccessor().getUnit(index);
+        GameUnit target = accessor.getEnemiesAccessor().getUnitByIndex(index);
 
         sleep(2000);
         System.out.printf("AI %s %d (%s)\n", selectedAction == 1 ? "миттєво лікує" : "накладає лікувальний ефект на юніта", accessor.getAlliesAccessor().getQuantity() + index + 1, target.toString());

@@ -12,7 +12,7 @@ public class AlliesAccessor implements Accessiable {
     }
 
     @Override
-    public GameUnit getUnit(int index) {
+    public GameUnit getUnitByIndex(int index) {
         if (index < 0)
             throw new IndexOutOfBoundsException("Number is too small");
 
@@ -21,6 +21,32 @@ public class AlliesAccessor implements Accessiable {
         }
 
         throw new IndexOutOfBoundsException("Number is too large");
+    }
+
+    @Override
+    public GameUnit getUnitById(int id) {
+        for (GameUnit ally : allies) {
+            if (ally.getId() == id)
+                return ally;
+        }
+        throw new IndexOutOfBoundsException("Invalid id");
+    }
+
+    @Override
+    public Boolean contains(GameUnit unit) {
+        for (GameUnit ally : allies) {
+            if (ally == unit)
+                return true;
+        }
+        return false;
+    }
+    @Override
+    public Boolean containsId(int id) {
+        for (GameUnit ally : allies) {
+            if (ally.getId() == id)
+                return true;
+        }
+        return false;
     }
 
     @Override

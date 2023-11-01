@@ -1,2 +1,8 @@
-package Game;public enum Actions {
+package Game;
+
+public enum Actions {
+    Attack,
+    Poisoning,
+    Healing,
+    InstantHealing,
 }

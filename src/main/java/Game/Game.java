@@ -5,34 +5,102 @@ import Game.Characters.Barbarian;
 import Game.Characters.Healer;
 import Game.Characters.Magician;
 import Game.Characters.GameUnit;
-import Helpers.UIAdapter;
+import Game.Event.Eventable;
 import Helpers.SafeInput;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 
 public class Game {
     private ArrayList<GameUnit> allies;
     private ArrayList<GameUnit> enemies;
+
     private Boolean gameIsOn;
+
     private AlliesAccessor alliesAccessor;
     private EnemiesAccessor enemiesAccessor;
     private UnitsAccessor unitsAccessor;
     private CompositeAccessor compositeAccessor;
 
-    public UIAdapter uiAdapter = new UIAdapter(); // Адаптер для UI. Вважай ніби це API для UI
+    private GameCycle cycle;
 
+    private int selectedUnitIndex = 1;
+    private int currentUnitIndex = 1;
+
+    @Nullable
+    private Eventable selectedIndexChanged;
+    @Nullable
+    private Eventable currentIndexChanged;
+    @Nullable
+    private Eventable moveCompleted;
+
+    // Setters
+    public void setSelectedUnitIndex(int selectedUnitIndex) {
+        this.selectedUnitIndex = selectedUnitIndex;
+        if (selectedIndexChanged != null) selectedIndexChanged.onEvent();
+    }
+
+    public void setCurrentUnitId(int currentUnitIndex) {
+        this.currentUnitIndex = currentUnitIndex;
+        if (currentIndexChanged != null) currentIndexChanged.onEvent();
+    }
+
+    public void setSelectedIndexChanged(Eventable selectedIndexChanged) {
+        this.selectedIndexChanged = selectedIndexChanged;
+    }
+
+    public void setCurrentIndexChanged(Eventable currentIndexChanged) {
+        this.currentIndexChanged = currentIndexChanged;
+    }
+
+    public void setMoveCompleted(@Nullable Eventable moveCompleted) {
+        this.moveCompleted = moveCompleted;
+    }
+
+    // Getters
+    public ArrayList<GameUnit> getAllies() {
+        return allies;
+    }
+
+    public ArrayList<GameUnit> getEnemies() {
+        return enemies;
+    }
+
+    public GameUnit getCurrentUnit() {
+        return unitsAccessor.getUnitByIndex(currentUnitIndex);
+    }
+
+    public int getSelectedUnitIndex() {
+        return selectedUnitIndex;
+    }
+
+    public int getCurrentUnitIndex() {
+        return currentUnitIndex;
+    }
+
+    // Methods
     private void reset() {
         gameIsOn = true;
 
         allies = new ArrayList<>();
 
+
         enemies = new ArrayList<>();
+
 
         alliesAccessor = new AlliesAccessor(allies);
         enemiesAccessor = new EnemiesAccessor(enemies);
         unitsAccessor = new UnitsAccessor(allies, enemies);
         compositeAccessor = new CompositeAccessor(alliesAccessor, enemiesAccessor, unitsAccessor);
-        uiAdapter.setCompositeAccessor(compositeAccessor);
+        cycle = new GameCycle(compositeAccessor);
+
+        allies.add(new Barbarian(compositeAccessor, 1));
+        allies.add(new Magician(compositeAccessor, 2));
+        allies.add(new Healer(compositeAccessor, 3));
+
+        enemies.add(new Barbarian(compositeAccessor, 4));
+        enemies.add(new Magician(compositeAccessor, 5));
+        enemies.add(new Healer(compositeAccessor, 6));
     }
 
     private int inputUnitsQuantity(String message, int max) {
@@ -42,6 +110,21 @@ public class Game {
             quantity = SafeInput.getInt();
         } while (!(1 <= quantity && quantity <= max));
         return quantity;
+    }
+
+    public GameUnit getUnitById(int id) {
+        System.out.println(id);
+        for (GameUnit unit : allies) {
+            if (unit.getId() == id) {
+                return unit;
+            }
+        }
+        for (GameUnit unit : enemies) {
+            if (unit.getId() == id) {
+                return unit;
+            }
+        }
+        return null;
     }
 
     private ArrayList<GameUnit> createTeam(int quantity) {
@@ -58,9 +141,9 @@ public class Game {
             } while (!(1 <= selectedType && selectedType <= 3));
 
             GameUnit unit = switch (selectedType) {
-                case 1 -> new Barbarian();
-                case 2 -> new Magician();
-                case 3 -> new Healer();
+                case 1 -> new Barbarian(compositeAccessor, 0);
+                case 2 -> new Magician(compositeAccessor, 0);
+                case 3 -> new Healer(compositeAccessor, 0);
                 default -> throw new IndexOutOfBoundsException();
             };
 
@@ -82,14 +165,9 @@ public class Game {
 
     public void start() {
         reset();
-        createTeams();
-
-        while (gameIsOn) {
-            MakeCycle();
-        }
     }
 
-    private void MakeCycle() {
+    private void makeCycle() {
         executeEffectsForAll();
         removeDeadUnits();
 
@@ -99,16 +177,17 @@ public class Game {
 
         for (int i = 0; i < unitsAccessor.getQuantity(); i++) {
             printFrame();
-            GameUnit currentUnit = unitsAccessor.getUnit(i);
+            GameUnit currentUnit = unitsAccessor.getUnitByIndex(i);
             System.out.printf("Зараз хід юнітом - %s\n", currentUnit.toString());
 
             if (i < allies.size()) {
-                currentUnit.Move(compositeAccessor);
+                //currentUnit.Move(compositeAccessor);
             } else {
-                currentUnit.MoveAI(compositeAccessor);
+                //currentUnit.MoveAI(compositeAccessor);
             }
 
             i -= getQuantityOfUnitsWhichWillBeDeleted(i);
+            setCurrentUnitId(unitsAccessor.getUnitByIndex(i).getId());
             removeDeadUnits();
 
             if (checkTheEnd()) {
@@ -117,21 +196,20 @@ public class Game {
         }
     }
 
-    private int currentUnitIndex = 0;
     public void next() {
-        executeEffectsForAll();
         removeDeadUnits();
-        uiAdapter.updateAllies(allies);
-        uiAdapter.updateEnemies(enemies);
+        int id = cycle.next();
 
-        currentUnitIndex++;
-        if (currentUnitIndex >= unitsAccessor.getQuantity()) {
-            currentUnitIndex = 0;
+        while (enemiesAccessor.containsId(id)) {
+            enemiesAccessor.getUnitById(id).moveAI();
+
+            id = cycle.next();
+            removeDeadUnits();
         }
-        uiAdapter.updateCurrentUnit(unitsAccessor.getUnit(currentUnitIndex));
-        if (!uiAdapter.isCurrentUnitAlly()) {
-            uiAdapter.getCurrentUnit().getValue().MoveAI(compositeAccessor);
-        }
+
+        setCurrentUnitId(id);
+
+        if (moveCompleted != null) moveCompleted.onEvent();
     }
 
     private Boolean checkTheEnd() {
@@ -153,7 +231,7 @@ public class Game {
     private int getQuantityOfUnitsWhichWillBeDeleted(int currentIndex) {
         int quantity = 0;
         for (int i = 0; i <= currentIndex; i++) {
-            if (!unitsAccessor.getUnit(i).isAlive()) quantity++;
+            if (!unitsAccessor.getUnitByIndex(i).isAlive()) quantity++;
         }
         return quantity;
     }
@@ -179,7 +257,7 @@ public class Game {
 
     private String getUnitInfo(Accessiable getter, int number, int index) {
         try {
-            return String.format("%1d. %s", number, getter.getUnit(index).toString());
+            return String.format("%1d. %s", number, getter.getUnitByIndex(index).toString());
         } catch (IndexOutOfBoundsException ex) {
             return getFilledString(' ', 31);
         }

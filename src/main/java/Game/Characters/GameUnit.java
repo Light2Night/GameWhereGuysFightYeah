@@ -3,17 +3,27 @@ package Game.Characters;
 import Game.CharacterGetters.CompositeAccessor;
 import Game.CharacterGetters.UnitsAccessor;
 import Game.Effects.Effectable;
+import Game.Exceptions.InvalidActionException;
+import Game.Move;
 import Helpers.SafeInput;
 
 import java.util.ArrayList;
 
 public abstract class GameUnit {
+    protected final CompositeAccessor accessor;
+    private final int id;
     private String name;
     private final int maxHp;
     private int hp;
     private ArrayList<Effectable> effects;
 
-    public GameUnit(String name, int hp) {
+    public int getId() {
+        return id;
+    }
+
+    public GameUnit(CompositeAccessor accessor, int id, String name, int hp) {
+        this.accessor = accessor;
+        this.id = id;
         this.name = name;
         maxHp = this.hp = hp;
         effects = new ArrayList<>();
@@ -68,23 +78,23 @@ public abstract class GameUnit {
         effects.removeIf(e -> e.getCyclesLeft() == 0);
     }
 
-    public abstract void Move(CompositeAccessor accessor);
+    public abstract void move(Move move) throws InvalidActionException;
 
-    public abstract void MoveAI(CompositeAccessor accessor);
+    public abstract void moveAI();
 
     protected void sleep(long milliseconds) {
-        try {
-            Thread.sleep(milliseconds);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            Thread.sleep(milliseconds);
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 
     @Override
     public String toString() {
         return String.format(
-                "%-8s | %3s♥ | Ефектів: %1d",
-                name, hp, effects.size()
+                "%d | %-8s | %3s♥ | Ефектів: %1d",
+                id, name, hp, effects.size()
         );
     }
 }

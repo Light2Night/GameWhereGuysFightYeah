@@ -4,12 +4,12 @@ import Game.Event.Eventable
 import Game.Game
 import GameData
 
-class OnSelectEvent(
+class CurrentUnitChangedEvent(
     val game: Game,
     val gameData: GameData,
 ) : Eventable {
 
     override fun onEvent() {
-        gameData.selectedUnit.value = game.getUnitById(game.selectedUnitIndex)
+        gameData.currentUnit.value = game.getUnitById(game.currentUnitIndex)
     }
 }

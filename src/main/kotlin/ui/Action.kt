@@ -1,3 +1,6 @@
 package ui
 
-data class Action()
+data class Action(
+    val name: String,
+    val action: (Int) -> Unit,
+)

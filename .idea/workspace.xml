@@ -5,54 +5,37 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d616960f-21f4-4e8a-8dc8-093b989c9e90" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradlew.bat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/settings.gradle.kts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Game/Actions.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Game/CharacterGetters/Accessiable.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Game/CharacterGetters/AlliesAccessor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Game/CharacterGetters/CompositeAccessor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Game/CharacterGetters/EnemiesAccessor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Game/CharacterGetters/UnitsAccessor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Game/Characters/Attackable.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Game/Characters/Barbarian.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Game/Characters/GameUnit.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Game/Characters/Healer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Game/Characters/Heallable.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Game/Characters/Magicable.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Game/Characters/Magician.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Game/Effects/Effectable.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Game/Effects/Healling.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Game/Effects/Poisoning.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Game/Event/Eventable.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Game/Exceptions/InvalidActionException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Game/Game.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Game/GameCycle.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Game/Move.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Helpers/SafeInput.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/GameData.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/Main.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ui/Action.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ui/ActionFabric.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ui/GameScreen.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ui/MainMenu.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ui/Screen.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ui/Side.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ui/event/CurrentUnitChangedEvent.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ui/event/MoveCompletedEvent.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ui/event/SelectEvent.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.run/desktop.run.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Game/Actions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/Actions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Game/CharacterGetters/Accessiable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/CharacterGetters/Accessiable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Game/CharacterGetters/AlliesAccessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/CharacterGetters/AlliesAccessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Game/CharacterGetters/EnemiesAccessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/CharacterGetters/EnemiesAccessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Game/CharacterGetters/UnitsAccessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/CharacterGetters/UnitsAccessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Game/Characters/Barbarian.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/Characters/Barbarian.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Game/Characters/GameUnit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/Characters/GameUnit.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Game/Characters/Healer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/Characters/Healer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Game/Characters/Magician.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/Characters/Magician.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Game/Event/Eventable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/Event/Eventable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Game/Exceptions/InvalidActionException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/Exceptions/InvalidActionException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Game/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Game/GameCycle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/GameCycle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Game/Move.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/Move.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/GameData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/GameData.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Main.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/Action.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/Action.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/ActionFabric.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/ActionFabric.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/GameScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/GameScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/MainMenu.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/MainMenu.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/Screen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/Screen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/Side.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/Side.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/event/CurrentUnitChangedEvent.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/event/CurrentUnitChangedEvent.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/event/MoveCompletedEvent.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/event/MoveCompletedEvent.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/event/SelectEvent.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/event/SelectEvent.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,6 +59,20 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "Light2Night"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="070e8ad8-ec9a-4f7d-a2aa-b5d758c4dacd" />
+        <option name="url" value="https://github.com/Light2Night/GameWhereGuysFightYeah.git" />
+      </UrlAndAccount>
+    </option>
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
@@ -139,11 +136,22 @@
       <option name="presentableId" value="Default" />
       <updated>1698857471043</updated>
       <workItem from="1698857472065" duration="1490000" />
-      <workItem from="1698859031861" duration="14044000" />
+      <workItem from="1698859031861" duration="15112000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

@@ -1,47 +1,41 @@
 package Game.Characters;
 
+import Game.Actions;
 import Game.CharacterGetters.CompositeAccessor;
 import Game.Effects.Effectable;
 import Game.Effects.Poisoning;
+import Game.Exceptions.InvalidActionException;
+import Game.Move;
 import Helpers.SafeInput;
 
 import java.util.Random;
 
 public class Magician extends GameUnit implements Attackable, Magicable {
-    public Magician() {
-        super("Маг", 100);
+    public Magician(CompositeAccessor accessor, int id) {
+        super(accessor, id, "Маг", 100);
     }
 
     @Override
-    public void Move(CompositeAccessor accessor) {
-        int selectedAction;
-        do {
-            System.out.println("Вибір дії:");
-            System.out.println("1. Магічна атака");
-            System.out.println("2. Накласти отруєння");
-            selectedAction = SafeInput.getInt();
-        } while (!(1 <= selectedAction && selectedAction <= 2));
-
-        System.out.println("Кого атакувати?");
-
-        int number = inputUnitNumber(accessor.getUnitsAccessor());
+    public void move(Move move) throws InvalidActionException {
+        if (!(move.getAction().equals(Actions.Attack) || move.getAction().equals(Actions.Poisoning)))
+            throw new InvalidActionException();
 
         GameUnit target = accessor.getUnitsAccessor()
-                .getUnit(number - 1);
+                .getUnitById(move.getTargetId());
 
-        if (selectedAction == 1)
+        if (move.getAction().equals(Actions.Attack))
             target.takeDamage(getRandomDamage());
-        else if (selectedAction == 2)
+        else if (move.getAction().equals(Actions.Poisoning))
             target.takeEffect(getMagicalEffect());
     }
 
     @Override
-    public void MoveAI(CompositeAccessor accessor) {
+    public void moveAI() {
         Random random = new Random();
         int selectedAction = random.nextInt(1, 3);
         int index = random.nextInt(0, accessor.getAlliesAccessor().getQuantity());
 
-        GameUnit target = accessor.getAlliesAccessor().getUnit(index);
+        GameUnit target = accessor.getAlliesAccessor().getUnitByIndex(index);
 
         sleep(2000);
         System.out.printf("AI %s %d (%s)\n", selectedAction == 1 ? "атакує магією по" : "накладає отруєння на юніта", index + 1, target.toString());

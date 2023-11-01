@@ -1,43 +1,37 @@
 package Game.Characters;
 
+import Game.Actions;
 import Game.CharacterGetters.CompositeAccessor;
-import Helpers.SafeInput;
+import Game.Exceptions.InvalidActionException;
+import Game.Move;
 
 import java.util.Random;
 
 public class Barbarian extends GameUnit implements Attackable {
-    public Barbarian() {
-        super("Варвар", 200);
+    public Barbarian(CompositeAccessor accessor, int id) {
+        super(accessor, id, "Варвар", 200);
     }
 
     @Override
-    public void Move(CompositeAccessor accessor) {
-        System.out.println("Кого атакувати?");
-
-        int number;
-        while (true) {
-            number = SafeInput.getInt();
-            if (0 < number && number <= accessor.getUnitsAccessor().getQuantity()) {
-                break;
-            }
-            System.out.println("Некоректний номер юніта");
-        }
+    public void move(Move move) throws InvalidActionException {
+        if (!move.getAction().equals(Actions.Attack))
+            throw new InvalidActionException();
 
         accessor.getUnitsAccessor()
-                .getUnit(number - 1)
+                .getUnitById(move.getTargetId())
                 .takeDamage(getRandomDamage());
     }
 
     @Override
-    public void MoveAI(CompositeAccessor accessor) {
+    public void moveAI() {
         int index = new Random().nextInt(0, accessor.getAlliesAccessor().getQuantity());
 
         sleep(2000);
-        System.out.printf("AI атакує по %d (%s)\n", index + 1, accessor.getAlliesAccessor().getUnit(index));
+        System.out.printf("AI атакує по %d (%s)\n", index + 1, accessor.getAlliesAccessor().getUnitByIndex(index));
         sleep(2000);
 
         accessor.getUnitsAccessor()
-                .getUnit(index)
+                .getUnitByIndex(index)
                 .takeDamage(getRandomDamage());
     }
 

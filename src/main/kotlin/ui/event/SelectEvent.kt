@@ -4,7 +4,7 @@ import Game.Event.Eventable
 import Game.Game
 import GameData
 
-class OnSelectEvent(
+class SelectEvent(
     val game: Game,
     val gameData: GameData,
 ) : Eventable {

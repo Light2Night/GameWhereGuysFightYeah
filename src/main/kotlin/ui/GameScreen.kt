@@ -92,7 +92,7 @@ fun GameScreen(
 }
 
 @Composable
-fun UnitList(
+private fun UnitList(
     selectedUnitID: Int,
     units: List<GameUnit>,
     side: Side,
@@ -118,7 +118,7 @@ fun UnitList(
 }
 
 @Composable
-fun UnitInfo(
+private fun UnitInfo(
     unit: GameUnit,
     isSelected: Boolean,
     side: Side = Side.Left,
@@ -248,7 +248,7 @@ fun UnitInfo(
 }
 
 @Composable
-fun GameBoard(
+private fun GameBoard(
     game: Game,
     gameData: GameData,
     onAction: () -> Unit,
@@ -272,7 +272,7 @@ fun GameBoard(
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun Actions(
+private fun Actions(
     actions: List<Action>,
     selectedUnitID: Int,
     onAction: () -> Unit,

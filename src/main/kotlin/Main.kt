@@ -41,8 +41,10 @@ fun main() = application {
     Window(onCloseRequest = ::exitApplication, state = windowState) {
         when (screen) {
             Screen.Main -> MainMenu(
-                onStart = {
+                onStart = { allies, enemies ->
                     game = Game()
+                    allies.forEach { game?.addAlly(it) }
+                    enemies.forEach { game?.addEnemy(it) }
                     game?.start()
                     gameData = GameData(game!!)
                     game?.events?.setSelectedIndexChangedEvent(SelectEvent(game!!, gameData!!))

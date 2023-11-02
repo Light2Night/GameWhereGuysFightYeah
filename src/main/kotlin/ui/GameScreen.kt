@@ -148,7 +148,7 @@ fun UnitInfo(
             )
 
             Text(
-                "HP: ${unit.hp}/${/*unit.maxHp*/100}",
+                "HP: ${unit.hp}/${unit.maxHp}",
                 fontSize = normalText,
                 color = if (isSelected) Color.Blue else Color.Black
             )

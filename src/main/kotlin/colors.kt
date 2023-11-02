@@ -4,6 +4,7 @@ import kotlin.math.min
 val colorBorder get() = style.color_border.toColor()
 val colorSelectedBorder get() = style.color_selected_border.toColor()
 
+val colorBackgroundDarker get() = style.color_background_darker.toColor()
 val colorBackground get() = style.color_background.toColor()
 val colorBackgroundSelection get() = style.color_background.copy(
     r = min(style.color_background.r + 5, 255),
@@ -21,9 +22,6 @@ val colorTextError get() = style.color_text_error.toColor()
 val colorTextSuccess get() = style.color_text_success.toColor()
 val colorTextItalic get() = style.color_text_italic.toColor()
 val colorTextBold get() = style.color_text_bold.toColor()
-val colorLink get() = style.color_link.toColor()
-val colorCode get() = style.color_code.toColor()
-val colorCodeBackground get() = style.color_code_background.toColor()
 
 val colorNoConnection get() = style.color_no_connection.toColor()
 val colorCheckConnection get() = style.color_check_connection.toColor()

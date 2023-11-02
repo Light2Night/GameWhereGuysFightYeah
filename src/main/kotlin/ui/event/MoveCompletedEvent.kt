@@ -10,7 +10,6 @@ class MoveCompletedEvent(
     val gameData: GameData,
 ) : Eventable {
     override fun onEvent() {
-        gameData.updateAllies(game.units.filter { it.team.playerType ==  PlayerTypes.Human })
-        gameData.updateEnemies(game.units.filter { it.team.playerType ==  PlayerTypes.AI })
+        gameData.updateUnits(game.units)
     }
 }

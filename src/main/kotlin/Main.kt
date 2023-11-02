@@ -1,9 +1,12 @@
 import Game.Game
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPosition
@@ -50,7 +53,10 @@ fun main() = application {
                         MoveCompletedEvent(game!!, gameData!!)
                     )
                     screen = Screen.Game
-                }
+                },
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(colorBackground)
             )
             Screen.Game -> GameScreen(
                 game = game!!,
@@ -59,7 +65,10 @@ fun main() = application {
                     game = null
                     gameData = null
                     screen = Screen.Main
-                }
+                },
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(colorBackground)
             )
         }
     }

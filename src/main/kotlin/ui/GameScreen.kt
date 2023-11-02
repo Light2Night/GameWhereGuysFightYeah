@@ -11,21 +11,22 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.*
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.platform.Font
 import androidx.compose.ui.unit.dp
 import bigText
 import border
 import colorBackground
-import colorBackgroundLighter
+import colorBackgroundDarker
 import colorBorder
 import colorSelectedBorder
 import colorText
@@ -37,6 +38,7 @@ import normalText
 import padding
 import smallBorder
 import smallCorners
+import ui.composable.MedievalButton
 
 @Composable
 fun GameScreen(
@@ -126,26 +128,33 @@ fun UnitInfo(
         modifier = modifier
             .clickable { onSelect() }
             .padding(padding)
-            .background(colorBackground, RoundedCornerShape(smallCorners))
+            .background(colorBackgroundDarker, MedievalShape(smallCorners.value))
             .border(
                 if (isSelected) border else smallBorder,
                 if (isSelected) colorSelectedBorder else colorBorder,
-                RoundedCornerShape(smallCorners)
+                MedievalShape(smallCorners.value)
             )
-            .clip(RoundedCornerShape(smallCorners)),
+            .clip(MedievalShape(smallCorners.value)),
     ) {
         if (side == Side.Left) {
             Image(
-                bitmap = getImageBitmap("textures/unit_image_placeholder.png") ?: emptyImageBitmap,
+                bitmap = getImageBitmap(
+                    when (unit) {
+                        is Barbarian -> { "textures/characters/barbarian_placeholder.png" }
+                        is Magician -> { "textures/characters/magician_placeholder.png" }
+                        is Healer -> { "textures/characters/healer_placeholder.png" }
+                        else -> ""
+                    }
+                ) ?: emptyImageBitmap,
                 contentDescription = unit.name,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .height(imageHeight)
                     .width(imageWidth)
                     .padding(padding)
-                    .background(colorBackgroundLighter, RoundedCornerShape(smallCorners))
-                    .border(smallBorder, colorBorder, RoundedCornerShape(smallCorners))
-                    .clip(RoundedCornerShape(smallCorners)),
+                    .background(colorBackground, MedievalShape(smallCorners.value))
+                    .border(smallBorder, colorBorder, MedievalShape(smallCorners.value))
+                    .clip(MedievalShape(smallCorners.value)),
             )
         }
 
@@ -158,12 +167,14 @@ fun UnitInfo(
                 color = colorText,
                 fontSize = bigText,
                 fontWeight = FontWeight.Bold,
+                fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
             )
 
             Text(
                 "HP: ${unit.hp}/${unit.maxHp}",
                 fontSize = normalText,
-                color = colorText
+                color = colorText,
+                fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
             )
 
             when (unit) {
@@ -171,35 +182,40 @@ fun UnitInfo(
                     Text(
                         "DMG: ${unit.damage - unit.damageDelta}-${unit.damage}",
                         fontSize = normalText,
-                        color = colorText
+                        color = colorText,
+                        fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
                     )
                 }
                 is Magician -> {
                     Text(
                         "DMG: ${unit.damage - unit.damageDelta}-${unit.damage}",
                         fontSize = normalText,
-                        color = colorText
+                        color = colorText,
+                        fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
                     )
 
                     val effect = unit.magicalEffect
                     Text(
                         "EFF: 15 (2 turns)",
                         fontSize = normalText,
-                        color = colorText
+                        color = colorText,
+                        fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
                     )
                 }
                 is Healer -> {
                     Text(
                         "HEAL: ${unit.heal}",
                         fontSize = normalText,
-                        color = colorText
+                        color = colorText,
+                        fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
                     )
 
                     val effect = unit.healingEffect
                     Text(
                         "EFF: 10 (3 turns)",
                         fontSize = normalText,
-                        color = colorText
+                        color = colorText,
+                        fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
                     )
                 }
             }
@@ -207,16 +223,23 @@ fun UnitInfo(
 
         if (side == Side.Right) {
             Image(
-                bitmap = getImageBitmap("textures/unit_image_placeholder.png") ?: emptyImageBitmap,
+                bitmap = getImageBitmap(
+                    when (unit) {
+                        is Barbarian -> { "textures/characters/barbarian_placeholder.png" }
+                        is Magician -> { "textures/characters/magician_placeholder.png" }
+                        is Healer -> { "textures/characters/healer_placeholder.png" }
+                        else -> ""
+                    }
+                ) ?: emptyImageBitmap,
                 contentDescription = unit.name,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .height(imageHeight)
                     .width(imageWidth)
                     .padding(padding)
-                    .background(colorBackgroundLighter, RoundedCornerShape(smallCorners))
-                    .border(smallBorder, colorBorder, RoundedCornerShape(smallCorners))
-                    .clip(RoundedCornerShape(smallCorners)),
+                    .background(colorBackground, MedievalShape(smallCorners.value))
+                    .border(smallBorder, colorBorder, MedievalShape(smallCorners.value))
+                    .clip(MedievalShape(smallCorners.value)),
             )
         }
     }
@@ -255,15 +278,14 @@ fun Actions(
 ) {
     FlowRow {
         actions.forEach { action ->
-            Button(
+            MedievalButton(
+                text = action.name,
                 onClick = {
                     action.action(selectedUnitID)
                     onAction()
                 },
                 modifier = modifier,
-            ) {
-                Text(action.name)
-            }
+            )
         }
     }
 }

@@ -8,34 +8,19 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 class GameData(
     game: Game,
 ) {
-    val allies: SnapshotStateList<GameUnit> = mutableStateListOf()
-    val enemies: SnapshotStateList<GameUnit> = mutableStateListOf()
+    val units: SnapshotStateList<GameUnit> = mutableStateListOf()
+    val allies get() = units.filter { it.team.playerType ==  PlayerTypes.Human }
+    val enemies get() = units.filter { it.team.playerType ==  PlayerTypes.AI }
 
     var currentUnit = mutableStateOf<GameUnit>(game.getUnitById(game.currentUnitIndex))
     var selectedUnit = mutableStateOf<GameUnit>(game.getUnitById(game.selectedUnitIndex))
 
     init {
-        updateAllies(game.units.filter { it.team.playerType ==  PlayerTypes.Human })
-        updateEnemies(game.units.filter { it.team.playerType ==  PlayerTypes.AI })
+        updateUnits(game.units)
     }
 
-    fun updateAllies(allies: List<GameUnit>) {
-        this.allies.clear()
-        this.allies.addAll(allies)
+    fun updateUnits(allies: List<GameUnit>) {
+        this.units.clear()
+        this.units.addAll(allies)
     }
-
-    fun updateEnemies(enemies: List<GameUnit>) {
-        this.enemies.clear()
-        this.enemies.addAll(enemies)
-    }
-
-    fun updateCurrentUnit(unit: GameUnit) {
-        this.currentUnit.value = unit
-    }
-
-    fun updateSelectedUnit(unit: GameUnit) {
-        this.selectedUnit.value = unit
-    }
-
-    fun isCurrentUnitAlly() = allies.contains(currentUnit.value)
 }

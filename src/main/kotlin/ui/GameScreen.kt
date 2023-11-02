@@ -70,6 +70,10 @@ fun GameScreen(
             onAction = {
                 game.next()
                 gameData.gameResult.value?.let { onEnd() }
+
+                if (game.getUnitById(gameData.selectedUnit.value.id) == null) {
+                    game.selectedUnitIndex = gameData.enemies.lastOrNull()?.id ?: gameData.allies.firstOrNull()?.id ?: 0
+                }
             },
             modifier = Modifier.weight(1F),
         )

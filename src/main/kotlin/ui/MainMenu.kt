@@ -65,12 +65,11 @@ fun MainMenu(
                 .background(Color.Black)
         )
 
-        Button(
+        MedievalButton(
+            text = "Почати",
             onClick = { onStart(allies, enemies) },
-            modifier = Modifier.weight(1F),
-        ) {
-            Text("Start")
-        }
+            modifier = Modifier.fillMaxWidth(0.33F)
+        )
 
         Box(
             modifier = Modifier

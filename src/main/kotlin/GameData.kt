@@ -9,14 +9,14 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 class GameData(
     game: Game,
 ) {
-    val units: SnapshotStateList<GameUnit> = mutableStateListOf()
+    private val units: SnapshotStateList<GameUnit> = mutableStateListOf()
     val allies get() = units.filter { it.team.playerType ==  PlayerTypes.Human }
     val enemies get() = units.filter { it.team.playerType ==  PlayerTypes.AI }
 
-    var currentUnit = mutableStateOf<GameUnit>(game.getUnitById(game.currentUnitIndex))
-    var selectedUnit = mutableStateOf<GameUnit>(game.getUnitById(game.selectedUnitIndex))
+    val currentUnit = mutableStateOf<GameUnit>(game.getUnitById(game.currentUnitIndex))
+    val selectedUnit = mutableStateOf<GameUnit>(game.getUnitById(game.selectedUnitIndex))
 
-    var gameResult = mutableStateOf<GameEndInfo?>(null)
+    val gameResult = mutableStateOf<GameEndInfo?>(null)
 
     init {
         updateUnits(game.units)

@@ -5,8 +5,8 @@ import Game.Game
 import GameData
 
 class SelectEvent(
-    val game: Game,
-    val gameData: GameData,
+    private val game: Game,
+    private val gameData: GameData,
 ) : Eventable {
 
     override fun onEvent() {

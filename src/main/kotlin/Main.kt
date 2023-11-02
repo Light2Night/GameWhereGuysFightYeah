@@ -50,7 +50,7 @@ fun main() = application {
                     game?.events?.setSelectedIndexChangedEvent(SelectEvent(game!!, gameData!!))
                     game?.events?.setCurrentIndexChangedEvent(CurrentUnitChangedEvent(game!!, gameData!!))
                     game?.events?.setMoveCompletedEvent(MoveCompletedEvent(game!!, gameData!!))
-                    game?.events?.setGameEndEvent(GameEndedEvent(game!!, gameData!!))
+                    game?.events?.setGameEndEvent(GameEndedEvent(gameData!!))
                     screen = Screen.Game
                 },
                 modifier = Modifier

@@ -3,6 +3,7 @@ package Game;
 import Game.CharacterGetters.*;
 import Game.Characters.*;
 import Game.Event.GameEventsAggregate;
+import Game.Event.Handlers.OnCycleLeft;
 import Game.Teams.Team;
 import Helpers.IdGenerator;
 import Helpers.SafeInput;
@@ -82,7 +83,9 @@ public class Game {
         enemiesAccessor = new TeamAccessor(units, ai);
         unitsAccessor = new UnitsAccessor(units);
         compositeAccessor = new CompositeAccessor(alliesAccessor, enemiesAccessor, unitsAccessor);
-        cycle = new GameCycle(compositeAccessor);
+        cycle = new GameCycle(compositeAccessor, events);
+
+        events.setCycleLeftEvent(new OnCycleLeft(units));
 
         testInitialize();
     }
@@ -127,60 +130,31 @@ public class Game {
         reset();
     }
 
-//    private void makeCycle() {
-//        executeEffectsForAll();
-//        removeDeadUnits();
-//
-//        if (checkTheEnd()) {
-//            return;
-//        }
-//
-//        for (int i = 0; i < unitsAccessor.getQuantity(); i++) {
-//            printFrame();
-//            GameUnit currentUnit = unitsAccessor.getUnitByIndex(i);
-//            System.out.printf("Зараз хід юнітом - %s\n", currentUnit.toString());
-//
-//            if (i < alliesAccessor.getQuantity()) {
-//                //currentUnit.Move(compositeAccessor);
-//            } else {
-//                //currentUnit.MoveAI(compositeAccessor);
-//            }
-//
-//            i -= getQuantityOfUnitsWhichWillBeDeleted(i);
-//            setCurrentUnitId(unitsAccessor.getUnitByIndex(i).getId());
-//            removeDeadUnits();
-//
-//            if (checkTheEnd()) {
-//                return;
-//            }
-//        }
-//    }
-
     public void next() {
         removeDeadUnits();
         if (checkTheEnd()) {
-            events.gameEnd(new GameEndInfo(human));
+            events.gameEnd(new GameEndInfo(getTeamWinner()));
             return;
         }
 
         int id = cycle.next();
+        setCurrentUnitId(id);
 
         while (enemiesAccessor.containsId(id)) {
             removeDeadUnits();
             if (checkTheEnd()) {
-                events.gameEnd(new GameEndInfo(human));
+                events.gameEnd(new GameEndInfo(getTeamWinner()));
                 return;
             }
 
             enemiesAccessor.getUnitById(id).moveAI();
             id = cycle.next();
+            setCurrentUnitId(id);
         }
-
-        setCurrentUnitId(id);
 
         removeDeadUnits();
         if (checkTheEnd()) {
-            events.gameEnd(new GameEndInfo(human));
+            events.gameEnd(new GameEndInfo(getTeamWinner()));
             return;
         }
         events.moveCompleted();
@@ -215,20 +189,12 @@ public class Game {
         return alliesAccessor.getQuantity() == 0 || enemiesAccessor.getQuantity() == 0;
     }
 
-//    private int getQuantityOfUnitsWhichWillBeDeleted(int currentIndex) {
-//        int quantity = 0;
-//        for (int i = 0; i <= currentIndex; i++) {
-//            if (!unitsAccessor.getUnitByIndex(i).isAlive()) quantity++;
-//        }
-//        return quantity;
-//    }
-
-    private void executeEffectsForAll() {
-        units.forEach(GameUnit::executeEffects);
-    }
-
-    private String getFilledString(char symbol, int count) {
-        return String.valueOf(symbol).repeat(count);
+    private Team getTeamWinner() {
+        if (alliesAccessor.getQuantity() == 0) {
+            return ai;
+        } else {
+            return human;
+        }
     }
 
     private void removeDeadUnits() {

@@ -12,6 +12,8 @@ public class GameEventsAggregate {
     private Eventable moveCompletedEvent;
     @Nullable
     private GameEndEventable gameEndEvent;
+    @Nullable
+    private Eventable cycleLeftEvent;
 
     public void setSelectedIndexChangedEvent(@Nullable Eventable selectedIndexChangedEvent) {
         this.selectedIndexChangedEvent = selectedIndexChangedEvent;
@@ -29,6 +31,10 @@ public class GameEventsAggregate {
         this.gameEndEvent = gameEndEvent;
     }
 
+    public void setCycleLeftEvent(@Nullable Eventable cycleLeftEvent) {
+        this.cycleLeftEvent = cycleLeftEvent;
+    }
+
     public void selectedIndexChanged() {
         if (selectedIndexChangedEvent != null) selectedIndexChangedEvent.onEvent();
     }
@@ -43,5 +49,9 @@ public class GameEventsAggregate {
 
     public void gameEnd(GameEndInfo info) {
         if (gameEndEvent != null) gameEndEvent.onEvent(info);
+    }
+
+    public void cycleLeft() {
+        if (cycleLeftEvent != null) cycleLeftEvent.onEvent();
     }
 }

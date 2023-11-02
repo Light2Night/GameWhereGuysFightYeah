@@ -1,5 +1,7 @@
 package Game.Teams;
 
+import Game.PlayerTypes;
+
 public class Team {
     private int id;
     private PlayerTypes playerType;

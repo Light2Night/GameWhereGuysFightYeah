@@ -1,4 +1,4 @@
-package Game.Teams;
+package Game;
 
 public enum PlayerTypes {
     Human,

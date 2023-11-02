@@ -2,25 +2,24 @@ package Game;
 
 import Game.CharacterGetters.*;
 import Game.Characters.*;
-import Game.Event.Eventable;
-import Game.Teams.PlayerTypes;
+import Game.Event.GameEventsAggregate;
 import Game.Teams.Team;
 import Helpers.IdGenerator;
 import Helpers.SafeInput;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 
 public class Game {
+    //region Fields
     private ArrayList<GameUnit> units;
 
     private Boolean gameIsOn;
 
     private TeamAccessor alliesAccessor;
-
     private TeamAccessor enemiesAccessor;
     private UnitsAccessor unitsAccessor;
     private CompositeAccessor compositeAccessor;
+
     private GameCycle cycle;
 
     private int selectedUnitIndex = 1;
@@ -30,42 +29,30 @@ public class Game {
     private Team human;
     private Team ai;
 
-    @Nullable
-    private Eventable selectedIndexChanged;
+    private GameEventsAggregate events;
+    //endregion
 
-    @Nullable
-    private Eventable currentIndexChanged;
-    @Nullable
-    private Eventable moveCompleted;
-
-    // Setters
-    public ArrayList<GameUnit> getUnits() {
-        return units;
+    public Game() {
+        events = new GameEventsAggregate();
     }
 
+    //region Setters
     public void setSelectedUnitIndex(int selectedUnitIndex) {
         this.selectedUnitIndex = selectedUnitIndex;
-        if (selectedIndexChanged != null) selectedIndexChanged.onEvent();
+        events.selectedIndexChanged();
     }
 
     public void setCurrentUnitId(int currentUnitIndex) {
         this.currentUnitIndex = currentUnitIndex;
-        if (currentIndexChanged != null) currentIndexChanged.onEvent();
+        events.currentIndexChanged();
+    }
+    //endregion
+
+    //region Getters
+    public ArrayList<GameUnit> getUnits() {
+        return units;
     }
 
-    public void setSelectedIndexChanged(@Nullable Eventable selectedIndexChanged) {
-        this.selectedIndexChanged = selectedIndexChanged;
-    }
-
-    public void setCurrentIndexChanged(@Nullable Eventable currentIndexChanged) {
-        this.currentIndexChanged = currentIndexChanged;
-    }
-
-    public void setMoveCompleted(@Nullable Eventable moveCompleted) {
-        this.moveCompleted = moveCompleted;
-    }
-
-    // Getters
     public GameUnit getCurrentUnit() {
         return unitsAccessor.getUnitByIndex(currentUnitIndex);
     }
@@ -78,7 +65,11 @@ public class Game {
         return currentUnitIndex;
     }
 
-    // Methods
+    public GameEventsAggregate getEvents() {
+        return events;
+    }
+    //endregion
+
     private void reset() {
         gameIsOn = true;
 
@@ -178,7 +169,7 @@ public class Game {
 
         setCurrentUnitId(id);
 
-        if (moveCompleted != null) moveCompleted.onEvent();
+        events.moveCompleted();
     }
 
     public GameUnit getUnitById(int id) {
@@ -196,11 +187,10 @@ public class Game {
             return false;
         }
 
-        //printFrame();
         if (alliesAccessor.getQuantity() == 0) {
-            System.out.println("Ви програми! Вашу групу знищили");
+            events.gameEnd(new GameEndInfo(ai));
         } else {
-            System.out.println("Ви перемогли! Вам вдалося знищити всіх противників");
+            events.gameEnd(new GameEndInfo(human));
         }
 
         gameIsOn = false;
@@ -217,28 +207,6 @@ public class Game {
 
     private void executeEffectsForAll() {
         units.forEach(GameUnit::executeEffects);
-    }
-
-    private void printFrame() {
-        final String separator = "-----------------------------------------------------------------";
-
-        System.out.println(separator);
-        for (int i = 0; i < Math.max(alliesAccessor.getQuantity(), enemiesAccessor.getQuantity()); i++) {
-            int number = i + 1;
-            String ally = getUnitInfo(alliesAccessor, number, i);
-            String enemy = getUnitInfo(enemiesAccessor, number + alliesAccessor.getQuantity(), i);
-
-            System.out.printf("%s ‖ %s\n", ally, enemy);
-        }
-        System.out.println(separator);
-    }
-
-    private String getUnitInfo(Accessiable getter, int number, int index) {
-        try {
-            return String.format("%1d. %s", number, getter.getUnitByIndex(index).toString());
-        } catch (IndexOutOfBoundsException ex) {
-            return getFilledString(' ', 31);
-        }
     }
 
     private String getFilledString(char symbol, int count) {

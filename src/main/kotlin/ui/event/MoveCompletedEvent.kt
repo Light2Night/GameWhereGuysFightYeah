@@ -2,7 +2,6 @@ package ui.event
 
 import Game.Event.Eventable
 import Game.Game
-import Game.Teams.PlayerTypes
 import GameData
 
 class MoveCompletedEvent(

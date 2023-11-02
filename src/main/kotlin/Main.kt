@@ -37,19 +37,19 @@ fun main() = application {
     )
 
     Window(onCloseRequest = ::exitApplication, state = windowState) {
-        when(screen) {
+        when (screen) {
             Screen.Main -> MainMenu(
                 onStart = {
                     game = Game()
                     game?.start()
                     gameData = GameData(game!!)
-                    game?.setSelectedIndexChanged(
+                    game?.events?.setSelectedIndexChangedEvent(
                         SelectEvent(game!!, gameData!!)
                     )
-                    game?.setCurrentIndexChanged(
+                    game?.events?.setCurrentIndexChangedEvent(
                         CurrentUnitChangedEvent(game!!, gameData!!)
                     )
-                    game?.setMoveCompleted(
+                    game?.events?.setMoveCompletedEvent(
                         MoveCompletedEvent(game!!, gameData!!)
                     )
                     screen = Screen.Game
@@ -58,6 +58,7 @@ fun main() = application {
                     .fillMaxSize()
                     .background(colorBackground)
             )
+
             Screen.Game -> GameScreen(
                 game = game!!,
                 gameData = gameData!!,

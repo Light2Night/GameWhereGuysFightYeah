@@ -1,6 +1,6 @@
-import Game.CharacterGetters.CompositeAccessor
 import Game.Characters.GameUnit
 import Game.Game
+import Game.Teams.PlayerTypes
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -15,8 +15,8 @@ class GameData(
     var selectedUnit = mutableStateOf<GameUnit>(game.getUnitById(game.selectedUnitIndex))
 
     init {
-        updateAllies(game.allies)
-        updateEnemies(game.enemies)
+        updateAllies(game.units.filter { it.team.playerType ==  PlayerTypes.Human })
+        updateEnemies(game.units.filter { it.team.playerType ==  PlayerTypes.AI })
     }
 
     fun updateAllies(allies: List<GameUnit>) {

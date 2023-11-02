@@ -9,6 +9,7 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
+import properties.Properties
 import ui.GameScreen
 import ui.MainMenu
 import ui.event.SelectEvent
@@ -17,6 +18,11 @@ import ui.event.CurrentUnitChangedEvent
 import ui.event.MoveCompletedEvent
 
 fun main() = application {
+    Properties.loadStyle()
+    Properties.loadSettings()
+    Properties.loadLanguage()
+    Properties.loadUser()
+
     var screen by remember { mutableStateOf(Screen.Main) }
     var game by remember { mutableStateOf<Game?>(null) }
     var gameData by remember { mutableStateOf<GameData?>(null) }

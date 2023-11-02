@@ -2,6 +2,7 @@ package ui.event
 
 import Game.Event.Eventable
 import Game.Game
+import Game.Teams.PlayerTypes
 import GameData
 
 class MoveCompletedEvent(
@@ -9,7 +10,7 @@ class MoveCompletedEvent(
     val gameData: GameData,
 ) : Eventable {
     override fun onEvent() {
-        gameData.updateAllies(game.allies)
-        gameData.updateEnemies(game.enemies)
+        gameData.updateAllies(game.units.filter { it.team.playerType ==  PlayerTypes.Human })
+        gameData.updateEnemies(game.units.filter { it.team.playerType ==  PlayerTypes.AI })
     }
 }

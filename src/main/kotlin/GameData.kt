@@ -1,5 +1,6 @@
 import Game.Characters.GameUnit
 import Game.Game
+import Game.GameEndInfo
 import Game.PlayerTypes
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -14,6 +15,8 @@ class GameData(
 
     var currentUnit = mutableStateOf<GameUnit>(game.getUnitById(game.currentUnitIndex))
     var selectedUnit = mutableStateOf<GameUnit>(game.getUnitById(game.selectedUnitIndex))
+
+    var gameResult = mutableStateOf<GameEndInfo?>(null)
 
     init {
         updateUnits(game.units)

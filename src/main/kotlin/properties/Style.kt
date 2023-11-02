@@ -41,9 +41,9 @@ data class Style(
     var color_border: AColor = Color(123, 95, 54).toAColor(),
     var color_selected_border: AColor = Color(143, 115, 74).toAColor(),
 
-    var color_background_darker: AColor = Color(14, 14, 14).toAColor(),
-    var color_background: AColor = Color(24, 24, 24).toAColor(),
-    var color_background_lighter: AColor = Color(54, 54, 54).toAColor(),
+    var color_background_darker: AColor = Color(30, 30, 30).toAColor(),
+    var color_background: AColor = Color(40, 40, 40).toAColor(),
+    var color_background_lighter: AColor = Color(70, 70, 70).toAColor(),
     var color_background_second: AColor = Color(0, 70, 70).toAColor(),
     var color_background_second_lighter: AColor  = Color(0, 90, 90).toAColor(),
     var color_background_delete: AColor = Color.Red.toAColor(),

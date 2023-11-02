@@ -220,7 +220,7 @@ fun GameBoard(
         modifier = modifier
     ) {
         UnitInfo(
-            unit = gameData.selectedUnit.value,
+            unit = gameData.currentUnit.value,
             isSelected = false,
             onSelect = {}
         )

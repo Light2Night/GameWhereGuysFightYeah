@@ -6,13 +6,14 @@ import Game.Effects.Effectable;
 import Game.Effects.Healling;
 import Game.Exceptions.InvalidActionException;
 import Game.Move;
+import Game.Teams.Team;
 import Helpers.SafeInput;
 
 import java.util.Random;
 
 public class Healer extends GameUnit implements Heallable {
-    public Healer(CompositeAccessor accessor, int id) {
-        super(accessor, id, "Цілитель", 125);
+    public Healer(CompositeAccessor accessor, Team team, int id) {
+        super(accessor,team, id, "Цілитель", 125);
     }
 
     @Override

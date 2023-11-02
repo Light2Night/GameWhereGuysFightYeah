@@ -5,6 +5,7 @@ import Game.CharacterGetters.UnitsAccessor;
 import Game.Effects.Effectable;
 import Game.Exceptions.InvalidActionException;
 import Game.Move;
+import Game.Teams.Team;
 import Helpers.SafeInput;
 
 import java.util.ArrayList;
@@ -16,13 +17,15 @@ public abstract class GameUnit {
     private final int maxHp;
     private int hp;
     private ArrayList<Effectable> effects;
+    private Team team;
 
     public int getId() {
         return id;
     }
 
-    public GameUnit(CompositeAccessor accessor, int id, String name, int hp) {
+    public GameUnit(CompositeAccessor accessor, Team team, int id, String name, int hp) {
         this.accessor = accessor;
+        this.team = team;
         this.id = id;
         this.name = name;
         maxHp = this.hp = hp;
@@ -49,16 +52,22 @@ public abstract class GameUnit {
         return hp;
     }
 
+    public int getMaxHp() {
+        return maxHp;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
     public void takeDamage(int damage) {
-        if (damage < 0)
-            throw new IllegalArgumentException("damage");
+        if (damage < 0) throw new IllegalArgumentException("damage");
 
         hp -= Math.min(hp, damage);
     }
 
     public void heal(int newHp) {
-        if (!isAlive())
-            return;
+        if (!isAlive()) return;
 
         hp = Math.min(maxHp, hp + newHp);
     }
@@ -92,9 +101,6 @@ public abstract class GameUnit {
 
     @Override
     public String toString() {
-        return String.format(
-                "%d | %-8s | %3s♥ | Ефектів: %1d",
-                id, name, hp, effects.size()
-        );
+        return String.format("%d | %-8s | %3s♥ | Ефектів: %1d", id, name, hp, effects.size());
     }
 }

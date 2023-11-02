@@ -5,8 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d616960f-21f4-4e8a-8dc8-093b989c9e90" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Game/Teams/PlayerTypes.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Game/Teams/Team.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Game/CharacterGetters/AlliesAccessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/CharacterGetters/TeamAccessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Game/CharacterGetters/CompositeAccessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/CharacterGetters/CompositeAccessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Game/CharacterGetters/UnitsAccessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/CharacterGetters/UnitsAccessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Game/Characters/Barbarian.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/Characters/Barbarian.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Game/Characters/GameUnit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/Characters/GameUnit.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Game/Characters/Healer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/Characters/Healer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Game/Characters/Magician.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/Characters/Magician.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Game/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/Game.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,8 +32,8 @@
       <list>
         <option value="Interface" />
         <option value="Kotlin Class" />
-        <option value="Enum" />
         <option value="Class" />
+        <option value="Enum" />
       </list>
     </option>
   </component>
@@ -54,26 +63,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "E:/Code/IntelliJ IDEA/GameWhereGuysFightYeah",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "preferences.editor.code.editing",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/Code/IntelliJ IDEA/GameWhereGuysFightYeah&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.editor.code.editing&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
       <recent name="ui.event" />

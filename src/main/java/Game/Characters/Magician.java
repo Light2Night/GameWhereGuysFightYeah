@@ -6,13 +6,14 @@ import Game.Effects.Effectable;
 import Game.Effects.Poisoning;
 import Game.Exceptions.InvalidActionException;
 import Game.Move;
+import Game.Teams.Team;
 import Helpers.SafeInput;
 
 import java.util.Random;
 
 public class Magician extends GameUnit implements Attackable, Magicable {
-    public Magician(CompositeAccessor accessor, int id) {
-        super(accessor, id, "Маг", 100);
+    public Magician(CompositeAccessor accessor, Team team, int id) {
+        super(accessor, team, id, "Маг", 100);
     }
 
     @Override

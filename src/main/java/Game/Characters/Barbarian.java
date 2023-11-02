@@ -4,12 +4,13 @@ import Game.Actions;
 import Game.CharacterGetters.CompositeAccessor;
 import Game.Exceptions.InvalidActionException;
 import Game.Move;
+import Game.Teams.Team;
 
 import java.util.Random;
 
 public class Barbarian extends GameUnit implements Attackable {
-    public Barbarian(CompositeAccessor accessor, int id) {
-        super(accessor, id, "Варвар", 200);
+    public Barbarian(CompositeAccessor accessor, Team team, int id) {
+        super(accessor,team, id, "Варвар", 200);
     }
 
     @Override

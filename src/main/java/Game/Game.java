@@ -6,19 +6,20 @@ import Game.Characters.Healer;
 import Game.Characters.Magician;
 import Game.Characters.GameUnit;
 import Game.Event.Eventable;
+import Game.Teams.PlayerTypes;
+import Game.Teams.Team;
 import Helpers.SafeInput;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 
 public class Game {
-    private ArrayList<GameUnit> allies;
-    private ArrayList<GameUnit> enemies;
+    private ArrayList<GameUnit> units;
 
     private Boolean gameIsOn;
 
-    private AlliesAccessor alliesAccessor;
-    private EnemiesAccessor enemiesAccessor;
+    private TeamAccessor alliesAccessor;
+    private TeamAccessor enemiesAccessor;
     private UnitsAccessor unitsAccessor;
     private CompositeAccessor compositeAccessor;
 
@@ -45,11 +46,11 @@ public class Game {
         if (currentIndexChanged != null) currentIndexChanged.onEvent();
     }
 
-    public void setSelectedIndexChanged(Eventable selectedIndexChanged) {
+    public void setSelectedIndexChanged(@Nullable Eventable selectedIndexChanged) {
         this.selectedIndexChanged = selectedIndexChanged;
     }
 
-    public void setCurrentIndexChanged(Eventable currentIndexChanged) {
+    public void setCurrentIndexChanged(@Nullable Eventable currentIndexChanged) {
         this.currentIndexChanged = currentIndexChanged;
     }
 
@@ -58,14 +59,6 @@ public class Game {
     }
 
     // Getters
-    public ArrayList<GameUnit> getAllies() {
-        return allies;
-    }
-
-    public ArrayList<GameUnit> getEnemies() {
-        return enemies;
-    }
-
     public GameUnit getCurrentUnit() {
         return unitsAccessor.getUnitByIndex(currentUnitIndex);
     }
@@ -82,25 +75,24 @@ public class Game {
     private void reset() {
         gameIsOn = true;
 
-        allies = new ArrayList<>();
+        units = new ArrayList<>();
 
+        Team human = new Team(1, PlayerTypes.Human, "Human");
+        Team ai = new Team(2, PlayerTypes.AI, "AI");
 
-        enemies = new ArrayList<>();
-
-
-        alliesAccessor = new AlliesAccessor(allies);
-        enemiesAccessor = new EnemiesAccessor(enemies);
-        unitsAccessor = new UnitsAccessor(allies, enemies);
+        alliesAccessor = new TeamAccessor(units, human);
+        enemiesAccessor = new TeamAccessor(units, ai);
+        unitsAccessor = new UnitsAccessor(units);
         compositeAccessor = new CompositeAccessor(alliesAccessor, enemiesAccessor, unitsAccessor);
         cycle = new GameCycle(compositeAccessor);
 
-        allies.add(new Barbarian(compositeAccessor, 1));
-        allies.add(new Magician(compositeAccessor, 2));
-        allies.add(new Healer(compositeAccessor, 3));
+        units.add(new Barbarian(compositeAccessor, human, 1));
+        units.add(new Magician(compositeAccessor, human, 2));
+        units.add(new Healer(compositeAccessor, human, 3));
 
-        enemies.add(new Barbarian(compositeAccessor, 4));
-        enemies.add(new Magician(compositeAccessor, 5));
-        enemies.add(new Healer(compositeAccessor, 6));
+        units.add(new Barbarian(compositeAccessor, ai, 4));
+        units.add(new Magician(compositeAccessor, ai, 5));
+        units.add(new Healer(compositeAccessor, ai, 6));
     }
 
     private int inputUnitsQuantity(String message, int max) {
@@ -110,57 +102,6 @@ public class Game {
             quantity = SafeInput.getInt();
         } while (!(1 <= quantity && quantity <= max));
         return quantity;
-    }
-
-    public GameUnit getUnitById(int id) {
-        System.out.println(id);
-        for (GameUnit unit : allies) {
-            if (unit.getId() == id) {
-                return unit;
-            }
-        }
-        for (GameUnit unit : enemies) {
-            if (unit.getId() == id) {
-                return unit;
-            }
-        }
-        return null;
-    }
-
-    private ArrayList<GameUnit> createTeam(int quantity) {
-        ArrayList<GameUnit> units = new ArrayList<>();
-
-        for (int i = 0; i < quantity; i++) {
-            int selectedType;
-            do {
-                System.out.printf("Вибір клас для юніта %d:\n", i + 1);
-                System.out.println("1. Варвар");
-                System.out.println("2. Маг");
-                System.out.println("3. Цілитель");
-                selectedType = SafeInput.getInt();
-            } while (!(1 <= selectedType && selectedType <= 3));
-
-            GameUnit unit = switch (selectedType) {
-                case 1 -> new Barbarian(compositeAccessor, 0);
-                case 2 -> new Magician(compositeAccessor, 0);
-                case 3 -> new Healer(compositeAccessor, 0);
-                default -> throw new IndexOutOfBoundsException();
-            };
-
-            units.add(unit);
-        }
-
-        return units;
-    }
-
-    private void createTeams() {
-        int quantity = inputUnitsQuantity("Введіть кількість ваших юнітів (до 10 штук)", 10);
-        System.out.println("Вкажіть типи для союзних юнітів");
-        allies.addAll(createTeam(quantity));
-
-        quantity = inputUnitsQuantity("Введіть кількість ворожих юнітів (до 10 штук)", 10);
-        System.out.println("Вкажіть типи для ворожих юнітів");
-        enemies.addAll(createTeam(quantity));
     }
 
     public void start() {
@@ -180,7 +121,7 @@ public class Game {
             GameUnit currentUnit = unitsAccessor.getUnitByIndex(i);
             System.out.printf("Зараз хід юнітом - %s\n", currentUnit.toString());
 
-            if (i < allies.size()) {
+            if (i < alliesAccessor.getQuantity()) {
                 //currentUnit.Move(compositeAccessor);
             } else {
                 //currentUnit.MoveAI(compositeAccessor);
@@ -212,13 +153,23 @@ public class Game {
         if (moveCompleted != null) moveCompleted.onEvent();
     }
 
+    public GameUnit getUnitById(int id) {
+        System.out.println(id);
+        for (GameUnit unit : units) {
+            if (unit.getId() == id) {
+                return unit;
+            }
+        }
+        return null;
+    }
+
     private Boolean checkTheEnd() {
         if (!isEnd()) {
             return false;
         }
 
         printFrame();
-        if (allies.isEmpty()) {
+        if (alliesAccessor.getQuantity() == 0) {
             System.out.println("Ви програми! Вашу групу знищили");
         } else {
             System.out.println("Ви перемогли! Вам вдалося знищити всіх противників");
@@ -237,18 +188,17 @@ public class Game {
     }
 
     private void executeEffectsForAll() {
-        allies.forEach(GameUnit::executeEffects);
-        enemies.forEach(GameUnit::executeEffects);
+        units.forEach(GameUnit::executeEffects);
     }
 
     private void printFrame() {
         final String separator = "-----------------------------------------------------------------";
 
         System.out.println(separator);
-        for (int i = 0; i < Math.max(allies.size(), enemies.size()); i++) {
+        for (int i = 0; i < Math.max(alliesAccessor.getQuantity(), enemiesAccessor.getQuantity()); i++) {
             int number = i + 1;
             String ally = getUnitInfo(alliesAccessor, number, i);
-            String enemy = getUnitInfo(enemiesAccessor, number + allies.size(), i);
+            String enemy = getUnitInfo(enemiesAccessor, number + alliesAccessor.getQuantity(), i);
 
             System.out.printf("%s ‖ %s\n", ally, enemy);
         }
@@ -268,11 +218,10 @@ public class Game {
     }
 
     private void removeDeadUnits() {
-        allies.removeIf(ally -> !ally.isAlive());
-        enemies.removeIf(ally -> !ally.isAlive());
+        units.removeIf(unit -> !unit.isAlive());
     }
 
     private Boolean isEnd() {
-        return allies.isEmpty() || enemies.isEmpty();
+        return alliesAccessor.getQuantity() == 0 || enemiesAccessor.getQuantity() == 0;
     }
 }

@@ -15,9 +15,11 @@ import androidx.compose.ui.window.rememberWindowState
 import properties.Properties
 import ui.GameScreen
 import ui.MainMenu
+import ui.ResultsScreen
 import ui.event.SelectEvent
 import ui.Screen
 import ui.event.CurrentUnitChangedEvent
+import ui.event.GameEndedEvent
 import ui.event.MoveCompletedEvent
 
 fun main() = application {
@@ -43,26 +45,29 @@ fun main() = application {
                     game = Game()
                     game?.start()
                     gameData = GameData(game!!)
-                    game?.events?.setSelectedIndexChangedEvent(
-                        SelectEvent(game!!, gameData!!)
-                    )
-                    game?.events?.setCurrentIndexChangedEvent(
-                        CurrentUnitChangedEvent(game!!, gameData!!)
-                    )
-                    game?.events?.setMoveCompletedEvent(
-                        MoveCompletedEvent(game!!, gameData!!)
-                    )
+                    game?.events?.setSelectedIndexChangedEvent(SelectEvent(game!!, gameData!!))
+                    game?.events?.setCurrentIndexChangedEvent(CurrentUnitChangedEvent(game!!, gameData!!))
+                    game?.events?.setMoveCompletedEvent(MoveCompletedEvent(game!!, gameData!!))
+                    game?.events?.setGameEndEvent(GameEndedEvent(game!!, gameData!!))
                     screen = Screen.Game
                 },
                 modifier = Modifier
                     .fillMaxSize()
                     .background(colorBackground)
             )
-
             Screen.Game -> GameScreen(
                 game = game!!,
                 gameData = gameData!!,
                 onEnd = {
+                    screen = Screen.Results
+                },
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(colorBackground)
+            )
+            Screen.Results -> ResultsScreen(
+                result = gameData!!.gameResult.value!!,
+                onBack = {
                     game = null
                     gameData = null
                     screen = Screen.Main

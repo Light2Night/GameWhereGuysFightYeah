@@ -4,11 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d616960f-21f4-4e8a-8dc8-093b989c9e90" name="Changes" comment="Added getter to units list in Game class">
-      <change afterPath="$PROJECT_DIR$/src/main/java/Game/Characters/UnitTypes.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Helpers/IdGenerator.java" afterDir="false" />
+    <list default="true" id="d616960f-21f4-4e8a-8dc8-093b989c9e90" name="Changes" comment="Half-made unit cards">
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ui/ResultsScreen.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ui/event/GameEndedEvent.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Game/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/GameData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/GameData.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Main.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/properties/Style.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/properties/Style.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/ActionFabric.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/ActionFabric.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/GameScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/GameScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/Screen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/Screen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/composable/MedievalButton.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/composable/MedievalButton.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,9 +30,10 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
-        <option value="Kotlin Class" />
         <option value="Class" />
         <option value="Enum" />
+        <option value="Kotlin Class" />
+        <option value="Kotlin File" />
       </list>
     </option>
   </component>
@@ -78,8 +85,9 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
-      <recent name="ui.event" />
       <recent name="" />
+      <recent name="ui" />
+      <recent name="ui.event" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="" />
@@ -129,7 +137,23 @@
       <option name="project" value="LOCAL" />
       <updated>1698929862302</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Finished unit cards (almost)">
+      <option name="closed" value="true" />
+      <created>1698932533953</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1698932533953</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Half-made unit cards">
+      <option name="closed" value="true" />
+      <created>1698942741814</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1698942741814</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -140,7 +164,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/master" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -149,6 +185,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Reorganization of the list of units" />
     <MESSAGE value="Added getter to units list in Game class" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added getter to units list in Game class" />
+    <MESSAGE value="Finished unit cards (almost)" />
+    <MESSAGE value="Half-made unit cards" />
+    <option name="LAST_COMMIT_MESSAGE" value="Half-made unit cards" />
   </component>
 </project>

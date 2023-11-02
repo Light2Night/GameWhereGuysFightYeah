@@ -19,11 +19,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.platform.Font
 import bigText
 import biggerPadding
-import colorBackgroundDarker
 import colorBackgroundSecond
 import colorBorder
 import colorText
-import padding
 import smallBorder
 import smallCorners
 import ui.MedievalShape

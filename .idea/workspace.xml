@@ -4,17 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d616960f-21f4-4e8a-8dc8-093b989c9e90" name="Changes" comment="Half-made unit cards">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ui/ResultsScreen.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ui/event/GameEndedEvent.kt" afterDir="false" />
+    <list default="true" id="d616960f-21f4-4e8a-8dc8-093b989c9e90" name="Changes" comment="Added access to some effects properties for GUI">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/GameData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/GameData.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Main.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/properties/Style.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/properties/Style.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/ActionFabric.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/ActionFabric.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/GameScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/GameScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/Screen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/Screen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ui/composable/MedievalButton.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ui/composable/MedievalButton.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Game/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Helpers/SafeInput.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -153,7 +146,23 @@
       <option name="project" value="LOCAL" />
       <updated>1698942741814</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Fixed game crash after restart">
+      <option name="closed" value="true" />
+      <created>1698961438335</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1698961438335</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Added access to some effects properties for GUI">
+      <option name="closed" value="true" />
+      <created>1698961904505</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1698961904505</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -187,6 +196,8 @@
     <MESSAGE value="Added getter to units list in Game class" />
     <MESSAGE value="Finished unit cards (almost)" />
     <MESSAGE value="Half-made unit cards" />
-    <option name="LAST_COMMIT_MESSAGE" value="Half-made unit cards" />
+    <MESSAGE value="Fixed game crash after restart" />
+    <MESSAGE value="Added access to some effects properties for GUI" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added access to some effects properties for GUI" />
   </component>
 </project>

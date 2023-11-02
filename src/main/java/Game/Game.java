@@ -6,7 +6,6 @@ import Game.Event.GameEventsAggregate;
 import Game.Event.Handlers.OnCycleLeft;
 import Game.Teams.Team;
 import Helpers.IdGenerator;
-import Helpers.SafeInput;
 
 import java.util.ArrayList;
 
@@ -118,15 +117,6 @@ public class Game {
             case HEALER -> new Healer(compositeAccessor, team, IdGenerator.getId());
             default -> throw new IllegalArgumentException();
         };
-    }
-
-    private int inputUnitsQuantity(String message, int max) {
-        int quantity;
-        do {
-            System.out.println(message);
-            quantity = SafeInput.getInt();
-        } while (!(1 <= quantity && quantity <= max));
-        return quantity;
     }
 
     public void start() {

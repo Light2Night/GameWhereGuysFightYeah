@@ -158,17 +158,31 @@ public class Game {
 
     public void next() {
         removeDeadUnits();
+        if (checkTheEnd()) {
+            events.gameEnd(new GameEndInfo(human));
+            return;
+        }
+
         int id = cycle.next();
 
         while (enemiesAccessor.containsId(id)) {
-            enemiesAccessor.getUnitById(id).moveAI();
-
-            id = cycle.next();
             removeDeadUnits();
+            if (checkTheEnd()) {
+                events.gameEnd(new GameEndInfo(human));
+                return;
+            }
+
+            enemiesAccessor.getUnitById(id).moveAI();
+            id = cycle.next();
         }
 
         setCurrentUnitId(id);
 
+        removeDeadUnits();
+        if (checkTheEnd()) {
+            events.gameEnd(new GameEndInfo(human));
+            return;
+        }
         events.moveCompleted();
     }
 
@@ -197,13 +211,17 @@ public class Game {
         return true;
     }
 
-    private int getQuantityOfUnitsWhichWillBeDeleted(int currentIndex) {
-        int quantity = 0;
-        for (int i = 0; i <= currentIndex; i++) {
-            if (!unitsAccessor.getUnitByIndex(i).isAlive()) quantity++;
-        }
-        return quantity;
+    private Boolean isEnd() {
+        return alliesAccessor.getQuantity() == 0 || enemiesAccessor.getQuantity() == 0;
     }
+
+//    private int getQuantityOfUnitsWhichWillBeDeleted(int currentIndex) {
+//        int quantity = 0;
+//        for (int i = 0; i <= currentIndex; i++) {
+//            if (!unitsAccessor.getUnitByIndex(i).isAlive()) quantity++;
+//        }
+//        return quantity;
+//    }
 
     private void executeEffectsForAll() {
         units.forEach(GameUnit::executeEffects);
@@ -215,9 +233,5 @@ public class Game {
 
     private void removeDeadUnits() {
         units.removeIf(unit -> !unit.isAlive());
-    }
-
-    private Boolean isEnd() {
-        return alliesAccessor.getQuantity() == 0 || enemiesAccessor.getQuantity() == 0;
     }
 }

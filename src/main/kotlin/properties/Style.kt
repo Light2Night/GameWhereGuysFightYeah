@@ -39,6 +39,7 @@ data class Style(
     var longAnimationDuration: Int = 500,
 
     var color_border: AColor = Color.Black.toAColor(),
+    var color_selected_border: AColor = Color.Blue.toAColor(),
 
     var color_background: AColor = Color(20, 20, 20).toAColor(),
     var color_background_lighter: AColor = Color(40, 40, 40).toAColor(),

@@ -2,6 +2,7 @@ import properties.toColor
 import kotlin.math.min
 
 val colorBorder get() = style.color_border.toColor()
+val colorSelectedBorder get() = style.color_selected_border.toColor()
 
 val colorBackground get() = style.color_background.toColor()
 val colorBackgroundSelection get() = style.color_background.copy(

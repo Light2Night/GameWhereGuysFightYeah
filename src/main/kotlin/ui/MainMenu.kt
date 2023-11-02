@@ -10,6 +10,7 @@ fun MainMenu(
     onStart: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+
     Button(
         onClick = onStart,
     ) {

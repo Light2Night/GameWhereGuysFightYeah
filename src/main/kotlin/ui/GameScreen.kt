@@ -13,7 +13,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
-import androidx.compose.material.Colors
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -24,10 +23,14 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import bigText
+import border
 import colorBackground
+import colorBackgroundLighter
 import colorBorder
-import corners
+import colorSelectedBorder
+import colorText
 import emptyImageBitmap
+import getImageBitmap
 import imageHeight
 import imageWidth
 import normalText
@@ -103,7 +106,8 @@ fun UnitList(
                 side = side,
                 onSelect = {
                     onSelect(unit.id)
-                }
+                },
+                modifier = Modifier.fillMaxWidth(),
             )
         }
     }
@@ -118,31 +122,40 @@ fun UnitInfo(
     modifier: Modifier = Modifier,
 ) {
     Row(
+        horizontalArrangement = if (side == Side.Right) Arrangement.End else Arrangement.Start,
         modifier = modifier
-            .clickable { onSelect() },
+            .clickable { onSelect() }
+            .padding(padding)
+            .background(colorBackground, RoundedCornerShape(smallCorners))
+            .border(
+                if (isSelected) border else smallBorder,
+                if (isSelected) colorSelectedBorder else colorBorder,
+                RoundedCornerShape(smallCorners)
+            )
+            .clip(RoundedCornerShape(smallCorners)),
     ) {
         if (side == Side.Left) {
             Image(
-                bitmap = emptyImageBitmap,
+                bitmap = getImageBitmap("textures/unit_image_placeholder.png") ?: emptyImageBitmap,
                 contentDescription = unit.name,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .height(imageHeight)
                     .width(imageWidth)
                     .padding(padding)
-                    .background(colorBackground, RoundedCornerShape(smallCorners))
+                    .background(colorBackgroundLighter, RoundedCornerShape(smallCorners))
                     .border(smallBorder, colorBorder, RoundedCornerShape(smallCorners))
                     .clip(RoundedCornerShape(smallCorners)),
             )
         }
 
         Column(
-            horizontalAlignment = if (side == Side.Left) Alignment.End else Alignment.Start,
+            horizontalAlignment = if (side == Side.Right) Alignment.End else Alignment.Start,
             modifier = Modifier
         ) {
             Text(
                 "${unit.id} - ${unit.name}",
-                color = if (isSelected) Color.Blue else Color.Black,
+                color = colorText,
                 fontSize = bigText,
                 fontWeight = FontWeight.Bold,
             )
@@ -150,7 +163,7 @@ fun UnitInfo(
             Text(
                 "HP: ${unit.hp}/${unit.maxHp}",
                 fontSize = normalText,
-                color = if (isSelected) Color.Blue else Color.Black
+                color = colorText
             )
 
             when (unit) {
@@ -158,35 +171,35 @@ fun UnitInfo(
                     Text(
                         "DMG: ${unit.damage - unit.damageDelta}-${unit.damage}",
                         fontSize = normalText,
-                        color = if (isSelected) Color.Blue else Color.Black
+                        color = colorText
                     )
                 }
                 is Magician -> {
                     Text(
                         "DMG: ${unit.damage - unit.damageDelta}-${unit.damage}",
                         fontSize = normalText,
-                        color = if (isSelected) Color.Blue else Color.Black
+                        color = colorText
                     )
 
                     val effect = unit.magicalEffect
                     Text(
                         "EFF: 15 (2 turns)",
                         fontSize = normalText,
-                        color = if (isSelected) Color.Blue else Color.Black
+                        color = colorText
                     )
                 }
                 is Healer -> {
                     Text(
                         "HEAL: ${unit.heal}",
                         fontSize = normalText,
-                        color = if (isSelected) Color.Blue else Color.Black
+                        color = colorText
                     )
 
                     val effect = unit.healingEffect
                     Text(
                         "EFF: 10 (3 turns)",
                         fontSize = normalText,
-                        color = if (isSelected) Color.Blue else Color.Black
+                        color = colorText
                     )
                 }
             }
@@ -194,14 +207,14 @@ fun UnitInfo(
 
         if (side == Side.Right) {
             Image(
-                bitmap = emptyImageBitmap,
+                bitmap = getImageBitmap("textures/unit_image_placeholder.png") ?: emptyImageBitmap,
                 contentDescription = unit.name,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .height(imageHeight)
                     .width(imageWidth)
                     .padding(padding)
-                    .background(colorBackground, RoundedCornerShape(smallCorners))
+                    .background(colorBackgroundLighter, RoundedCornerShape(smallCorners))
                     .border(smallBorder, colorBorder, RoundedCornerShape(smallCorners))
                     .clip(RoundedCornerShape(smallCorners)),
             )
@@ -222,7 +235,7 @@ fun GameBoard(
         UnitInfo(
             unit = gameData.currentUnit.value,
             isSelected = false,
-            onSelect = {}
+            modifier = Modifier.fillMaxWidth(),
         )
         Actions(
             actions = ActionFabric(game, gameData).createActions(),

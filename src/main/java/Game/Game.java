@@ -1,14 +1,13 @@
 package Game;
 
 import Game.CharacterGetters.*;
-import Game.Characters.Barbarian;
-import Game.Characters.Healer;
-import Game.Characters.Magician;
-import Game.Characters.GameUnit;
+import Game.Characters.*;
 import Game.Event.Eventable;
 import Game.Teams.PlayerTypes;
 import Game.Teams.Team;
+import Helpers.IdGenerator;
 import Helpers.SafeInput;
+import kotlin.Unit;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -28,6 +27,10 @@ public class Game {
     private int selectedUnitIndex = 1;
 
     private int currentUnitIndex = 1;
+
+    private Team human;
+    private Team ai;
+
     @Nullable
     private Eventable selectedIndexChanged;
 
@@ -82,8 +85,8 @@ public class Game {
 
         units = new ArrayList<>();
 
-        Team human = new Team(1, PlayerTypes.Human, "Human");
-        Team ai = new Team(2, PlayerTypes.AI, "AI");
+        human = new Team(1, PlayerTypes.Human, "Human");
+        ai = new Team(2, PlayerTypes.AI, "AI");
 
         alliesAccessor = new TeamAccessor(units, human);
         enemiesAccessor = new TeamAccessor(units, ai);
@@ -91,13 +94,33 @@ public class Game {
         compositeAccessor = new CompositeAccessor(alliesAccessor, enemiesAccessor, unitsAccessor);
         cycle = new GameCycle(compositeAccessor);
 
-        units.add(new Barbarian(compositeAccessor, human, 1));
-        units.add(new Magician(compositeAccessor, human, 2));
-        units.add(new Healer(compositeAccessor, human, 3));
+        units.add(new Barbarian(compositeAccessor, human, IdGenerator.getId()));
+        units.add(new Magician(compositeAccessor, human, IdGenerator.getId()));
+        units.add(new Healer(compositeAccessor, human, IdGenerator.getId()));
 
-        units.add(new Barbarian(compositeAccessor, ai, 4));
-        units.add(new Magician(compositeAccessor, ai, 5));
-        units.add(new Healer(compositeAccessor, ai, 6));
+        units.add(new Barbarian(compositeAccessor, ai, IdGenerator.getId()));
+        units.add(new Magician(compositeAccessor, ai, IdGenerator.getId()));
+        units.add(new Healer(compositeAccessor, ai, IdGenerator.getId()));
+    }
+
+    public void addAlly(UnitTypes type) {
+        GameUnit unit = switch (type) {
+            case BARBARIAN -> new Barbarian(compositeAccessor, human, IdGenerator.getId());
+            case MAGICIAN -> new Magician(compositeAccessor, human, IdGenerator.getId());
+            case HEALER -> new Healer(compositeAccessor, human, IdGenerator.getId());
+            default -> throw new IllegalArgumentException();
+        };
+        units.add(unit);
+    }
+
+    public void addEnemy(UnitTypes type) {
+        GameUnit unit = switch (type) {
+            case BARBARIAN -> new Barbarian(compositeAccessor, ai, IdGenerator.getId());
+            case MAGICIAN -> new Magician(compositeAccessor, ai, IdGenerator.getId());
+            case HEALER -> new Healer(compositeAccessor, ai, IdGenerator.getId());
+            default -> throw new IllegalArgumentException();
+        };
+        units.add(unit);
     }
 
     private int inputUnitsQuantity(String message, int max) {

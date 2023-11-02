@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d616960f-21f4-4e8a-8dc8-093b989c9e90" name="Changes" comment="Reorganization of the list of units">
+    <list default="true" id="d616960f-21f4-4e8a-8dc8-093b989c9e90" name="Changes" comment="Added getter to units list in Game class">
+      <change afterPath="$PROJECT_DIR$/src/main/java/Game/Characters/UnitTypes.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Helpers/IdGenerator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Game/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/Game.java" afterDir="false" />
     </list>
@@ -119,7 +121,15 @@
       <option name="project" value="LOCAL" />
       <updated>1698929635071</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Added getter to units list in Game class">
+      <option name="closed" value="true" />
+      <created>1698929862302</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1698929862302</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -138,6 +148,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Reorganization of the list of units" />
-    <option name="LAST_COMMIT_MESSAGE" value="Reorganization of the list of units" />
+    <MESSAGE value="Added getter to units list in Game class" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added getter to units list in Game class" />
   </component>
 </project>

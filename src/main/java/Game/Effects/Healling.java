@@ -4,7 +4,7 @@ import Game.Characters.GameUnit;
 
 public class Healling implements Effectable {
     private int cyclesLeft;
-    private int heal;
+    public final int heal;
 
     public Healling() {
         cyclesLeft = 3;

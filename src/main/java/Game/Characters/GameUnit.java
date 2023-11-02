@@ -60,6 +60,10 @@ public abstract class GameUnit {
         return team;
     }
 
+    public ArrayList<Effectable> getEffects() {
+        return new ArrayList<>(effects);
+    }
+
     public void takeDamage(int damage) {
         if (damage < 0) throw new IllegalArgumentException("damage");
 

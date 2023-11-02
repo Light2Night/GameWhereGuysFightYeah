@@ -4,7 +4,7 @@ import Game.Characters.GameUnit;
 
 public class Poisoning implements Effectable {
     private int cyclesLeft;
-    private int damage;
+    public final int damage;
 
     public Poisoning() {
         cyclesLeft = 2;

@@ -43,9 +43,9 @@ fun main() = application {
             Screen.Main -> MainMenu(
                 onStart = { allies, enemies ->
                     game = Game()
+                    game?.start()
                     allies.forEach { game?.addAlly(it) }
                     enemies.forEach { game?.addEnemy(it) }
-                    game?.start()
                     gameData = GameData(game!!)
                     game?.events?.setSelectedIndexChangedEvent(SelectEvent(game!!, gameData!!))
                     game?.events?.setCurrentIndexChangedEvent(CurrentUnitChangedEvent(game!!, gameData!!))

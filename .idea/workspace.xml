@@ -4,17 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d616960f-21f4-4e8a-8dc8-093b989c9e90" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/Game/Teams/PlayerTypes.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Game/Teams/Team.java" afterDir="false" />
+    <list default="true" id="d616960f-21f4-4e8a-8dc8-093b989c9e90" name="Changes" comment="Reorganization of the list of units">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Game/CharacterGetters/AlliesAccessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/CharacterGetters/TeamAccessor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Game/CharacterGetters/CompositeAccessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/CharacterGetters/CompositeAccessor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Game/CharacterGetters/UnitsAccessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/CharacterGetters/UnitsAccessor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Game/Characters/Barbarian.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/Characters/Barbarian.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Game/Characters/GameUnit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/Characters/GameUnit.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Game/Characters/Healer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/Characters/Healer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Game/Characters/Magician.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/Characters/Magician.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Game/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/Game.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -120,6 +111,15 @@
       <workItem from="1698857472065" duration="1490000" />
       <workItem from="1698859031861" duration="15112000" />
     </task>
+    <task id="LOCAL-00001" summary="Reorganization of the list of units">
+      <option name="closed" value="true" />
+      <created>1698929635071</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1698929635071</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -135,5 +135,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Reorganization of the list of units" />
+    <option name="LAST_COMMIT_MESSAGE" value="Reorganization of the list of units" />
   </component>
 </project>

@@ -19,23 +19,28 @@ public class Game {
     private Boolean gameIsOn;
 
     private TeamAccessor alliesAccessor;
+
     private TeamAccessor enemiesAccessor;
     private UnitsAccessor unitsAccessor;
     private CompositeAccessor compositeAccessor;
-
     private GameCycle cycle;
 
     private int selectedUnitIndex = 1;
-    private int currentUnitIndex = 1;
 
+    private int currentUnitIndex = 1;
     @Nullable
     private Eventable selectedIndexChanged;
+
     @Nullable
     private Eventable currentIndexChanged;
     @Nullable
     private Eventable moveCompleted;
 
     // Setters
+    public ArrayList<GameUnit> getUnits() {
+        return units;
+    }
+
     public void setSelectedUnitIndex(int selectedUnitIndex) {
         this.selectedUnitIndex = selectedUnitIndex;
         if (selectedIndexChanged != null) selectedIndexChanged.onEvent();

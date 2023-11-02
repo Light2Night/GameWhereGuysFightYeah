@@ -7,7 +7,6 @@ import Game.Teams.PlayerTypes;
 import Game.Teams.Team;
 import Helpers.IdGenerator;
 import Helpers.SafeInput;
-import kotlin.Unit;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -94,33 +93,34 @@ public class Game {
         compositeAccessor = new CompositeAccessor(alliesAccessor, enemiesAccessor, unitsAccessor);
         cycle = new GameCycle(compositeAccessor);
 
-        units.add(new Barbarian(compositeAccessor, human, IdGenerator.getId()));
-        units.add(new Magician(compositeAccessor, human, IdGenerator.getId()));
-        units.add(new Healer(compositeAccessor, human, IdGenerator.getId()));
+        testInitialize();
+    }
 
-        units.add(new Barbarian(compositeAccessor, ai, IdGenerator.getId()));
-        units.add(new Magician(compositeAccessor, ai, IdGenerator.getId()));
-        units.add(new Healer(compositeAccessor, ai, IdGenerator.getId()));
+    private void testInitialize() {
+        addAlly(UnitTypes.BARBARIAN);
+        addAlly(UnitTypes.MAGICIAN);
+        addAlly(UnitTypes.HEALER);
+
+        addEnemy(UnitTypes.BARBARIAN);
+        addEnemy(UnitTypes.MAGICIAN);
+        addEnemy(UnitTypes.HEALER);
     }
 
     public void addAlly(UnitTypes type) {
-        GameUnit unit = switch (type) {
-            case BARBARIAN -> new Barbarian(compositeAccessor, human, IdGenerator.getId());
-            case MAGICIAN -> new Magician(compositeAccessor, human, IdGenerator.getId());
-            case HEALER -> new Healer(compositeAccessor, human, IdGenerator.getId());
-            default -> throw new IllegalArgumentException();
-        };
-        units.add(unit);
+        units.add(createUnit(type, human));
     }
 
     public void addEnemy(UnitTypes type) {
-        GameUnit unit = switch (type) {
-            case BARBARIAN -> new Barbarian(compositeAccessor, ai, IdGenerator.getId());
-            case MAGICIAN -> new Magician(compositeAccessor, ai, IdGenerator.getId());
-            case HEALER -> new Healer(compositeAccessor, ai, IdGenerator.getId());
+        units.add(createUnit(type, ai));
+    }
+
+    private GameUnit createUnit(UnitTypes type, Team team) {
+        return switch (type) {
+            case BARBARIAN -> new Barbarian(compositeAccessor, team, IdGenerator.getId());
+            case MAGICIAN -> new Magician(compositeAccessor, team, IdGenerator.getId());
+            case HEALER -> new Healer(compositeAccessor, team, IdGenerator.getId());
             default -> throw new IllegalArgumentException();
         };
-        units.add(unit);
     }
 
     private int inputUnitsQuantity(String message, int max) {
@@ -136,34 +136,34 @@ public class Game {
         reset();
     }
 
-    private void makeCycle() {
-        executeEffectsForAll();
-        removeDeadUnits();
-
-        if (checkTheEnd()) {
-            return;
-        }
-
-        for (int i = 0; i < unitsAccessor.getQuantity(); i++) {
-            printFrame();
-            GameUnit currentUnit = unitsAccessor.getUnitByIndex(i);
-            System.out.printf("Зараз хід юнітом - %s\n", currentUnit.toString());
-
-            if (i < alliesAccessor.getQuantity()) {
-                //currentUnit.Move(compositeAccessor);
-            } else {
-                //currentUnit.MoveAI(compositeAccessor);
-            }
-
-            i -= getQuantityOfUnitsWhichWillBeDeleted(i);
-            setCurrentUnitId(unitsAccessor.getUnitByIndex(i).getId());
-            removeDeadUnits();
-
-            if (checkTheEnd()) {
-                return;
-            }
-        }
-    }
+//    private void makeCycle() {
+//        executeEffectsForAll();
+//        removeDeadUnits();
+//
+//        if (checkTheEnd()) {
+//            return;
+//        }
+//
+//        for (int i = 0; i < unitsAccessor.getQuantity(); i++) {
+//            printFrame();
+//            GameUnit currentUnit = unitsAccessor.getUnitByIndex(i);
+//            System.out.printf("Зараз хід юнітом - %s\n", currentUnit.toString());
+//
+//            if (i < alliesAccessor.getQuantity()) {
+//                //currentUnit.Move(compositeAccessor);
+//            } else {
+//                //currentUnit.MoveAI(compositeAccessor);
+//            }
+//
+//            i -= getQuantityOfUnitsWhichWillBeDeleted(i);
+//            setCurrentUnitId(unitsAccessor.getUnitByIndex(i).getId());
+//            removeDeadUnits();
+//
+//            if (checkTheEnd()) {
+//                return;
+//            }
+//        }
+//    }
 
     public void next() {
         removeDeadUnits();
@@ -182,7 +182,7 @@ public class Game {
     }
 
     public GameUnit getUnitById(int id) {
-        System.out.println(id);
+        //System.out.println(id);
         for (GameUnit unit : units) {
             if (unit.getId() == id) {
                 return unit;
@@ -196,7 +196,7 @@ public class Game {
             return false;
         }
 
-        printFrame();
+        //printFrame();
         if (alliesAccessor.getQuantity() == 0) {
             System.out.println("Ви програми! Вашу групу знищили");
         } else {

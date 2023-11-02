@@ -26,30 +26,19 @@ public class GameCycle {
     }
 
     public int next() {
+        removeDeadUnits();
+
         if (queue.isEmpty()) {
             resetQueue();
         }
 
-        GameUnit unit;
-        do {
-            unit = queue.get(0);
-
-            if (!unit.isAlive()) {
-                queue.remove(0);
-            }
-        } while (!unit.isAlive() && !queue.isEmpty());
-
-        if (queue.isEmpty()) {
-            resetQueue();
-            unit = queue.get(0);
-        }
-
+        GameUnit unit = queue.get(0);
         queue.remove(0);
 
-        if (queue.isEmpty()) {
-            resetQueue();
-        }
+        return unit.getId();
+    }
 
-        return queue.get(0).getId();
+    private void removeDeadUnits() {
+        queue.removeIf(unit -> !unit.isAlive());
     }
 }

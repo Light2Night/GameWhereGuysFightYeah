@@ -25,7 +25,7 @@ public class Game {
 
     private int selectedUnitIndex = 1;
 
-    private int currentUnitIndex = 1;
+    private int currentUnitIndex;
 
     private Team human;
     private Team ai;
@@ -88,6 +88,8 @@ public class Game {
         events.setCycleLeftEvent(new OnCycleLeft(units));
 
         testInitialize();
+
+        setCurrentUnitId(cycle.next());
     }
 
     private void testInitialize() {

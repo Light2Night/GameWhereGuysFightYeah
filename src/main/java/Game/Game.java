@@ -23,8 +23,7 @@ public class Game {
 
     private GameCycle cycle;
 
-    private int selectedUnitIndex = 1;
-
+    private int selectedUnitIndex;
     private int currentUnitIndex;
 
     private Team human;
@@ -89,7 +88,9 @@ public class Game {
 
         testInitialize();
 
-        setCurrentUnitId(cycle.next());
+        int unitId = cycle.next();
+        setCurrentUnitId(unitId);
+        setSelectedUnitIndex(unitId);
     }
 
     private void testInitialize() {

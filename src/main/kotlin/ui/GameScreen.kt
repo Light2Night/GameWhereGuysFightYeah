@@ -28,7 +28,6 @@ import androidx.compose.ui.unit.dp
 import bigText
 import border
 import colorBackground
-import colorBackgroundDarker
 import colorBorder
 import colorSelectedBorder
 import colorText
@@ -62,12 +61,7 @@ fun GameScreen(
             modifier = Modifier.weight(1F),
         )
 
-        Box(
-            modifier = Modifier
-                .width(8.dp)
-                .fillMaxHeight()
-                .background(Color.Black)
-        )
+        Divider(Modifier.fillMaxHeight())
 
         GameBoard(
             game = game,
@@ -83,12 +77,7 @@ fun GameScreen(
             modifier = Modifier.weight(1F),
         )
 
-        Box(
-            modifier = Modifier
-                .width(8.dp)
-                .fillMaxHeight()
-                .background(Color.Black)
-        )
+        Divider(Modifier.fillMaxHeight())
 
         UnitList(
             units = gameData.enemies,
@@ -134,12 +123,18 @@ private fun UnitInfo(
     onSelect: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
+    val imageBrush = ShaderBrush(ImageShader(
+        getImageBitmap("textures/background/2.png") ?: emptyImageBitmap,
+        TileMode.Repeated,
+        TileMode.Repeated,
+    ))
+
     Row(
         horizontalArrangement = if (side == Side.Right) Arrangement.End else Arrangement.Start,
         modifier = modifier
             .clickable { onSelect() }
             .padding(padding)
-            .background(colorBackgroundDarker, MedievalShape(smallCorners.value))
+            .background(imageBrush, MedievalShape(smallCorners.value))
             .border(
                 if (isSelected) border else smallBorder,
                 if (isSelected) colorSelectedBorder else colorBorder,
@@ -387,7 +382,7 @@ private fun Actions(
                     action.action(selectedUnitID)
                     onAction()
                 },
-                modifier = modifier,
+                modifier = modifier.padding(start = padding, top = padding),
             )
         }
     }

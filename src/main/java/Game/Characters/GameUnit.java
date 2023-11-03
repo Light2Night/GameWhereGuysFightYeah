@@ -6,7 +6,6 @@ import Game.Effects.Effectable;
 import Game.Exceptions.InvalidActionException;
 import Game.Move;
 import Game.Teams.Team;
-import Helpers.SafeInput;
 
 import java.util.ArrayList;
 
@@ -35,7 +34,7 @@ public abstract class GameUnit {
     protected int inputUnitNumber(UnitsAccessor unitsAccessor) {
         int number;
         while (true) {
-            number = SafeInput.getInt();
+            number = 1; //SafeInput.getInt();
             if (0 < number && number <= unitsAccessor.getQuantity()) {
                 break;
             }

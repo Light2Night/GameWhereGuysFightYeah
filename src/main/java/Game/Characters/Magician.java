@@ -7,7 +7,6 @@ import Game.Effects.Poisoning;
 import Game.Exceptions.InvalidActionException;
 import Game.Move;
 import Game.Teams.Team;
-import Helpers.SafeInput;
 
 import java.util.Random;
 

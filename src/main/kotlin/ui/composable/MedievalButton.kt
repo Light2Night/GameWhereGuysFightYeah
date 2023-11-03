@@ -24,7 +24,6 @@ import colorBorder
 import colorText
 import smallBorder
 import smallCorners
-import ui.MedievalShape
 
 @Composable
 fun MedievalButton(
@@ -40,6 +39,7 @@ fun MedievalButton(
             fontSize = bigText,
             fontWeight = FontWeight.Bold,
             fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
+            modifier = Modifier.padding(biggerPadding),
         )
     }
 }
@@ -81,6 +81,7 @@ fun MedievalButton(
                 fontSize = bigText,
                 fontWeight = FontWeight.Bold,
                 fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
+                modifier = Modifier.padding(biggerPadding),
             )
         }
     }
@@ -98,13 +99,8 @@ private fun MedievalButton(
         modifier = modifier
             .clickable(onClick = onClick, enabled = enabled)
             .background(colorBackgroundSecond, MedievalShape(smallCorners.value))
-            .border(
-                smallBorder,
-                colorBorder,
-                MedievalShape(smallCorners.value)
-            )
-            .clip(MedievalShape(smallCorners.value))
-            .padding(biggerPadding),
+            .border(smallBorder, colorBorder, MedievalShape(smallCorners.value))
+            .clip(MedievalShape(smallCorners.value)),
     ) {
         content()
     }

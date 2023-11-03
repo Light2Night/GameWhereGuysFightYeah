@@ -1,7 +1,6 @@
 package properties
 
 import androidx.compose.ui.graphics.Color
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -32,7 +31,7 @@ data class Style(
     var small_text: Int = 16,
     var normal_text: Int = 20,
     var big_text: Int = 26,
-    var huge_text: Int = 32,
+    var huge_text: Int = 36,
 
     var shortAnimationDuration: Int = 200,
     var normalAnimationDuration: Int = 300,
@@ -48,6 +47,7 @@ data class Style(
     var color_background_second_lighter: AColor  = Color(0, 90, 90).toAColor(),
     var color_background_delete: AColor = Color.Red.toAColor(),
 
+    var color_text_light: AColor = Color(240, 240, 240).toAColor(),
     var color_text: AColor = Color(140, 140, 140).toAColor(),
     var color_text_second: AColor = Color(130, 130, 130).toAColor(),
     var color_text_error: AColor = Color.Red.toAColor(),

@@ -1,44 +1,21 @@
 package ui
 
-import Game.Characters.Barbarian
-import Game.Characters.GameUnit
-import Game.Characters.Healer
-import Game.Characters.Magician
 import Game.Characters.UnitTypes
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.platform.Font
 import androidx.compose.ui.unit.dp
 import bigText
-import border
-import colorBackground
-import colorBackgroundDarker
-import colorBorder
-import colorSelectedBorder
 import colorText
-import emptyImageBitmap
-import getImageBitmap
-import imageHeight
-import imageWidth
-import normalText
-import padding
-import smallBorder
-import smallCorners
 import ui.composable.MedievalButton
 
 @Composable

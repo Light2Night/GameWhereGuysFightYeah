@@ -4,12 +4,12 @@ import Game.Characters.Barbarian
 import Game.Characters.GameUnit
 import Game.Characters.Healer
 import Game.Characters.Magician
+import Game.Effects.Effectable
+import Game.Effects.Healling
+import Game.Effects.Poisoning
 import Game.Game
 import GameData
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -17,7 +17,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.ExperimentalTextApi
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.platform.Font
@@ -29,15 +32,17 @@ import colorBackgroundDarker
 import colorBorder
 import colorSelectedBorder
 import colorText
+import colorTextLight
 import emptyImageBitmap
 import getImageBitmap
+import hugeText
 import imageHeight
 import imageWidth
 import normalText
 import padding
 import smallBorder
 import smallCorners
-import ui.composable.MedievalButton
+import ui.composable.*
 
 @Composable
 fun GameScreen(
@@ -105,7 +110,7 @@ private fun UnitList(
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier,
+        modifier = modifier.verticalScroll(rememberScrollState()),
     ) {
         units.forEach { unit ->
             UnitInfo(
@@ -176,55 +181,16 @@ private fun UnitInfo(
                 fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
             )
 
-            Text(
-                "HP: ${unit.hp}/${unit.maxHp}",
-                fontSize = normalText,
-                color = colorText,
-                fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
+            UnitTextData(
+                unit = unit,
+                alignment = if (side == Side.Right) Alignment.End else Alignment.Start,
+                modifier = Modifier,
             )
 
-            when (unit) {
-                is Barbarian -> {
-                    Text(
-                        "DMG: ${unit.damage - unit.damageDelta}-${unit.damage}",
-                        fontSize = normalText,
-                        color = colorText,
-                        fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
-                    )
-                }
-                is Magician -> {
-                    Text(
-                        "DMG: ${unit.damage - unit.damageDelta}-${unit.damage}",
-                        fontSize = normalText,
-                        color = colorText,
-                        fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
-                    )
-
-                    val effect = unit.magicalEffect
-                    Text(
-                        "EFF: 15 (2 turns)",
-                        fontSize = normalText,
-                        color = colorText,
-                        fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
-                    )
-                }
-                is Healer -> {
-                    Text(
-                        "HEAL: ${unit.heal}",
-                        fontSize = normalText,
-                        color = colorText,
-                        fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
-                    )
-
-                    val effect = unit.healingEffect
-                    Text(
-                        "EFF: 10 (3 turns)",
-                        fontSize = normalText,
-                        color = colorText,
-                        fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
-                    )
-                }
-            }
+            EffectsInfo(
+                effects = unit.effects,
+                modifier = Modifier,
+            )
         }
 
         if (side == Side.Right) {
@@ -246,6 +212,137 @@ private fun UnitInfo(
                     .background(colorBackground, MedievalShape(smallCorners.value))
                     .border(smallBorder, colorBorder, MedievalShape(smallCorners.value))
                     .clip(MedievalShape(smallCorners.value)),
+            )
+        }
+    }
+}
+
+@Composable
+private fun UnitTextData(
+    unit: GameUnit,
+    alignment: Alignment.Horizontal = Alignment.Start,
+    modifier: Modifier = Modifier,
+) {
+    Column (
+        horizontalAlignment = alignment,
+        modifier = modifier,
+    ) {
+        Text(
+            "HP: ${unit.hp}/${unit.maxHp}",
+            fontSize = normalText,
+            color = colorText,
+            fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
+        )
+
+        when (unit) {
+            is Barbarian -> {
+                Text(
+                    "DMG: ${unit.damage - unit.damageDelta}-${unit.damage}",
+                    fontSize = normalText,
+                    color = colorText,
+                    fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
+                )
+            }
+
+            is Magician -> {
+                Text(
+                    "DMG: ${unit.damage - unit.damageDelta}-${unit.damage}",
+                    fontSize = normalText,
+                    color = colorText,
+                    fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
+                )
+
+                val effect = unit.magicalEffect
+                Text(
+                    "EFF: 15 (2 turns)",
+                    fontSize = normalText,
+                    color = colorText,
+                    fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
+                )
+            }
+
+            is Healer -> {
+                Text(
+                    "HEAL: ${unit.heal}",
+                    fontSize = normalText,
+                    color = colorText,
+                    fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
+                )
+
+                val effect = unit.healingEffect
+                Text(
+                    "EFF: 10 (3 turns)",
+                    fontSize = normalText,
+                    color = colorText,
+                    fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun EffectsInfo(
+    effects: List<Effectable>,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(padding),
+        modifier = modifier,
+    ) {
+        effects.forEach { effect ->
+            EffectIcon(
+                effect = effect,
+                modifier = Modifier.size(50.dp),
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalTextApi::class)
+@Composable
+private fun EffectIcon(
+    effect: Effectable,
+    modifier: Modifier = Modifier,
+) {
+    MedievalContainer(
+        modifier = modifier,
+    ) {
+        Box(
+            modifier = Modifier
+        ) {
+            Image(
+                bitmap = when (effect) {
+                    is Healling -> getImageBitmap("textures/effect/healing.png")
+                    is Poisoning -> getImageBitmap("textures/effect/poison.png")
+                    else -> emptyImageBitmap
+                } ?: emptyImageBitmap,
+                contentDescription = "effect icon",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxWidth(),
+            )
+
+            Text(
+                effect.cyclesLeft.toString(),
+                fontSize = hugeText,
+                color = colorTextLight,
+                fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
+                modifier = Modifier.align(Alignment.Center)
+            )
+
+            Text(
+                effect.cyclesLeft.toString(),
+                fontSize = hugeText,
+                color = Color.Black,
+                style = TextStyle.Default.copy(
+                    drawStyle = Stroke(
+                        miter = 1f,
+                        width = 1f,
+                        join = StrokeJoin.Round
+                    )
+                ),
+                fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
+                modifier = Modifier.align(Alignment.Center)
             )
         }
     }

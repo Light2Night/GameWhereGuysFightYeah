@@ -1,7 +1,6 @@
 package ui
 
 import Game.Characters.UnitTypes
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -10,15 +9,12 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.platform.Font
 import bigText
 import biggerPadding
-import colorBackground
 import colorBackgroundDarker
 import colorBorder
 import colorText
@@ -30,11 +26,9 @@ import padding
 import properties.Properties
 import settings
 import smallBorder
-import smallCorners
 import transparencySecond
 import ui.composable.*
 import ui.composable.shaders.ButtonBrush
-import ui.composable.shaders.MedievalShape
 import ui.composable.shaders.StandardBackgroundBrush
 import user
 
@@ -150,16 +144,11 @@ private fun UserInfo(
             fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
         )
 
-        Image(
-            bitmap = user.profileImage ?: emptyImageBitmap,
-            contentDescription = user.name,
-            contentScale = ContentScale.Crop,
+        MedievalIcon(
+            icon = user.profileImage ?: emptyImageBitmap,
             modifier = Modifier
                 .size(iconSize)
                 .padding(padding)
-                .background(colorBackground, MedievalShape(smallCorners.value))
-                .border(smallBorder, colorBorder, MedievalShape(smallCorners.value))
-                .clip(MedievalShape(smallCorners.value)),
         )
     }
 }

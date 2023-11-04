@@ -2,6 +2,10 @@
   "start_button": "почати",
   "back_button": "назад",
 
+  "profile_tab": "профіль",
+  "game_tab": "гра",
+  "settings_tab": "налаштування",
+
   "barbarian_name": "варвар",
   "magician_name": "маг",
   "healer_name": "цілитель",

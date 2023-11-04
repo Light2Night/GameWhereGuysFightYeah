@@ -16,7 +16,7 @@ data class Style(
     var image_height: Int = 160,
     var message_image_height: Int = 256,
     var big_icon_size: Int = 80,
-    var icon_size: Int = 40,
+    var icon_size: Int = 50,
     var small_icon_size: Int = 28,
     var tiny_icon_size: Int = 24,
     var menu_width: Int = 300,

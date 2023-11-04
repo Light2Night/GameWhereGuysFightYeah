@@ -1,4 +1,4 @@
-package ui.composable
+package ui.composable.shaders
 
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size

@@ -1,6 +1,5 @@
 package properties
 
-import androidx.compose.ui.graphics.ImageBitmap
 import properties.settings.Settings
 import properties.settings.SettingsContainer
 import java.lang.Exception
@@ -10,7 +9,6 @@ object Properties {
 
     private val userContainer: UserContainer = UserContainer()
     fun user(): User = userContainer.user
-    fun getProfileImage(): ImageBitmap? = userContainer.getProfileImage()
     fun loadUser() { userContainer.load() }
     fun saveUser() { userContainer.save() }
 

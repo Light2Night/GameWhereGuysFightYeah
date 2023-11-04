@@ -2,6 +2,10 @@
   "start_button": "start",
   "back_button": "back",
 
+  "profile_tab": "profile",
+  "game_tab": "game",
+  "settings_tab": "settings",
+
   "barbarian_name": "barbarian",
   "magician_name": "mage",
   "healer_name": "healer",

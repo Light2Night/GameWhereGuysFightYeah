@@ -14,9 +14,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.ImageShader
-import androidx.compose.ui.graphics.ShaderBrush
-import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.platform.Font
@@ -24,10 +21,10 @@ import bigText
 import biggerPadding
 import colorBorder
 import colorTextSecond
-import emptyImageBitmap
-import getImageBitmap
 import smallBorder
 import smallCorners
+import ui.composable.shaders.ButtonBrush
+import ui.composable.shaders.MedievalShape
 
 @Composable
 fun MedievalButton(
@@ -98,19 +95,11 @@ private fun MedievalButton(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
-    val imageBrush = ShaderBrush(
-        ImageShader(
-            getImageBitmap("textures/background/button.png") ?: emptyImageBitmap,
-            TileMode.Repeated,
-            TileMode.Repeated,
-        )
-    )
-
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
             .clickable(onClick = onClick, enabled = enabled)
-            .background(imageBrush, MedievalShape(smallCorners.value))
+            .background(ButtonBrush(), MedievalShape(smallCorners.value))
             .border(smallBorder, colorBorder, MedievalShape(smallCorners.value))
             .clip(MedievalShape(smallCorners.value)),
     ) {

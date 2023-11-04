@@ -27,7 +27,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.platform.Font
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
-import androidx.compose.ui.unit.dp
 import bigText
 import border
 import colorBackground
@@ -38,6 +37,7 @@ import colorTextLight
 import emptyImageBitmap
 import getImageBitmap
 import hugeText
+import iconSize
 import imageHeight
 import imageWidth
 import lang
@@ -48,6 +48,8 @@ import smallBorder
 import smallCorners
 import transparencyLight
 import ui.composable.*
+import ui.composable.shaders.MedievalShape
+import ui.composable.shaders.StandardBackgroundBrush
 import kotlin.random.Random
 import kotlin.random.nextInt
 
@@ -79,7 +81,7 @@ fun GameScreen(
                 modifier = Modifier.weight(1F),
             )
 
-            Divider(Modifier.fillMaxHeight())
+            Divider(modifier = Modifier.fillMaxHeight())
 
             GameBoard(
                 game = game,
@@ -95,7 +97,7 @@ fun GameScreen(
                 modifier = Modifier.weight(1F),
             )
 
-            Divider(Modifier.fillMaxHeight())
+            Divider(modifier = Modifier.fillMaxHeight())
 
             UnitList(
                 units = gameData.enemies,
@@ -216,18 +218,12 @@ private fun UnitInfo(
     onSelect: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
-    val imageBrush = ShaderBrush(ImageShader(
-        getImageBitmap("textures/background/2.png") ?: emptyImageBitmap,
-        TileMode.Repeated,
-        TileMode.Repeated,
-    ))
-
     Row(
         horizontalArrangement = if (side == Side.Right) Arrangement.End else Arrangement.Start,
         modifier = modifier
             .clickable { onSelect() }
             .padding(padding)
-            .background(imageBrush, MedievalShape(smallCorners.value))
+            .background(StandardBackgroundBrush(), MedievalShape(smallCorners.value))
             .border(
                 if (isSelected) border else smallBorder,
                 if (isSelected) colorSelectedBorder else colorBorder,
@@ -388,7 +384,7 @@ private fun EffectsInfo(
         effects.forEach { effect ->
             EffectIcon(
                 effect = effect,
-                modifier = Modifier.size(50.dp),
+                modifier = Modifier.size(iconSize),
             )
         }
     }

@@ -23,9 +23,9 @@ data class Style(
     var menu_item_height: Int = 36,
     var scrollbar_thickness: Int = 12,
 
-    var transparency: Float = 0.95F,
-    var transparency_second: Float = 0.7F,
-    var transparency_light: Float = 0.4F,
+    var transparency: Float = 0.9F,
+    var transparency_second: Float = 0.6F,
+    var transparency_light: Float = 0.2F,
 
     var tiny_text: Int = 14,
     var small_text: Int = 16,
@@ -49,7 +49,7 @@ data class Style(
 
     var color_text_light: AColor = Color(240, 240, 240).toAColor(),
     var color_text: AColor = Color(140, 140, 140).toAColor(),
-    var color_text_second: AColor = Color(130, 130, 130).toAColor(),
+    var color_text_second: AColor = Color(180, 180, 180).toAColor(),
     var color_text_error: AColor = Color.Red.toAColor(),
     var color_text_success: AColor = Color.Green.toAColor(),
     var color_text_italic: AColor = Color(130, 130, 130).toAColor(),

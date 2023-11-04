@@ -9,6 +9,7 @@ import Game.Effects.Healling
 import Game.Effects.Poisoning
 import Game.Game
 import GameData
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
@@ -24,6 +25,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.platform.Font
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import bigText
 import border
@@ -38,10 +41,14 @@ import hugeText
 import imageHeight
 import imageWidth
 import normalText
+import org.jetbrains.skiko.currentNanoTime
 import padding
 import smallBorder
 import smallCorners
+import transparencyLight
 import ui.composable.*
+import kotlin.random.Random
+import kotlin.random.nextInt
 
 @Composable
 fun GameScreen(
@@ -50,42 +57,127 @@ fun GameScreen(
     onEnd: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Row(
+    Box(
         modifier = modifier
     ) {
-        UnitList(
-            units = gameData.allies,
-            selectedUnitID = gameData.selectedUnit.value.id,
-            side = Side.Left,
-            onSelect = { game.selectedUnitIndex = it },
-            modifier = Modifier.weight(1F),
+        SmokeArea(
+            amount = 10,
+            modifier = Modifier
+                .align(Alignment.BottomStart)
+                .fillMaxSize(),
         )
 
-        Divider(Modifier.fillMaxHeight())
+        Row(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            UnitList(
+                units = gameData.allies,
+                selectedUnitID = gameData.selectedUnit.value.id,
+                side = Side.Left,
+                onSelect = { game.selectedUnitIndex = it },
+                modifier = Modifier.weight(1F),
+            )
 
-        GameBoard(
-            game = game,
-            gameData = gameData,
-            onAction = {
-                game.next()
-                gameData.gameResult.value?.let { onEnd() }
+            Divider(Modifier.fillMaxHeight())
 
-                if (game.getUnitById(gameData.selectedUnit.value.id) == null) {
-                    game.selectedUnitIndex = gameData.enemies.lastOrNull()?.id ?: gameData.allies.firstOrNull()?.id ?: 0
-                }
-            },
-            modifier = Modifier.weight(1F),
+            GameBoard(
+                game = game,
+                gameData = gameData,
+                onAction = {
+                    game.next()
+                    gameData.gameResult.value?.let { onEnd() }
+
+                    if (game.getUnitById(gameData.selectedUnit.value.id) == null) {
+                        game.selectedUnitIndex = gameData.enemies.lastOrNull()?.id ?: gameData.allies.firstOrNull()?.id ?: 0
+                    }
+                },
+                modifier = Modifier.weight(1F),
+            )
+
+            Divider(Modifier.fillMaxHeight())
+
+            UnitList(
+                units = gameData.enemies,
+                selectedUnitID = gameData.selectedUnit.value.id,
+                side = Side.Right,
+                onSelect = { game.selectedUnitIndex = it },
+                modifier = Modifier.weight(1F),
+            )
+        }
+    }
+}
+
+@Composable
+private fun SmokeArea(
+    amount: Int,
+    modifier: Modifier = Modifier,
+) {
+    val animations = mutableListOf<InfiniteTransition>()
+    repeat(amount) { animations.add(rememberInfiniteTransition()) }
+
+    val xValues = remember { mutableStateListOf<State<Float>>() }
+    repeat(amount) { index ->
+        val direction = Random(index).nextBoolean()
+        val initial = if (direction) 0F else 1F
+        val target = if (direction) 1F else 0F
+        val duration = Random(index).nextInt(30000..60000)
+
+        val x = animations[index].animateFloat(
+            initialValue = initial,
+            targetValue = target,
+            animationSpec = infiniteRepeatable(
+                animation = tween(duration, easing = LinearEasing),
+                initialStartOffset = StartOffset(
+                    offsetMillis = Random(index).nextInt(0..60000),
+                    offsetType = StartOffsetType.FastForward,
+                ),
+                repeatMode = RepeatMode.Reverse
+            )
         )
 
-        Divider(Modifier.fillMaxHeight())
+        xValues.add(x)
+    }
 
-        UnitList(
-            units = gameData.enemies,
-            selectedUnitID = gameData.selectedUnit.value.id,
-            side = Side.Right,
-            onSelect = { game.selectedUnitIndex = it },
-            modifier = Modifier.weight(1F),
+    val backgroundImage by remember {
+        mutableStateOf(
+            if (Random(currentNanoTime().toInt()).nextBoolean()) {
+                getImageBitmap("textures/background/forest1.png") ?: emptyImageBitmap
+            } else {
+                getImageBitmap("textures/background/forest2.png") ?: emptyImageBitmap
+            }
         )
+    }
+
+    val smokeImage by remember {
+        mutableStateOf(getImageBitmap("textures/assets/fog.png") ?: emptyImageBitmap)
+    }
+
+    Canvas(
+        modifier = modifier
+    ) {
+        drawImage(
+            image = backgroundImage,
+            dstOffset = IntOffset.Zero,
+            dstSize = IntSize(size.width.toInt(), size.height.toInt()),
+        )
+
+        val imageRatio = smokeImage.width.toFloat() / smokeImage.height
+        val newImageHeight = (size.height / 1.5).toInt()
+        val newImageWidth = (newImageHeight * imageRatio).toInt()
+        val startX = -smokeImage.width - 100
+        val pathLength = startX + size.width + smokeImage.width + 50
+
+        repeat(amount) { index ->
+            drawImage(
+                image = smokeImage,
+                dstOffset = IntOffset(
+                    (startX + pathLength * xValues[index].value).toInt(),
+                    (size.height - newImageHeight + Random(index).nextInt(0..50)).toInt(),
+                ),
+                dstSize = IntSize(newImageWidth, newImageHeight),
+                alpha = transparencyLight,
+            )
+        }
     }
 }
 

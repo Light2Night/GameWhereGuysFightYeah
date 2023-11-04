@@ -1,0 +1,11 @@
+{
+  "start_button": "start",
+  "back_button": "back",
+
+  "barbarian_name": "barbarian",
+  "magician_name": "mage",
+  "healer_name": "healer",
+
+  "user_won": "You destroyed the enemy!",
+  "ai_won": "The enemy defeated you!"
+}

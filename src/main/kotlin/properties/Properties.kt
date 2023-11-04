@@ -3,7 +3,7 @@ package properties
 import androidx.compose.ui.graphics.ImageBitmap
 import properties.settings.Settings
 import properties.settings.SettingsContainer
-import java.io.File
+import java.lang.Exception
 
 object Properties {
     const val version = "0.0.0 alpha"
@@ -15,7 +15,7 @@ object Properties {
     fun saveUser() { userContainer.save() }
 
     private val languageContainer: LanguageContainer = LanguageContainer()
-    fun language(): Language = languageContainer.language
+    fun language(): Language = languageContainer.language.value ?: throw Exception("Language not found")
     fun loadLanguage(lang: String = "en") { languageContainer.load(lang) }
 
     private val settingsContainer: SettingsContainer = SettingsContainer()

@@ -40,6 +40,7 @@ import getImageBitmap
 import hugeText
 import imageHeight
 import imageWidth
+import lang
 import normalText
 import org.jetbrains.skiko.currentNanoTime
 import padding
@@ -261,7 +262,14 @@ private fun UnitInfo(
             modifier = Modifier
         ) {
             Text(
-                "${unit.id} - ${unit.name}",
+                "${unit.id} - ${
+                    when (unit) {
+                        is Barbarian -> lang.barbarian_name.replaceFirstChar { it.uppercaseChar() }
+                        is Magician -> lang.magician_name.replaceFirstChar { it.uppercaseChar() }
+                        is Healer -> lang.healer_name.replaceFirstChar { it.uppercaseChar() }
+                        else -> ""
+                    }
+                }",
                 color = colorText,
                 fontSize = bigText,
                 fontWeight = FontWeight.Bold,

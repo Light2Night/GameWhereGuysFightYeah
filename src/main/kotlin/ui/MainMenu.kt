@@ -16,6 +16,9 @@ import androidx.compose.ui.text.platform.Font
 import androidx.compose.ui.unit.dp
 import bigText
 import colorText
+import lang
+import properties.Properties
+import settings
 import ui.composable.MedievalButton
 
 @Composable
@@ -42,11 +45,31 @@ fun MainMenu(
                 .background(Color.Black)
         )
 
-        MedievalButton(
-            text = "Почати",
-            onClick = { onStart(allies, enemies) },
-            modifier = Modifier.fillMaxWidth(0.33F)
-        )
+        Column {
+            MedievalButton(
+                text = lang.start_button.replaceFirstChar { it.uppercaseChar() },
+                onClick = { onStart(allies, enemies) },
+                modifier = Modifier.fillMaxWidth(0.33F)
+            )
+
+            MedievalButton(
+                text = "Українська",
+                onClick = {
+                    settings.language = "ua"
+                    Properties.saveSettings()
+                    Properties.loadLanguage(settings.language)
+                },
+            )
+
+            MedievalButton(
+                text = "English",
+                onClick = {
+                    settings.language = "en"
+                    Properties.saveSettings()
+                    Properties.loadLanguage(settings.language)
+                },
+            )
+        }
 
         Box(
             modifier = Modifier
@@ -104,21 +127,21 @@ private fun UnitInfo(
 ) {
     when (unitType) {
         UnitTypes.BARBARIAN -> Text(
-            "Варвар",
+            lang.barbarian_name.replaceFirstChar { it.uppercaseChar() },
             color = colorText,
             fontSize = bigText,
             fontWeight = FontWeight.Bold,
             fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
         )
         UnitTypes.MAGICIAN -> Text(
-            "Маг",
+            lang.magician_name.replaceFirstChar { it.uppercaseChar() },
             color = colorText,
             fontSize = bigText,
             fontWeight = FontWeight.Bold,
             fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
         )
         UnitTypes.HEALER -> Text(
-            "Цілитель",
+            lang.healer_name.replaceFirstChar { it.uppercaseChar() },
             color = colorText,
             fontSize = bigText,
             fontWeight = FontWeight.Bold,

@@ -1,0 +1,11 @@
+{
+  "start_button": "почати",
+  "back_button": "назад",
+
+  "barbarian_name": "варвар",
+  "magician_name": "маг",
+  "healer_name": "цілитель",
+
+  "user_won": "Ви розгромили противника!",
+  "ai_won": "Противник переміг!"
+}

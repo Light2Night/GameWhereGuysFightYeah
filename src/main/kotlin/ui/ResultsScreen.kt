@@ -11,9 +11,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.platform.Font
-import colorText
 import colorTextError
 import hugeText
+import lang
 import ui.composable.MedievalButton
 
 @Composable
@@ -29,8 +29,8 @@ fun ResultsScreen(
     ) {
         Text(
             when (result.teamWinner.playerType) {
-                PlayerTypes.AI -> "Противник переміг!"
-                PlayerTypes.Human -> "Ви розгромили противника!"
+                PlayerTypes.AI -> lang.ai_won
+                PlayerTypes.Human -> lang.user_won
                 null -> "<ERROR>"
             },
             color = colorTextError,
@@ -40,7 +40,7 @@ fun ResultsScreen(
         )
 
         MedievalButton(
-            text = "Назад",
+            text = lang.back_button.replaceFirstChar { it.uppercaseChar() },
             onClick = onBack,
         )
     }

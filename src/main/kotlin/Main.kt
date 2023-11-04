@@ -25,7 +25,7 @@ import ui.event.MoveCompletedEvent
 fun main() = application {
     Properties.loadStyle()
     Properties.loadSettings()
-    Properties.loadLanguage()
+    Properties.loadLanguage(settings.language)
     Properties.loadUser()
 
     var screen by remember { mutableStateOf(Screen.Main) }

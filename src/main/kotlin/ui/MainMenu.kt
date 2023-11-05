@@ -1,34 +1,43 @@
 package ui
 
-import Game.Characters.UnitTypes
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
+import Game.Characters.*
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.platform.Font
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntSize
 import bigText
 import biggerPadding
+import colorBackground
 import colorBackgroundDarker
 import colorBorder
 import colorText
 import colorTextSecond
 import emptyImageBitmap
+import getImageBitmap
 import iconSize
+import imageHeight
+import imageWidth
 import lang
 import padding
 import properties.Properties
 import settings
 import smallBorder
+import smallCorners
 import transparencySecond
 import ui.composable.*
 import ui.composable.shaders.ButtonBrush
+import ui.composable.shaders.MedievalShape
 import ui.composable.shaders.StandardBackgroundBrush
 import user
 
@@ -38,8 +47,9 @@ fun MainMenu(
     modifier: Modifier = Modifier,
 ) {
     val tabs by remember { mutableStateOf(CheckManager(
-        CheckValue(MainMenuTab.Profile, true),
-        CheckValue(MainMenuTab.Game, false),
+        CheckValue(MainMenuTab.Guild, true),
+        CheckValue(MainMenuTab.Party, false),
+        CheckValue(MainMenuTab.World, false),
         CheckValue(MainMenuTab.Settings, false),
     )) }
 
@@ -52,10 +62,13 @@ fun MainMenu(
         )
 
         when (tabs.getChecked()) {
-            MainMenuTab.Profile -> Profile(
+            MainMenuTab.Guild -> Guild(
                 modifier = Modifier.fillMaxSize(),
             )
-            MainMenuTab.Game -> Game(
+            MainMenuTab.Party -> Party(
+                modifier = Modifier.fillMaxSize(),
+            )
+            MainMenuTab.World -> World(
                 onStart = onStart,
                 modifier = Modifier.fillMaxSize(),
             )
@@ -154,14 +167,187 @@ private fun UserInfo(
 }
 
 @Composable
-private fun Profile(
+private fun Guild(
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier
+            .drawBehind {
+                drawImage(
+                    image = getImageBitmap("textures/background/guild1.png") ?: emptyImageBitmap,
+                    dstOffset = IntOffset.Zero,
+                    dstSize = IntSize(size.width.toInt(), size.height.toInt()),
+                )
+            }
+    ) {
+        Recruits(
+            modifier = Modifier
+                .fillMaxWidth(0.33F)
+                .fillMaxHeight()
+                .background(StandardBackgroundBrush())
+        )
+    }
+}
+
+@Composable
+private fun Recruits(
+    modifier: Modifier = Modifier,
+) {
+    Row(modifier = modifier) {
+        Column(modifier = Modifier.weight(1F)) {
+            Row {
+                Chest(modifier = Modifier.weight(1F))
+                Chest(modifier = Modifier.weight(1F))
+                Chest(modifier = Modifier.weight(1F))
+            }
+
+            Divider(orientation = Orientation.Horizontal, modifier = Modifier.fillMaxWidth())
+
+            Column(
+                modifier = Modifier
+                    .verticalScroll(rememberScrollState())
+            ) {
+                RecruitUnitCard(
+                    unit = Magician(null, null, 0),
+                    onClick = {},
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                RecruitUnitCard(
+                    unit = Barbarian(null, null, 1),
+                    onClick = {},
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                RecruitUnitCard(
+                    unit = Healer(null, null, 2),
+                    onClick = {},
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        }
+
+        Divider(modifier = Modifier.fillMaxHeight())
+    }
+}
+
+@Composable
+private fun Chest(
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier.padding(padding),
+    ) {
+        MedievalIcon(
+            icon = getImageBitmap("textures/assets/chest1.png") ?: emptyImageBitmap,
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(1F),
+        )
+
+        MedievalText(
+            text = "Chest",
+            fontSize = bigText,
+            fontWeight = FontWeight.Bold,
+        )
+    }
+}
+
+@Composable
+private fun RecruitUnitCard(
+    unit: GameUnit,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Row(modifier = modifier
+            .clickable(onClick = onClick)
+            .padding(padding)
+            .background(StandardBackgroundBrush(), MedievalShape(smallCorners.value))
+            .border(smallBorder, colorBorder, MedievalShape(smallCorners.value))
+            .clip(MedievalShape(smallCorners.value)),
+    ) {
+        Image(
+            bitmap = getImageBitmap(
+                when (unit) {
+                    is Barbarian -> { "textures/characters/barbarian_placeholder.png" }
+                    is Magician -> { "textures/characters/magician_placeholder.png" }
+                    is Healer -> { "textures/characters/healer_placeholder.png" }
+                    else -> ""
+                }
+            ) ?: emptyImageBitmap,
+            contentDescription = unit.name,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .height(imageHeight)
+                .width(imageWidth)
+                .padding(padding)
+                .background(colorBackground, MedievalShape(smallCorners.value))
+                .border(smallBorder, colorBorder, MedievalShape(smallCorners.value))
+                .clip(MedievalShape(smallCorners.value)),
+        )
+
+        Column {
+            MedievalText(
+                text = "${unit.id} - ${
+                    when (unit) {
+                        is Barbarian -> lang.barbarian_name.replaceFirstChar { it.uppercaseChar() }
+                        is Magician -> lang.magician_name.replaceFirstChar { it.uppercaseChar() }
+                        is Healer -> lang.healer_name.replaceFirstChar { it.uppercaseChar() }
+                        else -> ""
+                    }
+                }",
+                fontSize = bigText,
+                fontWeight = FontWeight.Bold,
+            )
+
+            RecruitUnitTextData(
+                unit = unit,
+                modifier = Modifier,
+            )
+        }
+    }
+}
+
+@Composable
+private fun RecruitUnitTextData(
+    unit: GameUnit,
+    modifier: Modifier = Modifier,
+) {
+    Column (modifier = modifier) {
+        MedievalText("HP: ${unit.hp}/${unit.maxHp}",)
+
+        when (unit) {
+            is Barbarian -> {
+                MedievalText("DMG: ${unit.damage - unit.damageDelta}-${unit.damage}")
+            }
+
+            is Magician -> {
+                MedievalText("DMG: ${unit.damage - unit.damageDelta}-${unit.damage}")
+
+                val effect = unit.magicalEffect
+                MedievalText("EFF: 15 (2 turns)")
+            }
+
+            is Healer -> {
+                MedievalText("HEAL: ${unit.heal}")
+
+                val effect = unit.healingEffect
+                MedievalText("EFF: 10 (3 turns)")
+            }
+        }
+    }
+}
+
+@Composable
+private fun Party(
     modifier: Modifier = Modifier,
 ) {
 
 }
 
 @Composable
-private fun Game(
+private fun World(
     onStart: (List<UnitTypes>, List<UnitTypes>) -> Unit,
     modifier: Modifier = Modifier,
 ) {

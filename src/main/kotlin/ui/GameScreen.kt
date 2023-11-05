@@ -32,7 +32,6 @@ import border
 import colorBackground
 import colorBorder
 import colorSelectedBorder
-import colorText
 import colorTextLight
 import emptyImageBitmap
 import getImageBitmap
@@ -41,7 +40,6 @@ import iconSize
 import imageHeight
 import imageWidth
 import lang
-import normalText
 import org.jetbrains.skiko.currentNanoTime
 import padding
 import smallBorder
@@ -257,8 +255,8 @@ private fun UnitInfo(
             horizontalAlignment = if (side == Side.Right) Alignment.End else Alignment.Start,
             modifier = Modifier
         ) {
-            Text(
-                "${unit.id} - ${
+            MedievalText(
+                text = "${unit.id} - ${
                     when (unit) {
                         is Barbarian -> lang.barbarian_name.replaceFirstChar { it.uppercaseChar() }
                         is Magician -> lang.magician_name.replaceFirstChar { it.uppercaseChar() }
@@ -266,10 +264,8 @@ private fun UnitInfo(
                         else -> ""
                     }
                 }",
-                color = colorText,
                 fontSize = bigText,
                 fontWeight = FontWeight.Bold,
-                fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
             )
 
             UnitTextData(
@@ -318,55 +314,25 @@ private fun UnitTextData(
         horizontalAlignment = alignment,
         modifier = modifier,
     ) {
-        Text(
-            "HP: ${unit.hp}/${unit.maxHp}",
-            fontSize = normalText,
-            color = colorText,
-            fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
-        )
+        MedievalText("HP: ${unit.hp}/${unit.maxHp}",)
 
         when (unit) {
             is Barbarian -> {
-                Text(
-                    "DMG: ${unit.damage - unit.damageDelta}-${unit.damage}",
-                    fontSize = normalText,
-                    color = colorText,
-                    fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
-                )
+                MedievalText("DMG: ${unit.damage - unit.damageDelta}-${unit.damage}")
             }
 
             is Magician -> {
-                Text(
-                    "DMG: ${unit.damage - unit.damageDelta}-${unit.damage}",
-                    fontSize = normalText,
-                    color = colorText,
-                    fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
-                )
+                MedievalText("DMG: ${unit.damage - unit.damageDelta}-${unit.damage}")
 
                 val effect = unit.magicalEffect
-                Text(
-                    "EFF: 15 (2 turns)",
-                    fontSize = normalText,
-                    color = colorText,
-                    fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
-                )
+                MedievalText("EFF: 15 (2 turns)")
             }
 
             is Healer -> {
-                Text(
-                    "HEAL: ${unit.heal}",
-                    fontSize = normalText,
-                    color = colorText,
-                    fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
-                )
+                MedievalText("HEAL: ${unit.heal}")
 
                 val effect = unit.healingEffect
-                Text(
-                    "EFF: 10 (3 turns)",
-                    fontSize = normalText,
-                    color = colorText,
-                    fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
-                )
+                MedievalText("EFF: 10 (3 turns)")
             }
         }
     }

@@ -7,8 +7,9 @@ data class Language(
     val start_button: String,
     val back_button: String,
 
-    val profile_tab: String,
-    val game_tab: String,
+    val guild_tab: String,
+    val party_tab: String,
+    val world_tab: String,
     val settings_tab: String,
 
     val barbarian_name: String,

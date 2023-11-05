@@ -3,12 +3,13 @@ package ui
 import lang
 
 enum class MainMenuTab {
-    Profile, Game, Settings;
+    Guild, Party, World, Settings;
 
     override fun toString(): String {
         return when (this) {
-            Profile -> lang.profile_tab.replaceFirstChar { it.uppercaseChar() }
-            Game -> lang.game_tab.replaceFirstChar { it.uppercaseChar() }
+            Guild -> lang.guild_tab.replaceFirstChar { it.uppercaseChar() }
+            Party -> lang.party_tab.replaceFirstChar { it.uppercaseChar() }
+            World -> lang.world_tab.replaceFirstChar { it.uppercaseChar() }
             Settings -> lang.settings_tab.replaceFirstChar { it.uppercaseChar() }
         }
     }

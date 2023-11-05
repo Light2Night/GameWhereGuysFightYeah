@@ -2,8 +2,9 @@
   "start_button": "почати",
   "back_button": "назад",
 
-  "profile_tab": "профіль",
-  "game_tab": "гра",
+  "guild_tab": "гільдя",
+  "party_tab": "команда",
+  "world_tab": "світ",
   "settings_tab": "налаштування",
 
   "barbarian_name": "варвар",

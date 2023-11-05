@@ -2,8 +2,9 @@
   "start_button": "start",
   "back_button": "back",
 
-  "profile_tab": "profile",
-  "game_tab": "game",
+  "guild_tab": "guild",
+  "party_tab": "party",
+  "world_tab": "world",
   "settings_tab": "settings",
 
   "barbarian_name": "barbarian",

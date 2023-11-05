@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import colorBackgroundSecond
 import colorBorder
 import smallBorder
@@ -31,6 +32,7 @@ fun MedievalIcon(
         Image(
             icon,
             contentDescription = "icon",
+            contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxHeight()
         )
     }

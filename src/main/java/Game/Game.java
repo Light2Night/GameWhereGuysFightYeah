@@ -83,11 +83,13 @@ public class Game {
         return unitsAccessor.getUnitByIndex(currentUnitIndex);
     }
 
-    public int getSelectedUnitIndex() {
+    @Nullable
+    public Integer getSelectedUnitIndex() {
         return selectedUnitIndex;
     }
 
-    public int getCurrentUnitIndex() {
+    @Nullable
+    public Integer getCurrentUnitIndex() {
         return currentUnitIndex;
     }
 

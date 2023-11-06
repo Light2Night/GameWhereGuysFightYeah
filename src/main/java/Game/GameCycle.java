@@ -25,12 +25,14 @@ public class GameCycle {
         events.cycleLeft();
     }
 
-    public int next() {
+    public Integer next() {
         removeDeadUnits();
 
         if (queue.isEmpty()) {
             resetQueue();
         }
+
+        if (queue.isEmpty()) return null;
 
         GameUnit unit = queue.get(0);
         queue.remove(0);

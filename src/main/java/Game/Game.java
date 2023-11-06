@@ -10,6 +10,7 @@ import Game.Event.Aggregates.GameEventsAggregate;
 import Game.Event.Handlers.OnCycleLeft;
 import Game.Teams.Team;
 import Helpers.IdGenerator;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 
@@ -26,8 +27,10 @@ public class Game {
 
     private GameCycle cycle;
 
-    private int selectedUnitIndex;
-    private int currentUnitIndex;
+    @Nullable
+    private Integer selectedUnitIndex = null;
+    @Nullable
+    private Integer currentUnitIndex = null;
 
     private Team human;
     private Team ai;
@@ -38,16 +41,34 @@ public class Game {
     //endregion
 
     public Game() {
+        gameIsOn = true;
+
+        units = new ArrayList<>();
         events = new GameEventsAggregate();
+        cycleActions = new ArrayList<>();
+
+        events.setCycleLeftEvent(new OnCycleLeft(units, cycleActions));
+        unitEvents = new UnitEventsAggregate();
+        unitEvents.setActionPerformedEvent(new OnAction(cycleActions));
+
+        human = new Team(1, PlayerTypes.Human, "Human");
+        ai = new Team(2, PlayerTypes.AI, "AI");
+
+        alliesAccessor = new TeamAccessor(units, human);
+        enemiesAccessor = new TeamAccessor(units, ai);
+        unitsAccessor = new UnitsAccessor(units);
+        compositeAccessor = new CompositeAccessor(alliesAccessor, enemiesAccessor, unitsAccessor);
+
+        cycle = new GameCycle(compositeAccessor, events);
     }
 
     //region Setters
-    public void setSelectedUnitIndex(int selectedUnitIndex) {
+    public void setSelectedUnitIndex(@Nullable Integer selectedUnitIndex) {
         this.selectedUnitIndex = selectedUnitIndex;
         events.selectedIndexChanged();
     }
 
-    public void setCurrentUnitId(int currentUnitIndex) {
+    public void setCurrentUnitId(@Nullable Integer currentUnitIndex) {
         this.currentUnitIndex = currentUnitIndex;
         events.currentIndexChanged();
     }
@@ -79,32 +100,17 @@ public class Game {
     }
     //endregion
 
-    private void reset() {
-        gameIsOn = true;
-
-        units = new ArrayList<>();
-
-        human = new Team(1, PlayerTypes.Human, "Human");
-        ai = new Team(2, PlayerTypes.AI, "AI");
-
-        alliesAccessor = new TeamAccessor(units, human);
-        enemiesAccessor = new TeamAccessor(units, ai);
-        unitsAccessor = new UnitsAccessor(units);
-        compositeAccessor = new CompositeAccessor(alliesAccessor, enemiesAccessor, unitsAccessor);
-        cycle = new GameCycle(compositeAccessor, events);
-
-        cycleActions = new ArrayList<>();
-
-        events.setCycleLeftEvent(new OnCycleLeft(units, cycleActions));
-
-        unitEvents = new UnitEventsAggregate();
-        unitEvents.setActionPerformedEvent(new OnAction(cycleActions));
-
-        testInitialize();
-
-        int unitId = cycle.next();
+    public void start() {
+        Integer unitId = cycle.next();
         setCurrentUnitId(unitId);
         setSelectedUnitIndex(unitId);
+    }
+
+    public void reset() {
+        units.clear();
+        cycleActions.clear();
+
+        //testInitialize();
     }
 
     private void testInitialize() {
@@ -134,10 +140,6 @@ public class Game {
         };
     }
 
-    public void start() {
-        reset();
-    }
-
     public void next() {
         removeDeadUnits();
         if (checkTheEnd()) {
@@ -145,8 +147,11 @@ public class Game {
             return;
         }
 
-        int id = cycle.next();
+        Integer id = cycle.next();
         setCurrentUnitId(id);
+
+        if (id == null)
+            return;
 
         while (enemiesAccessor.containsId(id)) {
             removeDeadUnits();

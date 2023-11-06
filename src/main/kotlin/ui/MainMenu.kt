@@ -302,19 +302,19 @@ private fun Recruits(
                     .verticalScroll(rememberScrollState())
             ) {
                 RecruitUnitCard(
-                    unit = Magician(null, null, 0),
+                    unit = Magician(null, null, null, 0),
                     onClick = {},
                     modifier = Modifier.fillMaxWidth()
                 )
 
                 RecruitUnitCard(
-                    unit = Barbarian(null, null, 1),
+                    unit = Barbarian(null, null, null, 1),
                     onClick = {},
                     modifier = Modifier.fillMaxWidth()
                 )
 
                 RecruitUnitCard(
-                    unit = Healer(null, null, 2),
+                    unit = Healer(null, null, null, 2),
                     onClick = {},
                     modifier = Modifier.fillMaxWidth()
                 )

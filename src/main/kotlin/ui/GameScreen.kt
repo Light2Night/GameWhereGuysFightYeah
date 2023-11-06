@@ -324,15 +324,15 @@ private fun UnitTextData(
             is Magician -> {
                 MedievalText("DMG: ${unit.damage - unit.damageDelta}-${unit.damage}")
 
-                val effect = unit.magicalEffect
-                MedievalText("EFF: 15 (2 turns)")
+                val effect = unit.magicalEffect as Poisoning
+                MedievalText("EFF: ${effect.damage} (${effect.durationInCycles} turns)")
             }
 
             is Healer -> {
                 MedievalText("HEAL: ${unit.heal}")
 
-                val effect = unit.healingEffect
-                MedievalText("EFF: 10 (3 turns)")
+                val effect = unit.healingEffect as Healling
+                MedievalText("EFF: ${effect.heal} (${effect.durationInCycles} turns)")
             }
         }
     }

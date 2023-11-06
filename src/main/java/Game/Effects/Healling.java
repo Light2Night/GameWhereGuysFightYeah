@@ -4,10 +4,11 @@ import Game.Characters.GameUnit;
 
 public class Healling implements Effectable {
     private int cyclesLeft;
+    private final int durationInCycles;
     public final int heal;
 
     public Healling() {
-        cyclesLeft = 3;
+        durationInCycles = cyclesLeft = 3;
         heal = 10;
     }
 
@@ -33,5 +34,10 @@ public class Healling implements Effectable {
     @Override
     public int getCyclesLeft() {
         return cyclesLeft;
+    }
+
+    @Override
+    public int getDurationInCycles() {
+        return durationInCycles;
     }
 }

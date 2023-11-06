@@ -4,10 +4,11 @@ import Game.Characters.GameUnit;
 
 public class Poisoning implements Effectable {
     private int cyclesLeft;
+    private final int durationInCycles;
     public final int damage;
 
     public Poisoning() {
-        cyclesLeft = 2;
+        durationInCycles = cyclesLeft = 2;
         damage = 15;
     }
 
@@ -30,5 +31,10 @@ public class Poisoning implements Effectable {
     @Override
     public int getCyclesLeft() {
         return cyclesLeft;
+    }
+
+    @Override
+    public int getDurationInCycles() {
+        return durationInCycles;
     }
 }

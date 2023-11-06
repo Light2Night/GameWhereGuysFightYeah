@@ -6,4 +6,6 @@ public interface Effectable {
     void effect(GameUnit unit);
 
     int getCyclesLeft();
+
+    int getDurationInCycles();
 }

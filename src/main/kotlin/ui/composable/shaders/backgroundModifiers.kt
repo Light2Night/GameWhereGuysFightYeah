@@ -1,9 +1,10 @@
 package ui.composable.shaders
 
+import androidx.compose.foundation.background
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import ui.composable.Orientation
@@ -34,3 +35,30 @@ fun Modifier.repeatableTexture(
             )
         }
     }
+
+@Composable
+fun Modifier.texture(
+    texture: ImageBitmap,
+    shape: Shape = RectangleShape,
+): Modifier {
+    val brush = ShaderBrush(
+        ImageShader(
+            texture,
+            TileMode.Repeated,
+            TileMode.Repeated,
+        )
+    )
+
+    return background(brush, shape)
+}
+
+@Composable
+fun Modifier.background(
+    background: ImageBitmap,
+): Modifier = drawBehind {
+    drawImage(
+        image = background,
+        dstOffset = IntOffset.Zero,
+        dstSize = IntSize(size.width.toInt(), size.height.toInt()),
+    )
+}

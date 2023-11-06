@@ -5,6 +5,8 @@ val corners get() = style.corners.dp
 val smallCorners get() = style.small_corners.dp
 val padding get() = style.padding.dp
 val biggerPadding get() = style.bigger_padding.dp
+val hugePadding get() = style.huge_padding.dp
+val reallyHugePadding get() = style.really_huge_padding.dp
 val border get() = style.border.dp
 val smallBorder get() = style.small_border.dp
 

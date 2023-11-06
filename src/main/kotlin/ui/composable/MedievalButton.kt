@@ -99,9 +99,9 @@ private fun MedievalButton(
         contentAlignment = Alignment.Center,
         modifier = modifier
             .clickable(onClick = onClick, enabled = enabled)
-            .background(ButtonBrush(), MedievalShape(smallCorners.value))
-            .border(smallBorder, colorBorder, MedievalShape(smallCorners.value))
-            .clip(MedievalShape(smallCorners.value)),
+            .background(ButtonBrush(), MedievalShape(smallCorners))
+            .border(smallBorder, colorBorder, MedievalShape(smallCorners))
+            .clip(MedievalShape(smallCorners)),
     ) {
         content()
     }

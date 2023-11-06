@@ -25,9 +25,9 @@ fun MedievalIcon(
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
-            .background(colorBackgroundSecond, MedievalShape(smallCorners.value))
-            .border(smallBorder, colorBorder, MedievalShape(smallCorners.value))
-            .clip(MedievalShape(smallCorners.value)),
+            .background(colorBackgroundSecond, MedievalShape(smallCorners))
+            .border(smallBorder, colorBorder, MedievalShape(smallCorners))
+            .clip(MedievalShape(smallCorners)),
     ) {
         Image(
             icon,

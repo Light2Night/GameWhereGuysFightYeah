@@ -8,17 +8,16 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.platform.Font
-import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import bigText
 import biggerPadding
+import border
 import colorBackground
 import colorBackgroundDarker
 import colorBorder
@@ -26,14 +25,18 @@ import colorText
 import colorTextLight
 import colorTextLighter
 import colorTextSecond
+import corners
 import emptyImageBitmap
 import getImageBitmap
+import hugePadding
 import iconSize
 import imageHeight
 import imageWidth
 import lang
+import org.jetbrains.skiko.currentNanoTime
 import padding
 import properties.Properties
+import reallyHugePadding
 import resourceWidth
 import settings
 import smallBorder
@@ -42,10 +45,9 @@ import smallIconSize
 import smallText
 import transparencySecond
 import ui.composable.*
-import ui.composable.shaders.ButtonBrush
-import ui.composable.shaders.MedievalShape
-import ui.composable.shaders.StandardBackgroundBrush
+import ui.composable.shaders.*
 import user
+import kotlin.random.Random
 
 @Composable
 fun MainMenu(
@@ -110,7 +112,6 @@ private fun Tabs(
     tabs: CheckManager<MainMenuTab>,
     modifier: Modifier = Modifier,
 ) {
-
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier.fillMaxWidth()
@@ -265,19 +266,19 @@ private fun Guild(
 ) {
     Row(
         modifier = modifier
-            .drawBehind {
-                drawImage(
-                    image = getImageBitmap("textures/background/guild1.png") ?: emptyImageBitmap,
-                    dstOffset = IntOffset.Zero,
-                    dstSize = IntSize(size.width.toInt(), size.height.toInt()),
-                )
-            }
+            .background(getImageBitmap("textures/background/guild1.png") ?: emptyImageBitmap)
     ) {
         Recruits(
             modifier = Modifier
                 .fillMaxWidth(0.33F)
                 .fillMaxHeight()
                 .background(StandardBackgroundBrush())
+        )
+
+        RequestBoard(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(reallyHugePadding)
         )
     }
 }
@@ -357,9 +358,9 @@ private fun RecruitUnitCard(
         modifier = modifier
             .clickable(onClick = onClick)
             .padding(padding)
-            .background(StandardBackgroundBrush(), MedievalShape(smallCorners.value))
-            .border(smallBorder, colorBorder, MedievalShape(smallCorners.value))
-            .clip(MedievalShape(smallCorners.value)),
+            .background(StandardBackgroundBrush(), MedievalShape(smallCorners))
+            .border(smallBorder, colorBorder, MedievalShape(smallCorners))
+            .clip(MedievalShape(smallCorners)),
     ) {
         Image(
             bitmap = getImageBitmap(
@@ -376,9 +377,9 @@ private fun RecruitUnitCard(
                 .height(imageHeight)
                 .width(imageWidth)
                 .padding(padding)
-                .background(colorBackground, MedievalShape(smallCorners.value))
-                .border(smallBorder, colorBorder, MedievalShape(smallCorners.value))
-                .clip(MedievalShape(smallCorners.value)),
+                .background(colorBackground, MedievalShape(smallCorners))
+                .border(smallBorder, colorBorder, MedievalShape(smallCorners))
+                .clip(MedievalShape(smallCorners)),
         )
 
         Column {
@@ -429,6 +430,63 @@ private fun RecruitUnitTextData(
                 val effect = unit.healingEffect
                 MedievalText("EFF: 10 (3 turns)")
             }
+        }
+    }
+}
+
+@Composable
+private fun RequestBoard(
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier
+            .texture(getImageBitmap("textures/background/3.png") ?: emptyImageBitmap, MedievalShape(corners))
+            .border(border, colorBorder, MedievalShape(corners))
+            .clip(MedievalShape(corners)),
+    ) {
+        Row {
+            repeat(3) {
+                Column(
+                    modifier = Modifier
+                        .weight(1F)
+                        .background(colorTextSecond),
+                ) {
+                    repeat(2) {
+                        RequestCard(
+                            modifier = Modifier
+                                .weight(1F)
+                                .fillMaxWidth()
+                                .padding(hugePadding)
+                                .offset(
+                                    Random(currentNanoTime()).nextInt(
+                                        0,
+                                        hugePadding.minus(2.dp).times(2).value.toInt()
+                                    ).dp - hugePadding.minus(2.dp),
+                                    Random(currentNanoTime()).nextInt(
+                                        0,
+                                        hugePadding.minus(2.dp).times(2).value.toInt()
+                                    ).dp - hugePadding.minus(2.dp),
+                                ),
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun RequestCard(
+    modifier: Modifier = Modifier,
+) {
+    MedievalBox(
+        background = SolidColor(Color.Transparent),
+        modifier = modifier
+            .texture(getImageBitmap("textures/background/4.png") ?: emptyImageBitmap, MedievalShape(smallCorners))
+    ) {
+        Column {
+            MedievalText("Request")
+            MedievalText("Info: Blah Blah Blah")
         }
     }
 }

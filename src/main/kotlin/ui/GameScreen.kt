@@ -221,13 +221,13 @@ private fun UnitInfo(
         modifier = modifier
             .clickable { onSelect() }
             .padding(padding)
-            .background(StandardBackgroundBrush(), MedievalShape(smallCorners.value))
+            .background(StandardBackgroundBrush(), MedievalShape(smallCorners))
             .border(
                 if (isSelected) border else smallBorder,
                 if (isSelected) colorSelectedBorder else colorBorder,
-                MedievalShape(smallCorners.value)
+                MedievalShape(smallCorners)
             )
-            .clip(MedievalShape(smallCorners.value)),
+            .clip(MedievalShape(smallCorners)),
     ) {
         if (side == Side.Left) {
             Image(
@@ -245,9 +245,9 @@ private fun UnitInfo(
                     .height(imageHeight)
                     .width(imageWidth)
                     .padding(padding)
-                    .background(colorBackground, MedievalShape(smallCorners.value))
-                    .border(smallBorder, colorBorder, MedievalShape(smallCorners.value))
-                    .clip(MedievalShape(smallCorners.value)),
+                    .background(colorBackground, MedievalShape(smallCorners))
+                    .border(smallBorder, colorBorder, MedievalShape(smallCorners))
+                    .clip(MedievalShape(smallCorners)),
             )
         }
 
@@ -296,9 +296,9 @@ private fun UnitInfo(
                     .height(imageHeight)
                     .width(imageWidth)
                     .padding(padding)
-                    .background(colorBackground, MedievalShape(smallCorners.value))
-                    .border(smallBorder, colorBorder, MedievalShape(smallCorners.value))
-                    .clip(MedievalShape(smallCorners.value)),
+                    .background(colorBackground, MedievalShape(smallCorners))
+                    .border(smallBorder, colorBorder, MedievalShape(smallCorners))
+                    .clip(MedievalShape(smallCorners)),
             )
         }
     }

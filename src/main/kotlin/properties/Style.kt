@@ -9,6 +9,8 @@ data class Style(
     var small_corners: Int = 8,
     var padding: Int = 4,
     var bigger_padding: Int = 8,
+    var huge_padding: Int = 16,
+    var really_huge_padding: Int = 64,
     var border: Int = 2,
     var small_border: Int = 1,
 

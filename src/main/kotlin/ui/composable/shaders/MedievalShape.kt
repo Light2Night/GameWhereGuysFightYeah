@@ -6,20 +6,21 @@ import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 
-class MedievalShape(private val cornerRadius: Float) : Shape {
+class MedievalShape(private val cornerRadius: Dp) : Shape {
     override fun createOutline(
         size: Size,
         layoutDirection: LayoutDirection,
         density: Density
     ): Outline {
         return Outline.Generic(
-            path = drawPath(size = size, cornerRadius = cornerRadius)
+            path = drawPath(size = size, cornerRadius = cornerRadius.value)
         )
     }
 
-    fun drawPath(size: Size, cornerRadius: Float): Path {
+    private fun drawPath(size: Size, cornerRadius: Float): Path {
         return Path().apply {
             reset()
             // Top left arc

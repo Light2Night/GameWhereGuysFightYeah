@@ -52,35 +52,54 @@ fun MainMenu(
     onStart: (List<UnitTypes>, List<UnitTypes>) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val tabs by remember { mutableStateOf(CheckManager(
-        CheckValue(MainMenuTab.Guild, true),
-        CheckValue(MainMenuTab.Party, false),
-        CheckValue(MainMenuTab.World, false),
-        CheckValue(MainMenuTab.Settings, false),
-    )) }
+    val tabs by remember {
+        mutableStateOf(
+            CheckManager(
+                CheckValue(MainMenuTab.Guild, true),
+                CheckValue(MainMenuTab.Party, false),
+                CheckValue(MainMenuTab.World, false),
+                CheckValue(MainMenuTab.Settings, false),
+            )
+        )
+    }
 
     Column(
         modifier = modifier
     ) {
-        Tabs(
-            tabs = tabs,
-            modifier = Modifier.fillMaxWidth(),
-        )
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(StandardBackgroundBrush())
+        ) {
+            Tabs(
+                tabs = tabs,
+                modifier = Modifier.fillMaxWidth(),
+            )
+
+            Divider(
+                orientation = Orientation.Horizontal,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
 
         when (tabs.getChecked()) {
             MainMenuTab.Guild -> Guild(
                 modifier = Modifier.fillMaxSize(),
             )
+
             MainMenuTab.Party -> Party(
                 modifier = Modifier.fillMaxSize(),
             )
+
             MainMenuTab.World -> World(
                 onStart = onStart,
                 modifier = Modifier.fillMaxSize(),
             )
+
             MainMenuTab.Settings -> Settings(
                 modifier = Modifier.fillMaxSize(),
             )
+
             null -> Text("<ERROR>")
         }
     }
@@ -91,37 +110,27 @@ private fun Tabs(
     tabs: CheckManager<MainMenuTab>,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier
-            .background(StandardBackgroundBrush())
-            .background(colorBackgroundDarker.copy(alpha = transparencySecond))
+
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = modifier.fillMaxWidth()
     ) {
         Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth()
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                tabs.getKeys().forEach { tab ->
-                    Tab(
-                        tab = tab,
-                        selected = tabs.getChecked() == tab,
-                        onClick = { tabs.check(tab) },
-                        modifier = Modifier.height(iconSize)
-                    )
-                }
-
-                UserResourcesInfo(modifier = Modifier.padding(start = biggerPadding))
+            tabs.getKeys().forEach { tab ->
+                Tab(
+                    tab = tab,
+                    selected = tabs.getChecked() == tab,
+                    onClick = { tabs.check(tab) },
+                    modifier = Modifier.height(iconSize)
+                )
             }
 
-            UserInfo()
+            UserResourcesInfo(modifier = Modifier.padding(start = biggerPadding))
         }
 
-        Divider(
-            orientation = Orientation.Horizontal,
-            modifier = Modifier.fillMaxWidth()
-        )
+        UserInfo()
     }
 }
 
@@ -344,7 +353,8 @@ private fun RecruitUnitCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Row(modifier = modifier
+    Row(
+        modifier = modifier
             .clickable(onClick = onClick)
             .padding(padding)
             .background(StandardBackgroundBrush(), MedievalShape(smallCorners.value))
@@ -354,9 +364,9 @@ private fun RecruitUnitCard(
         Image(
             bitmap = getImageBitmap(
                 when (unit) {
-                    is Barbarian -> { "textures/characters/barbarian_placeholder.png" }
-                    is Magician -> { "textures/characters/magician_placeholder.png" }
-                    is Healer -> { "textures/characters/healer_placeholder.png" }
+                    is Barbarian -> "textures/characters/barbarian_placeholder.png"
+                    is Magician -> "textures/characters/magician_placeholder.png"
+                    is Healer -> "textures/characters/healer_placeholder.png"
                     else -> ""
                 }
             ) ?: emptyImageBitmap,
@@ -398,8 +408,8 @@ private fun RecruitUnitTextData(
     unit: GameUnit,
     modifier: Modifier = Modifier,
 ) {
-    Column (modifier = modifier) {
-        MedievalText("HP: ${unit.hp}/${unit.maxHp}",)
+    Column(modifier = modifier) {
+        MedievalText("HP: ${unit.hp}/${unit.maxHp}")
 
         when (unit) {
             is Barbarian -> {
@@ -537,6 +547,7 @@ private fun UnitInfo(
             fontWeight = FontWeight.Bold,
             fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
         )
+
         UnitTypes.MAGICIAN -> Text(
             lang.magician_name.replaceFirstChar { it.uppercaseChar() },
             color = colorText,
@@ -544,6 +555,7 @@ private fun UnitInfo(
             fontWeight = FontWeight.Bold,
             fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
         )
+
         UnitTypes.HEALER -> Text(
             lang.healer_name.replaceFirstChar { it.uppercaseChar() },
             color = colorText,

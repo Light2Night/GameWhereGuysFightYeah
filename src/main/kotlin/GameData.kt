@@ -13,8 +13,8 @@ class GameData(
     val allies get() = units.filter { it.team.playerType ==  PlayerTypes.Human }
     val enemies get() = units.filter { it.team.playerType ==  PlayerTypes.AI }
 
-    val currentUnit = mutableStateOf<GameUnit>(game.getUnitById(game.currentUnitIndex))
-    val selectedUnit = mutableStateOf<GameUnit>(game.getUnitById(game.selectedUnitIndex))
+    val currentUnit = mutableStateOf<GameUnit?>(null)
+    val selectedUnit = mutableStateOf<GameUnit?>(null)
 
     val gameResult = mutableStateOf<GameEndInfo?>(null)
 

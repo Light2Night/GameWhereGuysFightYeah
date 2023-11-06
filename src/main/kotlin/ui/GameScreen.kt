@@ -73,7 +73,7 @@ fun GameScreen(
         ) {
             UnitList(
                 units = gameData.allies,
-                selectedUnitID = gameData.selectedUnit.value.id,
+                selectedUnitID = gameData.selectedUnit.value?.id ?: 0,
                 side = Side.Left,
                 onSelect = { game.selectedUnitIndex = it },
                 modifier = Modifier.weight(1F),
@@ -88,7 +88,7 @@ fun GameScreen(
                     game.next()
                     gameData.gameResult.value?.let { onEnd() }
 
-                    if (game.getUnitById(gameData.selectedUnit.value.id) == null) {
+                    if (game.getUnitById(gameData.selectedUnit.value?.id ?: 0) == null) {
                         game.selectedUnitIndex = gameData.enemies.lastOrNull()?.id ?: gameData.allies.firstOrNull()?.id ?: 0
                     }
                 },
@@ -99,7 +99,7 @@ fun GameScreen(
 
             UnitList(
                 units = gameData.enemies,
-                selectedUnitID = gameData.selectedUnit.value.id,
+                selectedUnitID = gameData.selectedUnit.value?.id ?: 0,
                 side = Side.Right,
                 onSelect = { game.selectedUnitIndex = it },
                 modifier = Modifier.weight(1F),
@@ -415,16 +415,20 @@ private fun GameBoard(
     Column(
         modifier = modifier
     ) {
-        UnitInfo(
-            unit = gameData.currentUnit.value,
-            isSelected = false,
-            modifier = Modifier.fillMaxWidth(),
-        )
-        Actions(
-            actions = ActionFabric(game, gameData).createActions(),
-            selectedUnitID = gameData.selectedUnit.value.id,
-            onAction = onAction,
-        )
+        gameData.currentUnit.value?.let { unit ->
+            UnitInfo(
+                unit = unit,
+                isSelected = false,
+                modifier = Modifier.fillMaxWidth(),
+            )
+            Actions(
+                actions = ActionFabric(game, gameData).createActions(),
+                selectedUnitID = unit.id,
+                onAction = onAction,
+            )
+        } ?: run {
+            Text("<ERROR>")
+        }
     }
 }
 

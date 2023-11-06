@@ -43,7 +43,7 @@ fun main() = application {
             Screen.Main -> MainMenu(
                 onStart = { allies, enemies ->
                     game = Game()
-                    game?.start()
+                    game?.reset()
                     allies.forEach { game?.addAlly(it) }
                     enemies.forEach { game?.addEnemy(it) }
                     gameData = GameData(game!!)
@@ -51,6 +51,7 @@ fun main() = application {
                     game?.events?.setCurrentIndexChangedEvent(CurrentUnitChangedEvent(game!!, gameData!!))
                     game?.events?.setMoveCompletedEvent(MoveCompletedEvent(game!!, gameData!!))
                     game?.events?.setGameEndEvent(GameEndedEvent(gameData!!))
+                    game?.start()
                     screen = Screen.Game
                 },
                 modifier = Modifier

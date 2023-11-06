@@ -519,6 +519,7 @@ private fun World(
 
         MedievalButton(
             text = lang.start_button.replaceFirstChar { it.uppercaseChar() },
+            enabled = allies.isNotEmpty() && enemies.isNotEmpty(),
             onClick = { onStart(allies, enemies) },
             modifier = Modifier.fillMaxWidth(0.33F)
         )

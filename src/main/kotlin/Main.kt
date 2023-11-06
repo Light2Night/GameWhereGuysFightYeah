@@ -29,8 +29,8 @@ fun main() = application {
     Properties.loadUser()
 
     var screen by remember { mutableStateOf(Screen.Main) }
-    var game by remember { mutableStateOf<Game?>(null) }
-    var gameData by remember { mutableStateOf<GameData?>(null) }
+    var game by remember { mutableStateOf(Game()) }
+    var gameData by remember { mutableStateOf(GameData(game)) }
 
     val windowState = rememberWindowState(
         width = 1400.dp,
@@ -43,15 +43,15 @@ fun main() = application {
             Screen.Main -> MainMenu(
                 onStart = { allies, enemies ->
                     game = Game()
-                    game?.reset()
-                    allies.forEach { game?.addAlly(it) }
-                    enemies.forEach { game?.addEnemy(it) }
-                    gameData = GameData(game!!)
-                    game?.events?.setSelectedIndexChangedEvent(SelectEvent(game!!, gameData!!))
-                    game?.events?.setCurrentIndexChangedEvent(CurrentUnitChangedEvent(game!!, gameData!!))
-                    game?.events?.setMoveCompletedEvent(MoveCompletedEvent(game!!, gameData!!))
-                    game?.events?.setGameEndEvent(GameEndedEvent(gameData!!))
-                    game?.start()
+                    game.reset()
+                    allies.forEach { game.addAlly(it) }
+                    enemies.forEach { game.addEnemy(it) }
+                    gameData = GameData(game)
+                    game.events.setSelectedIndexChangedEvent(SelectEvent(game, gameData))
+                    game.events.setCurrentIndexChangedEvent(CurrentUnitChangedEvent(game, gameData))
+                    game.events.setMoveCompletedEvent(MoveCompletedEvent(game, gameData))
+                    game.events.setGameEndEvent(GameEndedEvent(gameData))
+                    game.start()
                     screen = Screen.Game
                 },
                 modifier = Modifier
@@ -59,8 +59,8 @@ fun main() = application {
                     .background(colorBackground)
             )
             Screen.Game -> GameScreen(
-                game = game!!,
-                gameData = gameData!!,
+                game = game,
+                gameData = gameData,
                 onEnd = {
                     screen = Screen.Results
                 },
@@ -69,10 +69,9 @@ fun main() = application {
                     .background(colorBackground)
             )
             Screen.Results -> ResultsScreen(
-                result = gameData!!.gameResult.value!!,
+                result = gameData.gameResult.value!!,
                 onBack = {
-                    game = null
-                    gameData = null
+                    gameData.reset()
                     screen = Screen.Main
                 },
                 modifier = Modifier

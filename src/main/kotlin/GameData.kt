@@ -26,4 +26,11 @@ class GameData(
         this.units.clear()
         this.units.addAll(allies)
     }
+
+    fun reset() {
+        units.clear()
+        currentUnit.value = null
+        selectedUnit.value = null
+        gameResult.value = null
+    }
 }

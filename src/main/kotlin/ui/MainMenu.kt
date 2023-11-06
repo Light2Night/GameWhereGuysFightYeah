@@ -16,12 +16,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.platform.Font
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.dp
 import bigText
 import biggerPadding
 import colorBackground
 import colorBackgroundDarker
 import colorBorder
 import colorText
+import colorTextLight
+import colorTextLighter
 import colorTextSecond
 import emptyImageBitmap
 import getImageBitmap
@@ -31,9 +34,12 @@ import imageWidth
 import lang
 import padding
 import properties.Properties
+import resourceWidth
 import settings
 import smallBorder
 import smallCorners
+import smallIconSize
+import smallText
 import transparencySecond
 import ui.composable.*
 import ui.composable.shaders.ButtonBrush
@@ -94,7 +100,9 @@ private fun Tabs(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Row {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
                 tabs.getKeys().forEach { tab ->
                     Tab(
                         tab = tab,
@@ -103,6 +111,8 @@ private fun Tabs(
                         modifier = Modifier.height(iconSize)
                     )
                 }
+
+                UserResourcesInfo(modifier = Modifier.padding(start = biggerPadding))
             }
 
             UserInfo()
@@ -132,12 +142,58 @@ private fun Tab(
     ) {
         Text(
             tab.toString(),
-            color = colorTextSecond,
+            color = colorTextLighter,
             fontSize = bigText,
             fontWeight = FontWeight.Bold,
             fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
             modifier = Modifier.padding(biggerPadding),
         )
+    }
+}
+
+@Composable
+private fun UserResourcesInfo(
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier,
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(padding),
+            modifier = Modifier.width(resourceWidth),
+        ) {
+            Image(
+                bitmap = getImageBitmap("textures/assets/coin.png") ?: emptyImageBitmap,
+                contentDescription = "coin icon",
+                modifier = Modifier.size(smallIconSize),
+            )
+
+            MedievalText(
+                user.coins.toString(),
+                fontSize = bigText,
+                fontWeight = FontWeight.Bold,
+            )
+        }
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(padding),
+            modifier = Modifier.width(resourceWidth),
+        ) {
+            Image(
+                bitmap = getImageBitmap("textures/assets/crystal.png") ?: emptyImageBitmap,
+                contentDescription = "crystal icon",
+                modifier = Modifier.size(smallIconSize),
+            )
+
+            MedievalText(
+                user.crystals.toString(),
+                fontSize = bigText,
+                fontWeight = FontWeight.Bold,
+            )
+        }
     }
 }
 
@@ -149,13 +205,41 @@ private fun UserInfo(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier,
     ) {
-        Text(
-            user.name,
-            color = colorText,
-            fontSize = bigText,
-            fontWeight = FontWeight.Bold,
-            fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
-        )
+        Column(
+            horizontalAlignment = Alignment.End,
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(padding),
+            ) {
+                MedievalText(
+                    "${lang.level_short.uppercase()}. ${user.lvl}",
+                    color = colorTextSecond,
+                )
+
+                MedievalText(
+                    user.name,
+                    fontWeight = FontWeight.Bold,
+                )
+            }
+
+            Box(
+                contentAlignment = Alignment.Center,
+            ) {
+                MedievalProgressbar(
+                    value = user.exp,
+                    min = 0,
+                    max = user.expTarget,
+                    modifier = Modifier.size(256.dp, 16.dp),
+                )
+
+                MedievalText(
+                    text = "${lang.exp_short.uppercase()}: ${user.exp}/${user.expTarget}",
+                    fontSize = smallText,
+                    color = colorTextLight,
+                )
+            }
+        }
 
         MedievalIcon(
             icon = user.profileImage ?: emptyImageBitmap,

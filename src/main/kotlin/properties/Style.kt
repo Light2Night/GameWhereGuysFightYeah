@@ -14,11 +14,11 @@ data class Style(
 
     var image_width: Int = 120,
     var image_height: Int = 160,
-    var message_image_height: Int = 256,
     var big_icon_size: Int = 80,
     var icon_size: Int = 50,
     var small_icon_size: Int = 28,
     var tiny_icon_size: Int = 24,
+    var resource_width: Int = 100,
     var menu_width: Int = 300,
     var menu_item_height: Int = 36,
     var scrollbar_thickness: Int = 12,
@@ -49,7 +49,8 @@ data class Style(
 
     var color_text_light: AColor = Color(240, 240, 240).toAColor(),
     var color_text: AColor = Color(140, 140, 140).toAColor(),
-    var color_text_second: AColor = Color(180, 180, 180).toAColor(),
+    var color_text_lighter: AColor = Color(180, 180, 180).toAColor(),
+    var color_text_second: AColor = Color(143, 115, 74).toAColor(),
     var color_text_error: AColor = Color.Red.toAColor(),
     var color_text_success: AColor = Color.Green.toAColor(),
     var color_text_italic: AColor = Color(130, 130, 130).toAColor(),

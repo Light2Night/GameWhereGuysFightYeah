@@ -7,6 +7,9 @@
   "world_tab": "світ",
   "settings_tab": "налаштування",
 
+  "level_short": "рівень",
+  "exp_short": "досвід",
+
   "barbarian_name": "варвар",
   "magician_name": "маг",
   "healer_name": "цілитель",

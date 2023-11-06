@@ -12,6 +12,9 @@ data class Language(
     val world_tab: String,
     val settings_tab: String,
 
+    val level_short: String,
+    val exp_short: String,
+
     val barbarian_name: String,
     val magician_name: String,
     val healer_name: String,

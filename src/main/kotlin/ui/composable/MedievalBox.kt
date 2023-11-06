@@ -3,6 +3,7 @@ package ui.composable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,9 +15,9 @@ import smallCorners
 import ui.composable.shaders.MedievalShape
 
 @Composable
-fun MedievalContainer(
+fun MedievalBox(
     modifier: Modifier = Modifier,
-    content: @Composable () -> Unit,
+    content: @Composable BoxScope.() -> Unit,
 ) {
     Box(
         contentAlignment = Alignment.Center,
@@ -24,7 +25,6 @@ fun MedievalContainer(
             .background(colorBackgroundSecond, MedievalShape(smallCorners.value))
             .border(smallBorder, colorBorder, MedievalShape(smallCorners.value))
             .clip(MedievalShape(smallCorners.value)),
-    ) {
-        content()
-    }
+        content = content,
+    )
 }

@@ -362,7 +362,7 @@ private fun EffectIcon(
     effect: Effectable,
     modifier: Modifier = Modifier,
 ) {
-    MedievalContainer(
+    MedievalBox(
         modifier = modifier,
     ) {
         Box(

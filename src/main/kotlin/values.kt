@@ -10,11 +10,11 @@ val smallBorder get() = style.small_border.dp
 
 val imageWidth get() = style.image_width.dp
 val imageHeight get() = style.image_height.dp
-val messageImageHeight get() = style.message_image_height.dp
 val bigIconSize get() = style.big_icon_size.dp
 val iconSize get() = style.icon_size.dp
 val smallIconSize get() = style.small_icon_size.dp
 val tinyIconSize get() = style.tiny_icon_size.dp
+val resourceWidth get() = style.resource_width.dp
 val menuWidth get() = style.menu_width.dp
 val menuItemHeight get() = style.menu_item_height.dp
 val scrollbarThickness get() = style.scrollbar_thickness.dp

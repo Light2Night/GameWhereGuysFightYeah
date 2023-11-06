@@ -7,6 +7,9 @@
   "world_tab": "world",
   "settings_tab": "settings",
 
+  "level_short": "lvl",
+  "exp_short": "exp",
+
   "barbarian_name": "barbarian",
   "magician_name": "mage",
   "healer_name": "healer",

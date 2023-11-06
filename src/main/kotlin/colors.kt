@@ -18,6 +18,7 @@ val colorBackgroundDelete get() = style.color_background_delete.toColor()
 
 val colorTextLight get() = style.color_text_light.toColor()
 val colorText get() = style.color_text.toColor()
+val colorTextLighter get() = style.color_text_lighter.toColor()
 val colorTextSecond get() = style.color_text_second.toColor()
 val colorTextError get() = style.color_text_error.toColor()
 val colorTextSuccess get() = style.color_text_success.toColor()

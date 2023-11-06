@@ -20,7 +20,7 @@ import androidx.compose.ui.text.platform.Font
 import bigText
 import biggerPadding
 import colorBorder
-import colorTextSecond
+import colorTextLighter
 import smallBorder
 import smallCorners
 import ui.composable.shaders.ButtonBrush
@@ -36,7 +36,7 @@ fun MedievalButton(
     MedievalButton(onClick, enabled, modifier) {
         Text(
             text,
-            color = colorTextSecond,
+            color = colorTextLighter,
             fontSize = bigText,
             fontWeight = FontWeight.Bold,
             fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
@@ -78,7 +78,7 @@ fun MedievalButton(
             )
             Text(
                 text,
-                color = colorTextSecond,
+                color = colorTextLighter,
                 fontSize = bigText,
                 fontWeight = FontWeight.Bold,
                 fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),

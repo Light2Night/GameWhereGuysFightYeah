@@ -4,6 +4,7 @@ import Game.Event.Aggregates.UnitEventsAggregate;
 import Game.Event.Arguments.Actions.ActionInfo;
 import Game.Event.Arguments.GameEndInfo;
 import Game.Event.Handlers.OnAction;
+import Game.Exceptions.GameIsNotStartedException;
 import Game.UnitGetters.*;
 import Game.Characters.*;
 import Game.Event.Aggregates.GameEventsAggregate;
@@ -16,32 +17,32 @@ import java.util.ArrayList;
 
 public class Game {
     //region Fields
-    private ArrayList<GameUnit> units;
+    private final ArrayList<GameUnit> units;
 
     private Boolean gameIsOn;
 
-    private TeamAccessor alliesAccessor;
-    private TeamAccessor enemiesAccessor;
-    private UnitsAccessor unitsAccessor;
-    private CompositeAccessor compositeAccessor;
+    private final TeamAccessor alliesAccessor;
+    private final TeamAccessor enemiesAccessor;
+    private final UnitsAccessor unitsAccessor;
+    private final CompositeAccessor compositeAccessor;
 
-    private GameCycle cycle;
+    private final GameCycle cycle;
 
     @Nullable
     private Integer selectedUnitIndex = null;
     @Nullable
     private Integer currentUnitIndex = null;
 
-    private Team human;
-    private Team ai;
+    private final Team human;
+    private final Team ai;
 
-    private GameEventsAggregate events;
-    private UnitEventsAggregate unitEvents;
-    private ArrayList<ActionInfo> cycleActions;
+    private final GameEventsAggregate events;
+    private final UnitEventsAggregate unitEvents;
+    private final ArrayList<ActionInfo> cycleActions;
     //endregion
 
     public Game() {
-        gameIsOn = true;
+        gameIsOn = false;
 
         units = new ArrayList<>();
         events = new GameEventsAggregate();
@@ -80,6 +81,9 @@ public class Game {
     }
 
     public GameUnit getCurrentUnit() {
+        if (currentUnitIndex == null) {
+            return null;
+        }
         return unitsAccessor.getUnitByIndex(currentUnitIndex);
     }
 
@@ -103,6 +107,8 @@ public class Game {
     //endregion
 
     public void start() {
+        gameIsOn = true;
+
         Integer unitId = cycle.next();
         setCurrentUnitId(unitId);
         setSelectedUnitIndex(unitId);
@@ -142,7 +148,11 @@ public class Game {
         };
     }
 
-    public void next() {
+    public void next() throws GameIsNotStartedException {
+        if (!gameIsOn) {
+            throw new GameIsNotStartedException();
+        }
+
         removeDeadUnits();
         if (checkTheEnd()) {
             events.gameEnd(new GameEndInfo(getTeamWinner()));
@@ -151,9 +161,6 @@ public class Game {
 
         Integer id = cycle.next();
         setCurrentUnitId(id);
-
-        if (id == null)
-            return;
 
         while (enemiesAccessor.containsId(id)) {
             removeDeadUnits();
@@ -176,7 +183,6 @@ public class Game {
     }
 
     public GameUnit getUnitById(int id) {
-        //System.out.println(id);
         for (GameUnit unit : units) {
             if (unit.getId() == id) {
                 return unit;

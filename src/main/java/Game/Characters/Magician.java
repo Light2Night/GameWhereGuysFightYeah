@@ -1,7 +1,10 @@
 package Game.Characters;
 
 import Game.Actions;
-import Game.CharacterGetters.CompositeAccessor;
+import Game.Event.Aggregates.UnitEventsAggregate;
+import Game.Event.Arguments.Actions.AttackActionInfo;
+import Game.Event.Arguments.Actions.EffectActionInfo;
+import Game.UnitGetters.CompositeAccessor;
 import Game.Effects.Effectable;
 import Game.Effects.Poisoning;
 import Game.Exceptions.InvalidActionException;
@@ -11,8 +14,8 @@ import Game.Teams.Team;
 import java.util.Random;
 
 public class Magician extends GameUnit implements Attackable, Magicable {
-    public Magician(CompositeAccessor accessor, Team team, int id) {
-        super(accessor, team, id, "Маг", 100);
+    public Magician(CompositeAccessor accessor, UnitEventsAggregate events, Team team, int id) {
+        super(accessor, events, team, "Маг", 100, id);
     }
 
     @Override
@@ -20,13 +23,8 @@ public class Magician extends GameUnit implements Attackable, Magicable {
         if (!(move.getAction().equals(Actions.Attack) || move.getAction().equals(Actions.Poisoning)))
             throw new InvalidActionException();
 
-        GameUnit target = accessor.getUnitsAccessor()
-                .getUnitById(move.getTargetId());
-
-        if (move.getAction().equals(Actions.Attack))
-            target.takeDamage(getRandomDamage());
-        else if (move.getAction().equals(Actions.Poisoning))
-            target.takeEffect(getMagicalEffect());
+        GameUnit target = accessor.getUnitsAccessor().getUnitById(move.getTargetId());
+        attack(target, move.getAction());
     }
 
     @Override
@@ -36,13 +34,24 @@ public class Magician extends GameUnit implements Attackable, Magicable {
         int index = random.nextInt(0, accessor.getAlliesAccessor().getQuantity());
 
         GameUnit target = accessor.getAlliesAccessor().getUnitByIndex(index);
+        Actions action;
+        if (selectedAction == 1) action = Actions.Attack;
+        else action = Actions.Poisoning;
 
-        sleep(2000);
         System.out.printf("AI %s %d (%s)\n", selectedAction == 1 ? "атакує магією по" : "накладає отруєння на юніта", index + 1, target.toString());
-        sleep(3000);
+        attack(target, action);
+    }
 
-        if (selectedAction == 1) target.takeDamage(getRandomDamage());
-        else if (selectedAction == 2) target.takeEffect(getMagicalEffect());
+    private void attack(GameUnit target, Actions action) {
+        if (action.equals(Actions.Attack)) {
+            int damage = getRandomDamage();
+            target.takeDamage(damage);
+            events.actionPerformed(new AttackActionInfo(this, target, Actions.Attack, damage));
+        } else if (action.equals(Actions.Poisoning)) {
+            Effectable effect = getMagicalEffect();
+            target.takeEffect(effect);
+            events.actionPerformed(new EffectActionInfo(this, target, Actions.Poisoning, effect));
+        }
     }
 
     private int getRandomDamage() {

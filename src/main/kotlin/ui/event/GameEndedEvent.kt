@@ -1,7 +1,7 @@
 package ui.event
 
 import Game.Event.GameEndEventable
-import Game.GameEndInfo
+import Game.Event.Arguments.GameEndInfo
 import GameData
 
 class GameEndedEvent(

@@ -1,7 +1,10 @@
 package Game.Characters;
 
 import Game.Actions;
-import Game.CharacterGetters.CompositeAccessor;
+import Game.Event.Aggregates.UnitEventsAggregate;
+import Game.Event.Arguments.Actions.EffectActionInfo;
+import Game.Event.Arguments.Actions.HealActionInfo;
+import Game.UnitGetters.CompositeAccessor;
 import Game.Effects.Effectable;
 import Game.Effects.Healling;
 import Game.Exceptions.InvalidActionException;
@@ -11,8 +14,8 @@ import Game.Teams.Team;
 import java.util.Random;
 
 public class Healer extends GameUnit implements Heallable {
-    public Healer(CompositeAccessor accessor, Team team, int id) {
-        super(accessor,team, id, "Цілитель", 125);
+    public Healer(CompositeAccessor accessor, UnitEventsAggregate events, Team team, int id) {
+        super(accessor, events, team, "Цілитель", 125, id);
     }
 
     @Override
@@ -21,9 +24,7 @@ public class Healer extends GameUnit implements Heallable {
             throw new InvalidActionException();
 
         GameUnit target = accessor.getUnitsAccessor().getUnitById(move.getTargetId());
-
-        if (move.getAction().equals(Actions.InstantHealing)) target.heal(getHeal());
-        else if (move.getAction().equals(Actions.Healing)) target.takeEffect(getHealingEffect());
+        heal(target, move.getAction());
     }
 
     @Override
@@ -33,13 +34,24 @@ public class Healer extends GameUnit implements Heallable {
         int index = random.nextInt(0, accessor.getEnemiesAccessor().getQuantity());
 
         GameUnit target = accessor.getEnemiesAccessor().getUnitByIndex(index);
+        Actions action;
+        if (selectedAction == 1) action = Actions.InstantHealing;
+        else action = Actions.Healing;
 
-        sleep(2000);
         System.out.printf("AI %s %d (%s)\n", selectedAction == 1 ? "миттєво лікує" : "накладає лікувальний ефект на юніта", accessor.getAlliesAccessor().getQuantity() + index + 1, target.toString());
-        sleep(3000);
+        heal(target, action);
+    }
 
-        if (selectedAction == 1) target.heal(getHeal());
-        else if (selectedAction == 2) target.takeEffect(getHealingEffect());
+    private void heal(GameUnit target, Actions action) {
+        if (action.equals(Actions.InstantHealing)) {
+            int heal = getHeal();
+            target.heal(heal);
+            events.actionPerformed(new HealActionInfo(this, target, Actions.Healing, heal));
+        } else if (action.equals(Actions.Healing)) {
+            Effectable effect = getHealingEffect();
+            target.takeEffect(effect);
+            events.actionPerformed(new EffectActionInfo(this, target, Actions.Healing, effect));
+        }
     }
 
     @Override

@@ -1,7 +1,9 @@
 package Game.Characters;
 
 import Game.Actions;
-import Game.CharacterGetters.CompositeAccessor;
+import Game.Event.Aggregates.UnitEventsAggregate;
+import Game.Event.Arguments.Actions.AttackActionInfo;
+import Game.UnitGetters.CompositeAccessor;
 import Game.Exceptions.InvalidActionException;
 import Game.Move;
 import Game.Teams.Team;
@@ -9,8 +11,8 @@ import Game.Teams.Team;
 import java.util.Random;
 
 public class Barbarian extends GameUnit implements Attackable {
-    public Barbarian(CompositeAccessor accessor, Team team, int id) {
-        super(accessor,team, id, "Варвар", 200);
+    public Barbarian(CompositeAccessor accessor, UnitEventsAggregate events, Team team, int id) {
+        super(accessor, events, team, "Варвар", 200, id);
     }
 
     @Override
@@ -18,22 +20,24 @@ public class Barbarian extends GameUnit implements Attackable {
         if (!move.getAction().equals(Actions.Attack))
             throw new InvalidActionException();
 
-        accessor.getUnitsAccessor()
-                .getUnitById(move.getTargetId())
-                .takeDamage(getRandomDamage());
+        GameUnit target = accessor.getUnitsAccessor().getUnitById(move.getTargetId());
+        attack(target);
     }
 
     @Override
     public void moveAI() {
         int index = new Random().nextInt(0, accessor.getAlliesAccessor().getQuantity());
 
-        sleep(2000);
         System.out.printf("AI атакує по %d (%s)\n", index + 1, accessor.getAlliesAccessor().getUnitByIndex(index));
-        sleep(2000);
 
-        accessor.getUnitsAccessor()
-                .getUnitByIndex(index)
-                .takeDamage(getRandomDamage());
+        GameUnit target = accessor.getUnitsAccessor().getUnitByIndex(index);
+        attack(target);
+    }
+
+    private void attack(GameUnit target) {
+        int damage = getRandomDamage();
+        target.takeDamage(damage);
+        events.actionPerformed(new AttackActionInfo(this, target, Actions.Attack, damage));
     }
 
     private int getRandomDamage() {

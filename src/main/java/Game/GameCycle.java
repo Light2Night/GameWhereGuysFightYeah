@@ -1,8 +1,8 @@
 package Game;
 
-import Game.CharacterGetters.CompositeAccessor;
+import Game.UnitGetters.CompositeAccessor;
 import Game.Characters.GameUnit;
-import Game.Event.GameEventsAggregate;
+import Game.Event.Aggregates.GameEventsAggregate;
 
 import java.util.ArrayList;
 

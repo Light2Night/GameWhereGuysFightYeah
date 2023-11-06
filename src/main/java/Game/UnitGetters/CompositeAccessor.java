@@ -1,4 +1,4 @@
-package Game.CharacterGetters;
+package Game.UnitGetters;
 
 public class CompositeAccessor {
     private TeamAccessor alliesAccessor;

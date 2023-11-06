@@ -1,6 +1,6 @@
 package Game.Event;
 
-import Game.GameEndInfo;
+import Game.Event.Arguments.GameEndInfo;
 
 public interface GameEndEventable {
     void onEvent(GameEndInfo gameEndInfo);

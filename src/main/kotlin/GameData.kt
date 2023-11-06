@@ -1,6 +1,6 @@
 import Game.Characters.GameUnit
 import Game.Game
-import Game.GameEndInfo
+import Game.Event.Arguments.GameEndInfo
 import Game.PlayerTypes
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf

@@ -1,4 +1,4 @@
-package Game;
+package Game.Event.Arguments;
 
 import Game.Teams.Team;
 

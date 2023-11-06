@@ -1,8 +1,12 @@
 package Game;
 
-import Game.CharacterGetters.*;
+import Game.Event.Aggregates.UnitEventsAggregate;
+import Game.Event.Arguments.Actions.ActionInfo;
+import Game.Event.Arguments.GameEndInfo;
+import Game.Event.Handlers.OnAction;
+import Game.UnitGetters.*;
 import Game.Characters.*;
-import Game.Event.GameEventsAggregate;
+import Game.Event.Aggregates.GameEventsAggregate;
 import Game.Event.Handlers.OnCycleLeft;
 import Game.Teams.Team;
 import Helpers.IdGenerator;
@@ -29,6 +33,8 @@ public class Game {
     private Team ai;
 
     private GameEventsAggregate events;
+    private UnitEventsAggregate unitEvents;
+    private ArrayList<ActionInfo> cycleActions;
     //endregion
 
     public Game() {
@@ -67,6 +73,10 @@ public class Game {
     public GameEventsAggregate getEvents() {
         return events;
     }
+
+    public ArrayList<ActionInfo> getCycleActions() {
+        return cycleActions;
+    }
     //endregion
 
     private void reset() {
@@ -83,7 +93,12 @@ public class Game {
         compositeAccessor = new CompositeAccessor(alliesAccessor, enemiesAccessor, unitsAccessor);
         cycle = new GameCycle(compositeAccessor, events);
 
-        events.setCycleLeftEvent(new OnCycleLeft(units));
+        cycleActions = new ArrayList<>();
+
+        events.setCycleLeftEvent(new OnCycleLeft(units, cycleActions));
+
+        unitEvents = new UnitEventsAggregate();
+        unitEvents.setActionPerformedEvent(new OnAction(cycleActions));
 
         testInitialize();
 
@@ -112,9 +127,9 @@ public class Game {
 
     private GameUnit createUnit(UnitTypes type, Team team) {
         return switch (type) {
-            case BARBARIAN -> new Barbarian(compositeAccessor, team, IdGenerator.getId());
-            case MAGICIAN -> new Magician(compositeAccessor, team, IdGenerator.getId());
-            case HEALER -> new Healer(compositeAccessor, team, IdGenerator.getId());
+            case BARBARIAN -> new Barbarian(compositeAccessor, unitEvents, team, IdGenerator.getId());
+            case MAGICIAN -> new Magician(compositeAccessor, unitEvents, team, IdGenerator.getId());
+            case HEALER -> new Healer(compositeAccessor, unitEvents, team, IdGenerator.getId());
             default -> throw new IllegalArgumentException();
         };
     }

@@ -1,4 +1,4 @@
-package Game.CharacterGetters;
+package Game.UnitGetters;
 
 import Game.Characters.GameUnit;
 import Game.Teams.Team;

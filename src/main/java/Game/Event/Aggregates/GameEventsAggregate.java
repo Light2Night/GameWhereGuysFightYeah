@@ -1,6 +1,8 @@
-package Game.Event;
+package Game.Event.Aggregates;
 
-import Game.GameEndInfo;
+import Game.Event.Eventable;
+import Game.Event.GameEndEventable;
+import Game.Event.Arguments.GameEndInfo;
 import org.jetbrains.annotations.Nullable;
 
 public class GameEventsAggregate {

@@ -1,7 +1,7 @@
 package Game.Characters;
 
-import Game.CharacterGetters.CompositeAccessor;
-import Game.CharacterGetters.UnitsAccessor;
+import Game.Event.Aggregates.UnitEventsAggregate;
+import Game.UnitGetters.CompositeAccessor;
 import Game.Effects.Effectable;
 import Game.Exceptions.InvalidActionException;
 import Game.Move;
@@ -17,30 +17,20 @@ public abstract class GameUnit {
     private int hp;
     private ArrayList<Effectable> effects;
     private Team team;
+    protected UnitEventsAggregate events;
 
     public int getId() {
         return id;
     }
 
-    public GameUnit(CompositeAccessor accessor, Team team, int id, String name, int hp) {
+    public GameUnit(CompositeAccessor accessor, UnitEventsAggregate events, Team team, String name, int hp, int id) {
         this.accessor = accessor;
+        this.events = events;
         this.team = team;
         this.id = id;
         this.name = name;
         maxHp = this.hp = hp;
         effects = new ArrayList<>();
-    }
-
-    protected int inputUnitNumber(UnitsAccessor unitsAccessor) {
-        int number;
-        while (true) {
-            number = 1; //SafeInput.getInt();
-            if (0 < number && number <= unitsAccessor.getQuantity()) {
-                break;
-            }
-            System.out.println("Некоректний номер юніта");
-        }
-        return number;
     }
 
     public String getName() {
@@ -93,14 +83,6 @@ public abstract class GameUnit {
     public abstract void move(Move move) throws InvalidActionException;
 
     public abstract void moveAI();
-
-    protected void sleep(long milliseconds) {
-//        try {
-//            Thread.sleep(milliseconds);
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
-    }
 
     @Override
     public String toString() {

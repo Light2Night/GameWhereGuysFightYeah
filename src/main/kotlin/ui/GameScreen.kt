@@ -211,14 +211,13 @@ private fun UnitList(
                     orientation = Orientation.Horizontal,
                     side = side,
                     duration = normalAnimationDuration,
+                    delayIn = normalAnimationDuration,
                 ) {
                     UnitInfo(
                         unit = unit,
                         isSelected = unit.id == selectedUnitID,
                         side = side,
-                        onSelect = {
-                            onSelect(unit.id)
-                        },
+                        onSelect = { onSelect(unit.id) },
                         modifier = Modifier.fillMaxWidth(),
                     )
                 }

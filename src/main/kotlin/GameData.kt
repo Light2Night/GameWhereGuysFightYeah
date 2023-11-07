@@ -15,14 +15,7 @@ class GameData(
     val allies get() = units.filter { it.team.playerType ==  PlayerTypes.Human }
     val enemies get() = units.filter { it.team.playerType ==  PlayerTypes.AI }
 
-    var currentUnitChanged by mutableStateOf(false)
-    private var _currentUnit by mutableStateOf<GameUnit?>(null)
-    var currentUnit: GameUnit?
-        get() = _currentUnit
-        set(value) {
-            currentUnitChanged = true
-            _currentUnit = value
-        }
+    var currentUnit by mutableStateOf<GameUnit?>(null)
     var selectedUnit by mutableStateOf<GameUnit?>(null)
 
     private val actionInfoList = mutableStateListOf<ActionInfo>()

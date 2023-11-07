@@ -16,11 +16,8 @@ import properties.Properties
 import ui.GameScreen
 import ui.MainMenu
 import ui.ResultsScreen
-import ui.event.SelectEvent
 import ui.Screen
-import ui.event.CurrentUnitChangedEvent
-import ui.event.GameEndedEvent
-import ui.event.MoveCompletedEvent
+import ui.event.*
 
 fun main() = application {
     Properties.loadStyle()

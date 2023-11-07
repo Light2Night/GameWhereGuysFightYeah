@@ -10,6 +10,6 @@ class CurrentUnitChangedEvent(
 ) : Eventable {
 
     override fun onEvent() {
-        game.currentUnitIndex?.let { gameData.currentUnit.value = game.getUnitById(it) ?: return }
+        game.currentUnitIndex?.let { gameData.currentUnit = game.getUnitById(it) ?: return }
     }
 }

@@ -13,8 +13,8 @@ class ActionFabric(
     val gameData: GameData,
 ) {
     fun createActions(): List<Action> {
-        val currentUnit = gameData.currentUnit.value ?: return listOf()
-        val selectedUnit = gameData.selectedUnit.value ?: return listOf()
+        val currentUnit = gameData.currentUnit ?: return listOf()
+        val selectedUnit = gameData.selectedUnit ?: return listOf()
 
         return when (currentUnit) {
             is Barbarian -> listOf(

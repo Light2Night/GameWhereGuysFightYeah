@@ -9,6 +9,7 @@ import Game.Effects.Healling
 import Game.Effects.Poisoning
 import Game.Game
 import GameData
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -40,6 +41,7 @@ import iconSize
 import imageHeight
 import imageWidth
 import lang
+import normalAnimationDuration
 import org.jetbrains.skiko.currentNanoTime
 import padding
 import smallBorder
@@ -73,7 +75,8 @@ fun GameScreen(
         ) {
             UnitList(
                 units = gameData.allies,
-                selectedUnitID = gameData.selectedUnit.value?.id ?: 0,
+                selectedUnitID = gameData.selectedUnit?.id ?: 0,
+                currentUnitId = gameData.currentUnit?.id ?: 0,
                 side = Side.Left,
                 onSelect = { game.selectedUnitIndex = it },
                 modifier = Modifier.weight(1F),
@@ -88,8 +91,9 @@ fun GameScreen(
                     game.next()
                     gameData.gameResult.value?.let { onEnd() }
 
-                    if (game.getUnitById(gameData.selectedUnit.value?.id ?: 0) == null) {
-                        game.selectedUnitIndex = gameData.enemies.lastOrNull()?.id ?: gameData.allies.firstOrNull()?.id ?: 0
+                    if (game.getUnitById(gameData.selectedUnit?.id ?: 0) == null) {
+                        game.selectedUnitIndex =
+                            gameData.enemies.lastOrNull()?.id ?: gameData.allies.firstOrNull()?.id ?: 0
                     }
                 },
                 modifier = Modifier.weight(1F),
@@ -99,7 +103,8 @@ fun GameScreen(
 
             UnitList(
                 units = gameData.enemies,
-                selectedUnitID = gameData.selectedUnit.value?.id ?: 0,
+                selectedUnitID = gameData.selectedUnit?.id ?: 0,
+                currentUnitId = gameData.currentUnit?.id ?: 0,
                 side = Side.Right,
                 onSelect = { game.selectedUnitIndex = it },
                 modifier = Modifier.weight(1F),
@@ -185,6 +190,7 @@ private fun SmokeArea(
 @Composable
 private fun UnitList(
     selectedUnitID: Int,
+    currentUnitId: Int,
     units: List<GameUnit>,
     side: Side,
     onSelect: (Int) -> Unit,
@@ -195,15 +201,28 @@ private fun UnitList(
         modifier = modifier.verticalScroll(rememberScrollState()),
     ) {
         units.forEach { unit ->
-            UnitInfo(
-                unit = unit,
-                isSelected = unit.id == selectedUnitID,
-                side = side,
-                onSelect = {
-                    onSelect(unit.id)
-                },
-                modifier = Modifier.fillMaxWidth(),
-            )
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(imageHeight),
+            ) {
+                SlideAppearAnimation(
+                    visible = unit.id != currentUnitId,
+                    orientation = Orientation.Horizontal,
+                    side = side,
+                    duration = normalAnimationDuration,
+                ) {
+                    UnitInfo(
+                        unit = unit,
+                        isSelected = unit.id == selectedUnitID,
+                        side = side,
+                        onSelect = {
+                            onSelect(unit.id)
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                }
+            }
         }
     }
 }
@@ -233,9 +252,18 @@ private fun UnitInfo(
             Image(
                 bitmap = getImageBitmap(
                     when (unit) {
-                        is Barbarian -> { "textures/characters/barbarian_placeholder.png" }
-                        is Magician -> { "textures/characters/magician_placeholder.png" }
-                        is Healer -> { "textures/characters/healer_placeholder.png" }
+                        is Barbarian -> {
+                            "textures/characters/barbarian_placeholder.png"
+                        }
+
+                        is Magician -> {
+                            "textures/characters/magician_placeholder.png"
+                        }
+
+                        is Healer -> {
+                            "textures/characters/healer_placeholder.png"
+                        }
+
                         else -> ""
                     }
                 ) ?: emptyImageBitmap,
@@ -284,9 +312,18 @@ private fun UnitInfo(
             Image(
                 bitmap = getImageBitmap(
                     when (unit) {
-                        is Barbarian -> { "textures/characters/barbarian_placeholder.png" }
-                        is Magician -> { "textures/characters/magician_placeholder.png" }
-                        is Healer -> { "textures/characters/healer_placeholder.png" }
+                        is Barbarian -> {
+                            "textures/characters/barbarian_placeholder.png"
+                        }
+
+                        is Magician -> {
+                            "textures/characters/magician_placeholder.png"
+                        }
+
+                        is Healer -> {
+                            "textures/characters/healer_placeholder.png"
+                        }
+
                         else -> ""
                     }
                 ) ?: emptyImageBitmap,
@@ -310,11 +347,11 @@ private fun UnitTextData(
     alignment: Alignment.Horizontal = Alignment.Start,
     modifier: Modifier = Modifier,
 ) {
-    Column (
+    Column(
         horizontalAlignment = alignment,
         modifier = modifier,
     ) {
-        MedievalText("HP: ${unit.hp}/${unit.maxHp}",)
+        MedievalText("HP: ${unit.hp}/${unit.maxHp}")
 
         when (unit) {
             is Barbarian -> {
@@ -415,19 +452,33 @@ private fun GameBoard(
     Column(
         modifier = modifier
     ) {
-        gameData.currentUnit.value?.let { unit ->
+        SlideTransition(
+            items = gameData.allies.plus(gameData.enemies),
+            currentIndex = gameData.allies.plus(gameData.enemies).indexOf(gameData.currentUnit),
+            orientation = Orientation.Vertical,
+            side = Side.Down,
+            duration = normalAnimationDuration,
+            delayIn = normalAnimationDuration,
+        ) { index, unit ->
             UnitInfo(
                 unit = unit,
-                isSelected = false,
+                isSelected = unit.id == gameData.selectedUnit?.id,
+                onSelect = { game.selectedUnitIndex = unit.id },
                 modifier = Modifier.fillMaxWidth(),
             )
-            Actions(
-                actions = ActionFabric(game, gameData).createActions(),
-                selectedUnitID = unit.id,
-                onAction = onAction,
-            )
-        } ?: run {
-            Text("<ERROR>")
+        }
+
+        Crossfade(
+            gameData.currentUnit,
+            animationSpec = tween(normalAnimationDuration),
+        ) { unit ->
+            if (unit != null) {
+                Actions(
+                    actions = ActionFabric(game, gameData).createActions(),
+                    selectedUnitID = unit.id,
+                    onAction = onAction,
+                )
+            }
         }
     }
 }

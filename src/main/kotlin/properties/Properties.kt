@@ -1,7 +1,13 @@
 package properties
 
+import properties.language.Language
+import properties.language.LanguageContainer
 import properties.settings.Settings
 import properties.settings.SettingsContainer
+import properties.style.Style
+import properties.style.StyleContainer
+import properties.user.User
+import properties.user.UserContainer
 import java.lang.Exception
 
 object Properties {

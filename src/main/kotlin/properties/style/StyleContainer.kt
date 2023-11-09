@@ -1,4 +1,4 @@
-package properties
+package properties.style
 
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString

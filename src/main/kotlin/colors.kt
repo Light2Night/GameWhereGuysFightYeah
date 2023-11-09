@@ -1,4 +1,4 @@
-import properties.toColor
+import properties.style.toColor
 import kotlin.math.min
 
 val colorBorder get() = style.color_border.toColor()

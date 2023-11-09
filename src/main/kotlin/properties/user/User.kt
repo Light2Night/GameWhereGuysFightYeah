@@ -1,10 +1,10 @@
-package properties
+package properties.user
 
 import androidx.compose.ui.graphics.ImageBitmap
 import getImageBitmap
-import kotlinx.serialization.Serializable
+import properties.user.request.RequestsStorage
 
-@Serializable
+//@Serializable
 data class User(
     var name: String = "Test_Name",
     var coins: Int = 0,
@@ -12,6 +12,7 @@ data class User(
     var exp: Int = 30,
     var expTarget: Int = 100,
     var lvl: Int = 1,
+    val requests: RequestsStorage = RequestsStorage(),
 ) {
     val profileImage: ImageBitmap? get() =
         getImageBitmap("data/user/user.webp")

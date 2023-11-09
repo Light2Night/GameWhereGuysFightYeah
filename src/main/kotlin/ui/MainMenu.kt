@@ -36,6 +36,7 @@ import lang
 import org.jetbrains.skiko.currentNanoTime
 import padding
 import properties.Properties
+import properties.user.request.GuildRequest
 import reallyHugePadding
 import resourceWidth
 import settings
@@ -445,14 +446,14 @@ private fun RequestBoard(
             .clip(MedievalShape(corners)),
     ) {
         Row {
-            repeat(3) {
+            repeat(3) { x ->
                 Column(
                     modifier = Modifier
-                        .weight(1F)
-                        .background(colorTextSecond),
+                        .weight(1F),
                 ) {
-                    repeat(2) {
+                    repeat(2) { y ->
                         RequestCard(
+                            request = user.requests.getRequestByPosition(x, y),
                             modifier = Modifier
                                 .weight(1F)
                                 .fillMaxWidth()
@@ -477,16 +478,26 @@ private fun RequestBoard(
 
 @Composable
 private fun RequestCard(
+    request: GuildRequest?,
     modifier: Modifier = Modifier,
 ) {
-    MedievalBox(
-        background = SolidColor(Color.Transparent),
-        modifier = modifier
-            .texture(getImageBitmap("textures/background/4.png") ?: emptyImageBitmap, MedievalShape(smallCorners))
-    ) {
-        Column {
-            MedievalText("Request")
-            MedievalText("Info: Blah Blah Blah")
+    Box(modifier = modifier) {
+        if (request != null) {
+            MedievalBox(
+                background = SolidColor(Color.Transparent),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .texture(
+                        getImageBitmap("textures/background/4.png") ?: emptyImageBitmap,
+                        MedievalShape(smallCorners),
+                    )
+            ) {
+                Column {
+                    MedievalText(request.name)
+                    MedievalText(request.description)
+                    MedievalText(request.progressString)
+                }
+            }
         }
     }
 }

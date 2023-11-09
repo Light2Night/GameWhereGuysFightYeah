@@ -1,4 +1,4 @@
-package properties
+package properties.style
 
 import androidx.compose.ui.graphics.Color
 import kotlinx.serialization.Serializable

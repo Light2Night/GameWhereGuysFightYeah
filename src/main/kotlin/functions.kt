@@ -4,9 +4,9 @@ import androidx.compose.ui.graphics.*
 import org.jetbrains.skia.*
 import org.jetbrains.skiko.toImage
 import properties.Properties
-import properties.Language
-import properties.Style
-import properties.User
+import properties.language.Language
+import properties.style.Style
+import properties.user.User
 import properties.settings.Settings
 import java.awt.image.BufferedImage
 import java.io.File

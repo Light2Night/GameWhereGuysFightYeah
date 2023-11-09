@@ -68,6 +68,8 @@ fun main() = application {
             Screen.Results -> ResultsScreen(
                 result = gameData.gameResult.value!!,
                 onBack = {
+                    user.requests.updateAllRequests(gameData.gameResult.value!!)
+                    user.requests.checkAllRequests()
                     gameData.reset()
                     screen = Screen.Main
                 },

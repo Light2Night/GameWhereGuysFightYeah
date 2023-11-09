@@ -1,4 +1,4 @@
-package properties
+package properties.user
 
 import kotlinx.serialization.*
 import kotlinx.serialization.json.*

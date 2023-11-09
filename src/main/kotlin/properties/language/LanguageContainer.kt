@@ -1,4 +1,4 @@
-package properties
+package properties.language
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf

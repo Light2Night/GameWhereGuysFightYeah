@@ -1,5 +1,6 @@
-package properties
+package properties.language
 
+import Game.Characters.UnitTypes
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -21,4 +22,10 @@ data class Language(
 
     val user_won: String,
     val ai_won: String,
-)
+) {
+    fun getUnitName(type: UnitTypes): String = when(type) {
+        UnitTypes.BARBARIAN -> barbarian_name
+        UnitTypes.MAGICIAN -> magician_name
+        UnitTypes.HEALER -> healer_name
+    }
+}

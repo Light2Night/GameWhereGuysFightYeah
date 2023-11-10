@@ -20,10 +20,19 @@ import ui.Screen
 import ui.event.*
 
 fun main() = application {
-    Properties.loadStyle()
-    Properties.loadSettings()
-    Properties.loadLanguage(settings.language)
-    Properties.loadUser()
+    var firstTime by remember { mutableStateOf(true) }
+    if (firstTime) {
+        Properties.loadStyle()
+        Properties.loadSettings()
+        Properties.loadLanguage(settings.language)
+        Properties.loadUser()
+
+        repeat(3) {
+            user.recruits.createNewRecruitToGuild()
+        }
+
+        firstTime = false
+    }
 
     var screen by remember { mutableStateOf(Screen.Main) }
     var game by remember { mutableStateOf(Game()) }

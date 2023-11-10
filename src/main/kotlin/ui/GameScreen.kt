@@ -251,18 +251,9 @@ private fun UnitInfo(
             Image(
                 bitmap = getImageBitmap(
                     when (unit) {
-                        is Barbarian -> {
-                            "textures/characters/barbarian_placeholder.png"
-                        }
-
-                        is Magician -> {
-                            "textures/characters/magician_placeholder.png"
-                        }
-
-                        is Healer -> {
-                            "textures/characters/healer_placeholder.png"
-                        }
-
+                        is Barbarian -> "textures/characters/barbarian_placeholder.png"
+                        is Magician -> "textures/characters/magician_placeholder.png"
+                        is Healer -> "textures/characters/healer_placeholder.png"
                         else -> ""
                     }
                 ) ?: emptyImageBitmap,
@@ -311,18 +302,9 @@ private fun UnitInfo(
             Image(
                 bitmap = getImageBitmap(
                     when (unit) {
-                        is Barbarian -> {
-                            "textures/characters/barbarian_placeholder.png"
-                        }
-
-                        is Magician -> {
-                            "textures/characters/magician_placeholder.png"
-                        }
-
-                        is Healer -> {
-                            "textures/characters/healer_placeholder.png"
-                        }
-
+                        is Barbarian -> "textures/characters/barbarian_placeholder.png"
+                        is Magician -> "textures/characters/magician_placeholder.png"
+                        is Healer -> "textures/characters/healer_placeholder.png"
                         else -> ""
                     }
                 ) ?: emptyImageBitmap,

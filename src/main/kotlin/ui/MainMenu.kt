@@ -22,6 +22,7 @@ import colorBackground
 import colorBackgroundDarker
 import colorBorder
 import colorText
+import colorTextError
 import colorTextLight
 import colorTextLighter
 import colorTextSecond
@@ -36,6 +37,7 @@ import lang
 import org.jetbrains.skiko.currentNanoTime
 import padding
 import properties.Properties
+import properties.user.recruit.*
 import properties.user.request.GuildRequest
 import reallyHugePadding
 import resourceWidth
@@ -302,23 +304,17 @@ private fun Recruits(
                 modifier = Modifier
                     .verticalScroll(rememberScrollState())
             ) {
-                RecruitUnitCard(
-                    unit = Magician(null, null, null, 0),
-                    onClick = {},
-                    modifier = Modifier.fillMaxWidth()
-                )
-
-                RecruitUnitCard(
-                    unit = Barbarian(null, null, null, 1),
-                    onClick = {},
-                    modifier = Modifier.fillMaxWidth()
-                )
-
-                RecruitUnitCard(
-                    unit = Healer(null, null, null, 2),
-                    onClick = {},
-                    modifier = Modifier.fillMaxWidth()
-                )
+                user.recruits.guildList.forEach { recruit ->
+                    RecruitUnitCard(
+                        recruit = recruit,
+                        onClick = {
+                            if (recruit.cost?.isAvailableToBuy == true) {
+                                user.recruits.buyRecruit(recruit)
+                            }
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
             }
         }
 
@@ -351,7 +347,7 @@ private fun Chest(
 
 @Composable
 private fun RecruitUnitCard(
-    unit: GameUnit,
+    recruit: Recruit,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -364,15 +360,8 @@ private fun RecruitUnitCard(
             .clip(MedievalShape(smallCorners)),
     ) {
         Image(
-            bitmap = getImageBitmap(
-                when (unit) {
-                    is Barbarian -> "textures/characters/barbarian_placeholder.png"
-                    is Magician -> "textures/characters/magician_placeholder.png"
-                    is Healer -> "textures/characters/healer_placeholder.png"
-                    else -> ""
-                }
-            ) ?: emptyImageBitmap,
-            contentDescription = unit.name,
+            bitmap = getImageBitmap(recruit.profileImage) ?: emptyImageBitmap,
+            contentDescription = recruit.name,
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .height(imageHeight)
@@ -385,51 +374,57 @@ private fun RecruitUnitCard(
 
         Column {
             MedievalText(
-                text = "${unit.id} - ${
-                    when (unit) {
-                        is Barbarian -> lang.barbarian_name.replaceFirstChar { it.uppercaseChar() }
-                        is Magician -> lang.magician_name.replaceFirstChar { it.uppercaseChar() }
-                        is Healer -> lang.healer_name.replaceFirstChar { it.uppercaseChar() }
-                        else -> ""
-                    }
-                }",
+                text = recruit.name,
                 fontSize = bigText,
                 fontWeight = FontWeight.Bold,
             )
 
+            MedievalText(
+                text = when (recruit.data.type) {
+                    UnitTypes.BARBARIAN -> lang.barbarian_name.replaceFirstChar { it.uppercaseChar() }
+                    UnitTypes.MAGICIAN -> lang.magician_name.replaceFirstChar { it.uppercaseChar() }
+                    UnitTypes.HEALER -> lang.healer_name.replaceFirstChar { it.uppercaseChar() }
+                },
+                fontWeight = FontWeight.Bold,
+            )
+
             RecruitUnitTextData(
-                unit = unit,
+                recruitData = recruit.data,
                 modifier = Modifier,
             )
+
+            recruit.cost?.let { cost ->
+                MedievalText(
+                    text = "${cost.coins} coins | ${cost.crystal} crystals",
+                    color = if (cost.isAvailableToBuy) colorText else colorTextError,
+                    fontWeight = FontWeight.Bold,
+                )
+            }
         }
     }
 }
 
 @Composable
 private fun RecruitUnitTextData(
-    unit: GameUnit,
+    recruitData: RecruitData,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
-        MedievalText("HP: ${unit.hp}/${unit.maxHp}")
+        MedievalText("HP: ${recruitData.maxHP}")
 
-        when (unit) {
-            is Barbarian -> {
-                MedievalText("DMG: ${unit.damage - unit.damageDelta}-${unit.damage}")
+        when (recruitData) {
+            is BarbarianData -> {
+                MedievalText("DMG: ${recruitData.damage - recruitData.damageDelta}-${recruitData.damage}")
             }
 
-            is Magician -> {
-                MedievalText("DMG: ${unit.damage - unit.damageDelta}-${unit.damage}")
-
-                val effect = unit.magicalEffect
-                MedievalText("EFF: 15 (2 turns)")
+            is MageData -> {
+                MedievalText("DMG: ${recruitData.damage - recruitData.damageDelta}-${recruitData.damage}")
+                MedievalText("EFF: ${recruitData.magicalEffectDamage} (${recruitData.magicalEffectTurns} turns)")
             }
 
-            is Healer -> {
-                MedievalText("HEAL: ${unit.heal}")
-
-                val effect = unit.healingEffect
-                MedievalText("EFF: 10 (3 turns)")
+            is HealerData -> {
+                MedievalText("HEAL: ${recruitData.heal}")
+                MedievalText("EFF: ${recruitData.healingEffectHeal} (${recruitData.healingEffectTurns} turns)")
             }
         }
     }
@@ -506,7 +501,23 @@ private fun RequestCard(
 private fun Party(
     modifier: Modifier = Modifier,
 ) {
+    Row(modifier = modifier) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth(0.33F)
+                .verticalScroll(rememberScrollState())
+        ) {
+            user.recruits.list.forEach { recruit ->
+                RecruitUnitCard(
+                    recruit = recruit,
+                    onClick = {},
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        }
 
+        Divider(modifier = Modifier.fillMaxHeight())
+    }
 }
 
 @Composable

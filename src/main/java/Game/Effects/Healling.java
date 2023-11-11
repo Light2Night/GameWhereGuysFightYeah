@@ -7,6 +7,12 @@ public class Healling implements Effectable {
     private final int durationInCycles;
     public final int heal;
 
+    public Healling(Healling healling) {
+        this.durationInCycles = healling.durationInCycles;
+        this.cyclesLeft = healling.cyclesLeft;
+        this.heal = healling.heal;
+    }
+
     public Healling() {
         durationInCycles = cyclesLeft = 3;
         heal = 10;
@@ -39,5 +45,10 @@ public class Healling implements Effectable {
     @Override
     public int getDurationInCycles() {
         return durationInCycles;
+    }
+
+    @Override
+    public Effectable clone() {
+        return new Healling(this);
     }
 }

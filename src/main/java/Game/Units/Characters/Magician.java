@@ -17,12 +17,14 @@ import java.util.Random;
 public class Magician extends GameUnit implements Attackable, Magicable {
     public final int damage;
     public final int damageDelta;
+    public final Effectable magicalEffect;
 
-    public Magician(UnitSharedData sharedData, int damage, int damageDelta) {
+    public Magician(UnitSharedData sharedData, int damage, int damageDelta, Effectable magicalEffect) {
         super(sharedData);
 
         this.damage = damage;
         this.damageDelta = damageDelta;
+        this.magicalEffect = magicalEffect;
     }
 
     @Override
@@ -77,6 +79,6 @@ public class Magician extends GameUnit implements Attackable, Magicable {
 
     @Override
     public Effectable getMagicalEffect() {
-        return new Poisoning();
+        return magicalEffect.clone();
     }
 }

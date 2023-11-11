@@ -1,5 +1,7 @@
 package Game;
 
+import Game.Effects.Healling;
+import Game.Effects.Poisoning;
 import Game.Event.Aggregates.UnitEventsAggregate;
 import Game.Event.Arguments.Actions.ActionInfo;
 import Game.Event.Arguments.GameEndInfo;
@@ -143,8 +145,8 @@ public class Game {
 
         return switch (type) {
             case BARBARIAN -> factory.createBarbarian(new BarbarianViewModel("Варвар", 200, 200, 15, 10));
-            case MAGICIAN -> factory.createMagician(new MageViewModel("Маг", 100, 100, 25, 20));
-            case HEALER -> factory.createHealer(new HealerViewModel("Цілитель", 125, 125, 20));
+            case MAGICIAN -> factory.createMagician(new MageViewModel("Маг", 100, 100, 25, 20, new Poisoning()));
+            case HEALER -> factory.createHealer(new HealerViewModel("Цілитель", 125, 125, 20, new Healling()));
         };
     }
 

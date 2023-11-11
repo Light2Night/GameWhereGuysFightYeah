@@ -7,6 +7,12 @@ public class Poisoning implements Effectable {
     private final int durationInCycles;
     public final int damage;
 
+    public Poisoning(Poisoning poisoning) {
+        this.durationInCycles = poisoning.durationInCycles;
+        this.cyclesLeft = poisoning.cyclesLeft;
+        this.damage = poisoning.damage;
+    }
+
     public Poisoning() {
         durationInCycles = cyclesLeft = 2;
         damage = 15;
@@ -36,5 +42,10 @@ public class Poisoning implements Effectable {
     @Override
     public int getDurationInCycles() {
         return durationInCycles;
+    }
+
+    @Override
+    public Effectable clone() {
+        return new Poisoning(this);
     }
 }

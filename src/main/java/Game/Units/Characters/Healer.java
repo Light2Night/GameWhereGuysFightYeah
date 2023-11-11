@@ -17,11 +17,13 @@ import java.util.Random;
 
 public class Healer extends GameUnit implements Heallable {
     private final int heal;
+    private final Effectable healingEffect;
 
-    public Healer(UnitSharedData sharedData, int heal) {
+    public Healer(UnitSharedData sharedData, int heal, Effectable healingEffect) {
         super(sharedData);
 
         this.heal = heal;
+        this.healingEffect = healingEffect;
     }
 
     @Override
@@ -67,6 +69,6 @@ public class Healer extends GameUnit implements Heallable {
 
     @Override
     public Effectable getHealingEffect() {
-        return new Healling();
+        return healingEffect.clone();
     }
 }

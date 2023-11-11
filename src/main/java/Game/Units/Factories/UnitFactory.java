@@ -30,11 +30,11 @@ public class UnitFactory {
     }
 
     public GameUnit createMagician(MageViewModel data) {
-        return new Magician(getSharedData(data), data.Damage, data.DamageDelta);
+        return new Magician(getSharedData(data), data.Damage, data.DamageDelta, data.PoisoningEffect);
     }
 
     public GameUnit createHealer(HealerViewModel data) {
-        return new Healer(getSharedData(data), data.Heal);
+        return new Healer(getSharedData(data), data.Heal, data.HeallingEffect);
     }
 
     private UnitSharedData getSharedData(BaseUnitViewModel data) {

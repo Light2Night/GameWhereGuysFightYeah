@@ -80,12 +80,12 @@ public class Game {
         return units;
     }
 
-    public GameUnit getCurrentUnit() {
-        if (currentUnitIndex == null) {
-            return null;
-        }
-        return unitsAccessor.getUnitByIndex(currentUnitIndex);
-    }
+//    public GameUnit getCurrentUnit() {
+//        if (currentUnitIndex == null) {
+//            return null;
+//        }
+//        return unitsAccessor.getUnitByIndex(currentUnitIndex);
+//    }
 
     @Nullable
     public Integer getSelectedUnitIndex() {
@@ -117,18 +117,6 @@ public class Game {
     public void reset() {
         units.clear();
         cycleActions.clear();
-
-        //testInitialize();
-    }
-
-    private void testInitialize() {
-        addAlly(UnitTypes.BARBARIAN);
-        addAlly(UnitTypes.MAGICIAN);
-        addAlly(UnitTypes.HEALER);
-
-        addEnemy(UnitTypes.BARBARIAN);
-        addEnemy(UnitTypes.MAGICIAN);
-        addEnemy(UnitTypes.HEALER);
     }
 
     public void addAlly(UnitTypes type) {
@@ -144,7 +132,6 @@ public class Game {
             case BARBARIAN -> new Barbarian(compositeAccessor, unitEvents, team, IdGenerator.getId());
             case MAGICIAN -> new Magician(compositeAccessor, unitEvents, team, IdGenerator.getId());
             case HEALER -> new Healer(compositeAccessor, unitEvents, team, IdGenerator.getId());
-            default -> throw new IllegalArgumentException();
         };
     }
 

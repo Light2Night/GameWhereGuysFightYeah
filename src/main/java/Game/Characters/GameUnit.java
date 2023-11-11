@@ -3,7 +3,7 @@ package Game.Characters;
 import Game.Event.Aggregates.UnitEventsAggregate;
 import Game.UnitGetters.CompositeAccessor;
 import Game.Effects.Effectable;
-import Game.Exceptions.InvalidActionException;
+import Exceptions.InvalidActionException;
 import Game.Move;
 import Game.Teams.Team;
 

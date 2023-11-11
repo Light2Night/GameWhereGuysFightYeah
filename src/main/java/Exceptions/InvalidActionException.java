@@ -1,4 +1,4 @@
-package Game.Exceptions;
+package Exceptions;
 
 public class InvalidActionException extends Exception {
     public InvalidActionException(String message) {

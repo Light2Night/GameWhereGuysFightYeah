@@ -4,7 +4,7 @@ import Game.Actions;
 import Game.Event.Aggregates.UnitEventsAggregate;
 import Game.Event.Arguments.Actions.AttackActionInfo;
 import Game.UnitGetters.CompositeAccessor;
-import Game.Exceptions.InvalidActionException;
+import Exceptions.InvalidActionException;
 import Game.Move;
 import Game.Teams.Team;
 

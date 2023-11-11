@@ -7,7 +7,7 @@ import Game.Event.Arguments.Actions.HealActionInfo;
 import Game.UnitGetters.CompositeAccessor;
 import Game.Effects.Effectable;
 import Game.Effects.Healling;
-import Game.Exceptions.InvalidActionException;
+import Exceptions.InvalidActionException;
 import Game.Move;
 import Game.Teams.Team;
 

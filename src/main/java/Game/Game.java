@@ -4,7 +4,7 @@ import Game.Event.Aggregates.UnitEventsAggregate;
 import Game.Event.Arguments.Actions.ActionInfo;
 import Game.Event.Arguments.GameEndInfo;
 import Game.Event.Handlers.OnAction;
-import Game.Exceptions.GameIsNotStartedException;
+import Exceptions.GameIsNotStartedException;
 import Game.UnitGetters.*;
 import Game.Characters.*;
 import Game.Event.Aggregates.GameEventsAggregate;

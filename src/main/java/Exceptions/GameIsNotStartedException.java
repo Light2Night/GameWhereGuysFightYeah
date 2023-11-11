@@ -1,4 +1,4 @@
-package Game.Exceptions;
+package Exceptions;
 
 public class GameIsNotStartedException extends Exception {
     public GameIsNotStartedException(String message) {

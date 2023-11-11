@@ -5,6 +5,7 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import user
 
 class RecruitStorage {
+    private val factory = RecruitFactory()
     val maxSelections = 5
 
     private val guildRecruitList: SnapshotStateList<Recruit> = mutableStateListOf()
@@ -15,9 +16,10 @@ class RecruitStorage {
     val list: List<Recruit> get() = recruitsList
     val selectedList: List<Recruit> get() = selectedRecruitsList
 
-    fun createNewRecruitToGuild() {
-        val factory = RecruitFactory()
-        guildRecruitList.add(factory.createRandomUnique(recruitsList + guildRecruitList, costCoins = 1..3))
+    fun createNewRecruitToGuild(): Recruit {
+        val newRecruit = factory.createRandomUnique(recruitsList + guildRecruitList, costCoins = 1..3)
+        guildRecruitList.add(newRecruit)
+        return newRecruit
     }
 
     fun buyRecruit(recruit: Recruit) {

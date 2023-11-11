@@ -7,6 +7,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import properties.user.recruit.Recruit
 
 class GameData(
     game: Game,
@@ -18,6 +19,9 @@ class GameData(
     var currentUnit by mutableStateOf<GameUnit?>(null)
     var selectedUnit by mutableStateOf<GameUnit?>(null)
 
+    val unitIDs = mutableMapOf<Int, Int>()
+    var enemiesRecruits = emptyList<Recruit>()
+
     private val actionInfoList = mutableStateListOf<ActionInfo>()
     val currentActionIndex = mutableStateOf<Int?>(null)
     val currentAction get() = currentActionIndex.value?.let { actionInfoList[it] }
@@ -28,9 +32,9 @@ class GameData(
         updateUnits(game.units)
     }
 
-    fun updateUnits(allies: List<GameUnit>) {
+    fun updateUnits(units: List<GameUnit>) {
         this.units.clear()
-        this.units.addAll(allies)
+        this.units.addAll(units)
     }
 
     fun addActionInfo(info: ActionInfo) {
@@ -63,6 +67,9 @@ class GameData(
     fun reset() {
         units.clear()
         actionInfoList.clear()
+        unitIDs.clear()
+        enemiesRecruits = emptyList()
+
         currentUnit = null
         selectedUnit = null
         gameResult.value = null

@@ -60,7 +60,7 @@ import kotlin.random.Random
 
 @Composable
 fun MainMenu(
-    onStart: (List<UnitTypes>, List<UnitTypes>) -> Unit,
+    onStart: (List<UnitTypes>) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val tabs by remember {
@@ -633,9 +633,9 @@ private fun Party(
             MedievalButton(
                 text = "додати тестового найманця",
                 onClick = {
-                    user.recruits.createNewRecruitToGuild()
-                    user.coins += 1
-                    user.crystals += 1
+                    val recruit = user.recruits.createNewRecruitToGuild()
+                    user.coins += recruit.cost?.coins ?: 0
+                    user.crystals += recruit.cost?.crystals ?: 0
                     user.recruits.buyRecruit(user.recruits.guildList.last())
                 },
                 modifier = Modifier,
@@ -714,27 +714,27 @@ private fun RecruitedList(
 
 @Composable
 private fun World(
-    onStart: (List<UnitTypes>, List<UnitTypes>) -> Unit,
+    onStart: (List<UnitTypes>) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val allies = remember { mutableStateListOf<UnitTypes>() }
     val enemies = remember { mutableStateListOf<UnitTypes>() }
 
     Row(
         modifier = modifier
     ) {
-        UnitList(
+        /*UnitList(
             units = allies,
             onAddUnit = { allies.add(it) },
             modifier = Modifier.weight(1F),
-        )
+        )*/
+        Column(modifier = Modifier.weight(1F)) {  }
 
         Divider(modifier = Modifier.fillMaxHeight())
 
         MedievalButton(
             text = lang.start_button.replaceFirstChar { it.uppercaseChar() },
-            enabled = allies.isNotEmpty() && enemies.isNotEmpty(),
-            onClick = { onStart(allies, enemies) },
+            enabled = enemies.isNotEmpty(),
+            onClick = { onStart(enemies) },
             modifier = Modifier.fillMaxWidth(0.33F)
         )
 

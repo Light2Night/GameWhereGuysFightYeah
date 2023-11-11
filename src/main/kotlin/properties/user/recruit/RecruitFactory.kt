@@ -66,4 +66,34 @@ class RecruitFactory {
             )
         )
     }
+
+    fun createRandomUnique(
+        list: List<Recruit>,
+        type: UnitTypes,
+        levels: IntRange = 1..1,
+        costCoins: IntRange = 1..1,
+        costCrystals: IntRange = 1..1
+    ): Recruit {
+        val preset = presets.filter { it.data.type == type }.random()
+
+        val name = if (preset.stars == 1) {
+            when (preset.data.type) {
+                UnitTypes.BARBARIAN -> mobBarbarianNames.random()
+                UnitTypes.MAGICIAN -> mobMagicianNames.random()
+                UnitTypes.HEALER -> mobHealerNames.random()
+            }
+        } else {
+            preset.name
+        }
+
+        return preset.copy(
+            name = name,
+            id = list.uniqueId(),
+            level = levels.random(),
+            cost = RecruitCost(
+                coins = costCoins.random(),
+                crystals = costCrystals.random(),
+            )
+        )
+    }
 }

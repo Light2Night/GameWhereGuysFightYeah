@@ -37,7 +37,6 @@ import hugeText
 import iconSize
 import imageHeight
 import imageWidth
-import lang
 import normalAnimationDuration
 import org.jetbrains.skiko.currentNanoTime
 import padding
@@ -271,14 +270,7 @@ private fun UnitInfo(
             modifier = Modifier
         ) {
             MedievalText(
-                text = "${unit.id} - ${
-                    when (unit) {
-                        is Barbarian -> lang.barbarian_name.replaceFirstChar { it.uppercaseChar() }
-                        is Magician -> lang.magician_name.replaceFirstChar { it.uppercaseChar() }
-                        is Healer -> lang.healer_name.replaceFirstChar { it.uppercaseChar() }
-                        else -> ""
-                    }
-                }",
+                text = "${unit.id} - ${unit.name.replaceFirstChar { it.uppercaseChar() }}",
                 fontSize = bigText,
                 fontWeight = FontWeight.Bold,
             )

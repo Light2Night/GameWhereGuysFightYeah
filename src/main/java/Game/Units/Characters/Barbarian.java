@@ -1,24 +1,27 @@
-package Game.Characters;
+package Game.Units.Characters;
 
 import Game.Actions;
-import Game.Event.Aggregates.UnitEventsAggregate;
 import Game.Event.Arguments.Actions.AttackActionInfo;
-import Game.UnitGetters.CompositeAccessor;
 import Exceptions.InvalidActionException;
 import Game.Move;
 import Game.Teams.Team;
+import Game.Units.UnitSharedData;
 
 import java.util.Random;
 
 public class Barbarian extends GameUnit implements Attackable {
-    public Barbarian(CompositeAccessor accessor, UnitEventsAggregate events, Team team, int id) {
-        super(accessor, events, team, "Варвар", 200, id);
+    private final int damage;
+    private final int damageDelta;
+
+    public Barbarian(UnitSharedData sharedData, int damage, int damageDelta) {
+        super(sharedData);
+        this.damage = damage;
+        this.damageDelta = damageDelta;
     }
 
     @Override
     public void move(Move move) throws InvalidActionException {
-        if (!move.getAction().equals(Actions.Attack))
-            throw new InvalidActionException();
+        if (!move.getAction().equals(Actions.Attack)) throw new InvalidActionException();
 
         GameUnit target = accessor.getUnitsAccessor().getUnitById(move.getTargetId());
         attack(target);
@@ -46,11 +49,11 @@ public class Barbarian extends GameUnit implements Attackable {
 
     @Override
     public int getDamage() {
-        return 15;
+        return damage;
     }
 
     @Override
     public int getDamageDelta() {
-        return 10;
+        return damageDelta;
     }
 }

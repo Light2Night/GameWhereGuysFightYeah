@@ -1,6 +1,6 @@
 package properties.user.request
 
-import Game.Characters.UnitTypes
+import Game.Units.Characters.UnitTypes
 import Game.Event.Arguments.GameEndInfo
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList

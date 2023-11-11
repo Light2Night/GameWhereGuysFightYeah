@@ -1,21 +1,27 @@
-package Game.Characters;
+package Game.Units.Characters;
 
 import Game.Actions;
 import Game.Event.Aggregates.UnitEventsAggregate;
 import Game.Event.Arguments.Actions.EffectActionInfo;
 import Game.Event.Arguments.Actions.HealActionInfo;
-import Game.UnitGetters.CompositeAccessor;
+import Game.Units.Factories.ViewModels.HealerViewModel;
+import Game.Units.Getters.CompositeAccessor;
 import Game.Effects.Effectable;
 import Game.Effects.Healling;
 import Exceptions.InvalidActionException;
 import Game.Move;
 import Game.Teams.Team;
+import Game.Units.UnitSharedData;
 
 import java.util.Random;
 
 public class Healer extends GameUnit implements Heallable {
-    public Healer(CompositeAccessor accessor, UnitEventsAggregate events, Team team, int id) {
-        super(accessor, events, team, "Цілитель", 125, id);
+    private final int heal;
+
+    public Healer(UnitSharedData sharedData, int heal) {
+        super(sharedData);
+
+        this.heal = heal;
     }
 
     @Override
@@ -56,7 +62,7 @@ public class Healer extends GameUnit implements Heallable {
 
     @Override
     public int getHeal() {
-        return 20;
+        return heal;
     }
 
     @Override

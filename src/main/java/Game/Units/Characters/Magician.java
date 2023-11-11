@@ -1,21 +1,28 @@
-package Game.Characters;
+package Game.Units.Characters;
 
 import Game.Actions;
 import Game.Event.Aggregates.UnitEventsAggregate;
 import Game.Event.Arguments.Actions.AttackActionInfo;
 import Game.Event.Arguments.Actions.EffectActionInfo;
-import Game.UnitGetters.CompositeAccessor;
+import Game.Units.Getters.CompositeAccessor;
 import Game.Effects.Effectable;
 import Game.Effects.Poisoning;
 import Exceptions.InvalidActionException;
 import Game.Move;
 import Game.Teams.Team;
+import Game.Units.UnitSharedData;
 
 import java.util.Random;
 
 public class Magician extends GameUnit implements Attackable, Magicable {
-    public Magician(CompositeAccessor accessor, UnitEventsAggregate events, Team team, int id) {
-        super(accessor, events, team, "Маг", 100, id);
+    public final int damage;
+    public final int damageDelta;
+
+    public Magician(UnitSharedData sharedData, int damage, int damageDelta) {
+        super(sharedData);
+
+        this.damage = damage;
+        this.damageDelta = damageDelta;
     }
 
     @Override
@@ -60,12 +67,12 @@ public class Magician extends GameUnit implements Attackable, Magicable {
 
     @Override
     public int getDamage() {
-        return 25;
+        return damage;
     }
 
     @Override
     public int getDamageDelta() {
-        return 20;
+        return damageDelta;
     }
 
     @Override

@@ -1,6 +1,6 @@
 package Game.Effects;
 
-import Game.Characters.GameUnit;
+import Game.Units.Characters.GameUnit;
 
 public interface Effectable {
     void effect(GameUnit unit);

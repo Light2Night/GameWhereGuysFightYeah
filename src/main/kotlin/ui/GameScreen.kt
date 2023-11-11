@@ -1,9 +1,9 @@
 package ui
 
-import Game.Characters.Barbarian
-import Game.Characters.GameUnit
-import Game.Characters.Healer
-import Game.Characters.Magician
+import Game.Units.Characters.Barbarian
+import Game.Units.Characters.GameUnit
+import Game.Units.Characters.Healer
+import Game.Units.Characters.Magician
 import Game.Effects.Effectable
 import Game.Effects.Healling
 import Game.Effects.Poisoning

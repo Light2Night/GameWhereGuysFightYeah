@@ -5,12 +5,17 @@ import Game.Event.Arguments.Actions.ActionInfo;
 import Game.Event.Arguments.GameEndInfo;
 import Game.Event.Handlers.OnAction;
 import Exceptions.GameIsNotStartedException;
-import Game.UnitGetters.*;
-import Game.Characters.*;
 import Game.Event.Aggregates.GameEventsAggregate;
 import Game.Event.Handlers.OnCycleLeft;
 import Game.Teams.Team;
-import Helpers.IdGenerator;
+import Game.Units.Characters.*;
+import Game.Units.Factories.UnitFactory;
+import Game.Units.Factories.ViewModels.BarbarianViewModel;
+import Game.Units.Factories.ViewModels.HealerViewModel;
+import Game.Units.Factories.ViewModels.MageViewModel;
+import Game.Units.Getters.CompositeAccessor;
+import Game.Units.Getters.TeamAccessor;
+import Game.Units.Getters.UnitsAccessor;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -39,6 +44,9 @@ public class Game {
     private final GameEventsAggregate events;
     private final UnitEventsAggregate unitEvents;
     private final ArrayList<ActionInfo> cycleActions;
+
+    public final UnitFactory alliesFactory;
+    public final UnitFactory enemyFactory;
     //endregion
 
     public Game() {
@@ -61,6 +69,9 @@ public class Game {
         compositeAccessor = new CompositeAccessor(alliesAccessor, enemiesAccessor, unitsAccessor);
 
         cycle = new GameCycle(compositeAccessor, events);
+
+        alliesFactory = new UnitFactory(compositeAccessor, human, unitEvents);
+        enemyFactory = new UnitFactory(compositeAccessor, ai, unitEvents);
     }
 
     //region Setters
@@ -128,11 +139,17 @@ public class Game {
     }
 
     private GameUnit createUnit(UnitTypes type, Team team) {
+        UnitFactory factory = team == human ? alliesFactory : enemyFactory;
+
         return switch (type) {
-            case BARBARIAN -> new Barbarian(compositeAccessor, unitEvents, team, IdGenerator.getId());
-            case MAGICIAN -> new Magician(compositeAccessor, unitEvents, team, IdGenerator.getId());
-            case HEALER -> new Healer(compositeAccessor, unitEvents, team, IdGenerator.getId());
+            case BARBARIAN -> factory.createBarbarian(new BarbarianViewModel("Варвар", 200, 200, 15, 10));
+            case MAGICIAN -> factory.createMagician(new MageViewModel("Маг", 100, 100, 25, 20));
+            case HEALER -> factory.createHealer(new HealerViewModel("Цілитель", 125, 125, 20));
         };
+    }
+
+    public void addUnit(GameUnit unit) {
+        units.add(unit);
     }
 
     public void next() throws GameIsNotStartedException {

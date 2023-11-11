@@ -1,6 +1,6 @@
 package properties.user.recruit
 
-import Game.Characters.UnitTypes
+import Game.Units.Characters.UnitTypes
 import uniqueId
 
 class RecruitFactory {

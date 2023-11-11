@@ -1,6 +1,6 @@
 package properties.language
 
-import Game.Characters.UnitTypes
+import Game.Units.Characters.UnitTypes
 import kotlinx.serialization.Serializable
 
 @Serializable

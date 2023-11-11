@@ -1,4 +1,4 @@
-import Game.Characters.GameUnit
+import Game.Units.Characters.GameUnit
 import Game.Event.Arguments.Actions.ActionInfo
 import Game.Game
 import Game.Event.Arguments.GameEndInfo

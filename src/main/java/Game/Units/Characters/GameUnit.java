@@ -1,11 +1,12 @@
-package Game.Characters;
+package Game.Units.Characters;
 
 import Game.Event.Aggregates.UnitEventsAggregate;
-import Game.UnitGetters.CompositeAccessor;
+import Game.Units.Getters.CompositeAccessor;
 import Game.Effects.Effectable;
 import Exceptions.InvalidActionException;
 import Game.Move;
 import Game.Teams.Team;
+import Game.Units.UnitSharedData;
 
 import java.util.ArrayList;
 
@@ -23,14 +24,15 @@ public abstract class GameUnit {
         return id;
     }
 
-    public GameUnit(CompositeAccessor accessor, UnitEventsAggregate events, Team team, String name, int hp, int id) {
-        this.accessor = accessor;
-        this.events = events;
-        this.team = team;
-        this.id = id;
-        this.name = name;
-        maxHp = this.hp = hp;
-        effects = new ArrayList<>();
+    public GameUnit(UnitSharedData sharedData) {
+        this.accessor = sharedData.Accessor;
+        this.events = sharedData.Events;
+        this.team = sharedData.Team;
+        this.id = sharedData.Id;
+        this.name = sharedData.Name;
+        this.maxHp = sharedData.MaxHp;
+        this.hp = sharedData.Hp;
+        this.effects = new ArrayList<>();
     }
 
     public String getName() {

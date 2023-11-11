@@ -1,8 +1,8 @@
 package ui
 
-import Game.Characters.Barbarian
-import Game.Characters.Healer
-import Game.Characters.Magician
+import Game.Units.Characters.Barbarian
+import Game.Units.Characters.Healer
+import Game.Units.Characters.Magician
 import Game.Game
 import Game.Move
 import Game.Actions

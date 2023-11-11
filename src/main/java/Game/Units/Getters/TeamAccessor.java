@@ -1,6 +1,6 @@
-package Game.UnitGetters;
+package Game.Units.Getters;
 
-import Game.Characters.GameUnit;
+import Game.Units.Characters.GameUnit;
 import Game.Teams.Team;
 
 import java.util.ArrayList;

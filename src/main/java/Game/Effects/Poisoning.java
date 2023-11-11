@@ -1,6 +1,6 @@
 package Game.Effects;
 
-import Game.Characters.GameUnit;
+import Game.Units.Characters.GameUnit;
 
 public class Poisoning implements Effectable {
     private int cyclesLeft;

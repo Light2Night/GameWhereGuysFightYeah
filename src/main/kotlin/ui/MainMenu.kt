@@ -1,6 +1,6 @@
 package ui
 
-import Game.Characters.*
+import Game.Units.Characters.UnitTypes
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*

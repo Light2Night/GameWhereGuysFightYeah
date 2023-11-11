@@ -1,4 +1,4 @@
-package Game.Characters;
+package Game.Units.Characters;
 
 import Game.Effects.Effectable;
 

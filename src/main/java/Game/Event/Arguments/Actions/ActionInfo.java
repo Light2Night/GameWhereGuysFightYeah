@@ -1,7 +1,7 @@
 package Game.Event.Arguments.Actions;
 
 import Game.Actions;
-import Game.Characters.GameUnit;
+import Game.Units.Characters.GameUnit;
 
 public abstract class ActionInfo {
     private GameUnit actor;

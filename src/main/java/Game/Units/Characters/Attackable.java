@@ -1,4 +1,4 @@
-package Game.Characters;
+package Game.Units.Characters;
 
 public interface Attackable {
     int getDamage();

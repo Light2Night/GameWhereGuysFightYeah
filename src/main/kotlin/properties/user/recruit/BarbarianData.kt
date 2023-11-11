@@ -1,6 +1,6 @@
 package properties.user.recruit
 
-import Game.Characters.UnitTypes
+import Game.Units.Characters.UnitTypes
 
 data class BarbarianData(
     override val type: UnitTypes = UnitTypes.BARBARIAN,

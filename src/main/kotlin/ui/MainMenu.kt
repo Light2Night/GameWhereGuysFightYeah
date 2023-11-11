@@ -1,6 +1,8 @@
 package ui
 
 import Game.Characters.*
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
@@ -8,9 +10,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.ExperimentalTextApi
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.platform.Font
@@ -34,6 +38,7 @@ import iconSize
 import imageHeight
 import imageWidth
 import lang
+import longAnimationDuration
 import org.jetbrains.skiko.currentNanoTime
 import padding
 import properties.Properties
@@ -50,6 +55,7 @@ import transparencySecond
 import ui.composable.*
 import ui.composable.shaders.*
 import user
+import kotlin.math.ceil
 import kotlin.random.Random
 
 @Composable
@@ -87,25 +93,31 @@ fun MainMenu(
             )
         }
 
-        when (tabs.getChecked()) {
-            MainMenuTab.Guild -> Guild(
-                modifier = Modifier.fillMaxSize(),
-            )
+        Crossfade(
+            targetState = tabs.getChecked(),
+            animationSpec = tween(longAnimationDuration),
+            modifier = Modifier.fillMaxSize(),
+        ) { checked ->
+            when (checked) {
+                MainMenuTab.Guild -> Guild(
+                    modifier = Modifier.fillMaxSize(),
+                )
 
-            MainMenuTab.Party -> Party(
-                modifier = Modifier.fillMaxSize(),
-            )
+                MainMenuTab.Party -> Party(
+                    modifier = Modifier.fillMaxSize(),
+                )
 
-            MainMenuTab.World -> World(
-                onStart = onStart,
-                modifier = Modifier.fillMaxSize(),
-            )
+                MainMenuTab.World -> World(
+                    onStart = onStart,
+                    modifier = Modifier.fillMaxSize(),
+                )
 
-            MainMenuTab.Settings -> Settings(
-                modifier = Modifier.fillMaxSize(),
-            )
+                MainMenuTab.Settings -> Settings(
+                    modifier = Modifier.fillMaxSize(),
+                )
 
-            null -> Text("<ERROR>")
+                null -> Text("<ERROR>")
+            }
         }
     }
 }
@@ -278,6 +290,8 @@ private fun Guild(
                 .background(StandardBackgroundBrush())
         )
 
+        Divider(modifier = Modifier.fillMaxHeight())
+
         RequestBoard(
             modifier = Modifier
                 .fillMaxSize()
@@ -317,8 +331,6 @@ private fun Recruits(
                 }
             }
         }
-
-        Divider(modifier = Modifier.fillMaxHeight())
     }
 }
 
@@ -359,10 +371,7 @@ private fun RecruitUnitCard(
             .border(smallBorder, colorBorder, MedievalShape(smallCorners))
             .clip(MedievalShape(smallCorners)),
     ) {
-        Image(
-            bitmap = getImageBitmap(recruit.profileImage) ?: emptyImageBitmap,
-            contentDescription = recruit.name,
-            contentScale = ContentScale.Crop,
+        Box(
             modifier = Modifier
                 .height(imageHeight)
                 .width(imageWidth)
@@ -370,7 +379,26 @@ private fun RecruitUnitCard(
                 .background(colorBackground, MedievalShape(smallCorners))
                 .border(smallBorder, colorBorder, MedievalShape(smallCorners))
                 .clip(MedievalShape(smallCorners)),
-        )
+        ) {
+            Image(
+                bitmap = getImageBitmap(recruit.profileImage) ?: emptyImageBitmap,
+                contentDescription = recruit.name,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize(),
+            )
+
+            Stars(
+                amount = recruit.stars,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Brush.verticalGradient(listOf(
+                        Color.Transparent,
+                        colorBackground.copy(alpha = transparencySecond),
+                        colorBackground,
+                    )))
+                    .align(Alignment.BottomCenter),
+            )
+        }
 
         Column {
             MedievalText(
@@ -394,10 +422,46 @@ private fun RecruitUnitCard(
             )
 
             recruit.cost?.let { cost ->
+                Cost(cost)
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalTextApi::class)
+@Composable
+private fun Stars(
+    amount: Int,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(padding, Alignment.CenterHorizontally),
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+    ) {
+        repeat(3) {
+            Box {
+                if (it < amount) {
+                    MedievalText(
+                        "★",
+                        fontSize = bigText,
+                        color = colorTextSecond,
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                }
+
                 MedievalText(
-                    text = "${cost.coins} coins | ${cost.crystal} crystals",
-                    color = if (cost.isAvailableToBuy) colorText else colorTextError,
-                    fontWeight = FontWeight.Bold,
+                    "★",
+                    fontSize = bigText,
+                    color = Color.Black,
+                    style = TextStyle.Default.copy(
+                        drawStyle = Stroke(
+                            miter = 1f,
+                            width = 1f,
+                            join = StrokeJoin.Round
+                        )
+                    ),
+                    modifier = Modifier.align(Alignment.Center)
                 )
             }
         }
@@ -425,6 +489,57 @@ private fun RecruitUnitTextData(
             is HealerData -> {
                 MedievalText("HEAL: ${recruitData.heal}")
                 MedievalText("EFF: ${recruitData.healingEffectHeal} (${recruitData.healingEffectTurns} turns)")
+            }
+        }
+    }
+}
+
+@Composable
+private fun Cost(
+    cost: RecruitCost,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier,
+    ) {
+        if (cost.coins > 0) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(padding),
+            ) {
+                Image(
+                    bitmap = getImageBitmap("textures/assets/coin.png") ?: emptyImageBitmap,
+                    contentDescription = "coin icon",
+                    modifier = Modifier.size(smallIconSize),
+                )
+
+                MedievalText(
+                    cost.coins.toString(),
+                    color = if (cost.isAvailableToBuy) colorText else colorTextError,
+                    fontSize = bigText,
+                    fontWeight = FontWeight.Bold,
+                )
+            }
+        }
+
+        if (cost.crystals > 0) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(padding),
+            ) {
+                Image(
+                    bitmap = getImageBitmap("textures/assets/crystal.png") ?: emptyImageBitmap,
+                    contentDescription = "crystal icon",
+                    modifier = Modifier.size(smallIconSize),
+                )
+
+                MedievalText(
+                    cost.crystals.toString(),
+                    color = if (cost.isAvailableToBuy) colorText else colorTextError,
+                    fontSize = bigText,
+                    fontWeight = FontWeight.Bold,
+                )
             }
         }
     }
@@ -501,22 +616,99 @@ private fun RequestCard(
 private fun Party(
     modifier: Modifier = Modifier,
 ) {
-    Row(modifier = modifier) {
-        Column(
+    Box(
+        modifier = modifier
+    ) {
+        Row(
             modifier = Modifier
-                .fillMaxWidth(0.33F)
-                .verticalScroll(rememberScrollState())
+                .fillMaxSize()
+                .background(getImageBitmap("textures/background/party1.png") ?: emptyImageBitmap)
         ) {
-            user.recruits.list.forEach { recruit ->
-                RecruitUnitCard(
-                    recruit = recruit,
-                    onClick = {},
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
+            PartyList(modifier = Modifier.fillMaxWidth(0.33F))
+            Divider(modifier = Modifier.fillMaxHeight())
+            RecruitedList(modifier = Modifier.fillMaxSize())
         }
 
-        Divider(modifier = Modifier.fillMaxHeight())
+        Column {
+            MedievalButton(
+                text = "додати тестового найманця",
+                onClick = {
+                    user.recruits.createNewRecruitToGuild()
+                    user.coins += 1
+                    user.crystals += 1
+                    user.recruits.buyRecruit(user.recruits.guildList.last())
+                },
+                modifier = Modifier,
+            )
+            MedievalText(
+                text = "Щоб вибрати найманця в паті нажми на нього в лівому списку.",
+                color = colorTextError,
+            )
+            MedievalText(
+                text = "Щоб прибрати найманця з паті нажми на нього в правому списку.",
+                color = colorTextError,
+            )
+            MedievalText(
+                text = "(це для тестів, потім зроблю краще)",
+                color = colorTextError,
+            )
+            MedievalText(
+                text = "${user.recruits.selectedList.size}/5",
+                color = colorTextError,
+            )
+        }
+    }
+}
+
+@Composable
+private fun PartyList(
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier
+            .verticalScroll(rememberScrollState())
+    ) {
+        user.recruits.selectedList.forEach { recruit ->
+            RecruitUnitCard(
+                recruit = recruit,
+                onClick = {
+                    user.recruits.deselectRecruit(recruit)
+                },
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+    }
+}
+
+@Composable
+private fun RecruitedList(
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier
+            .verticalScroll(rememberScrollState())
+    ) {
+        val recruits = user.recruits.list
+
+        repeat(ceil(recruits.size / 2.0).toInt()) { index1 ->
+            Row {
+                repeat(2) { index2 ->
+                    if (index1 * 2 + index2 < recruits.size) {
+                        RecruitUnitCard(
+                            recruit = recruits[index1 * 2 + index2],
+                            onClick = {
+                                user.recruits.selectRecruit(recruits[index1 * 2 + index2])
+                            },
+                            modifier = Modifier.weight(1F)
+                        )
+                    }
+
+                    if (index1 * 2 + index2 == recruits.lastIndex && recruits.size % 2 == 1) {
+                        Box(modifier = Modifier.weight(1F))
+                    }
+                }
+            }
+        }
     }
 }
 

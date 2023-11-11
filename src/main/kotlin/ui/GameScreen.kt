@@ -13,7 +13,6 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,9 +22,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.platform.Font
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import bigText
@@ -397,15 +394,14 @@ private fun EffectIcon(
                 modifier = Modifier.fillMaxWidth(),
             )
 
-            Text(
+            MedievalText(
                 effect.cyclesLeft.toString(),
                 fontSize = hugeText,
                 color = colorTextLight,
-                fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
                 modifier = Modifier.align(Alignment.Center)
             )
 
-            Text(
+            MedievalText(
                 effect.cyclesLeft.toString(),
                 fontSize = hugeText,
                 color = Color.Black,
@@ -416,7 +412,6 @@ private fun EffectIcon(
                         join = StrokeJoin.Round
                     )
                 ),
-                fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
                 modifier = Modifier.align(Alignment.Center)
             )
         }

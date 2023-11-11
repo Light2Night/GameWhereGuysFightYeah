@@ -62,7 +62,7 @@ class RecruitFactory {
             level = levels.random(),
             cost = RecruitCost(
                 coins = costCoins.random(),
-                crystal = costCrystals.random(),
+                crystals = costCrystals.random(),
             )
         )
     }

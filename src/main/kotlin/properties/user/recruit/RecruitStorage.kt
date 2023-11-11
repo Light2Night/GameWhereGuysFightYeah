@@ -17,7 +17,7 @@ class RecruitStorage {
 
     fun createNewRecruitToGuild() {
         val factory = RecruitFactory()
-        guildRecruitList.add(factory.createRandomUnique(recruitsList + guildRecruitList))
+        guildRecruitList.add(factory.createRandomUnique(recruitsList + guildRecruitList, costCoins = 1..3))
     }
 
     fun buyRecruit(recruit: Recruit) {

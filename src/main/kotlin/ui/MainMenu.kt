@@ -516,7 +516,7 @@ private fun Cost(
 
                 MedievalText(
                     cost.coins.toString(),
-                    color = if (cost.isAvailableToBuy) colorText else colorTextError,
+                    color = if (user.coins >= cost.coins) colorText else colorTextError,
                     fontSize = bigText,
                     fontWeight = FontWeight.Bold,
                 )
@@ -536,7 +536,7 @@ private fun Cost(
 
                 MedievalText(
                     cost.crystals.toString(),
-                    color = if (cost.isAvailableToBuy) colorText else colorTextError,
+                    color = if (user.crystals >= cost.crystals) colorText else colorTextError,
                     fontSize = bigText,
                     fontWeight = FontWeight.Bold,
                 )

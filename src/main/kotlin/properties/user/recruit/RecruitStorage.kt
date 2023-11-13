@@ -22,7 +22,7 @@ class RecruitStorage {
         return newRecruit
     }
 
-    fun buyRecruit(recruit: Recruit) {
+    fun buyRecruit(recruit: Recruit, replace: Boolean = true) {
         if (recruit.cost?.isAvailableToBuy == false || recruit.cost == null) return
 
         guildRecruitList.remove(recruit)
@@ -33,7 +33,7 @@ class RecruitStorage {
 
         recruit.cost = null
 
-        createNewRecruitToGuild()
+        if (replace) createNewRecruitToGuild()
     }
 
     fun selectRecruit(recruit: Recruit) {

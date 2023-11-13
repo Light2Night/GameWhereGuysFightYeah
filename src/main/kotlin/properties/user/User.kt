@@ -4,6 +4,7 @@ import androidx.compose.ui.graphics.ImageBitmap
 import getImageBitmap
 import properties.user.recruit.RecruitStorage
 import properties.user.request.RequestsStorage
+import properties.user.worldMap.WorldMap
 
 //@Serializable
 data class User(
@@ -15,6 +16,7 @@ data class User(
     var lvl: Int = 1,
     val requests: RequestsStorage = RequestsStorage(),
     val recruits: RecruitStorage = RecruitStorage(),
+    val worldMap: WorldMap = WorldMap(),
 ) {
     val profileImage: ImageBitmap? get() =
         getImageBitmap("data/user/user.webp")

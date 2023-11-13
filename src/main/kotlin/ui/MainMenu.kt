@@ -18,6 +18,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.platform.Font
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import bigText
 import biggerPadding
@@ -54,6 +55,8 @@ import smallText
 import transparencySecond
 import ui.composable.*
 import ui.composable.shaders.*
+import properties.user.worldMap.Location
+import properties.user.worldMap.WorldMap
 import user
 import kotlin.math.ceil
 import kotlin.random.Random
@@ -624,7 +627,11 @@ private fun Party(
                 .fillMaxSize()
                 .background(getImageBitmap("textures/background/party1.png") ?: emptyImageBitmap)
         ) {
-            PartyList(modifier = Modifier.fillMaxWidth(0.33F))
+            PartyList(modifier = Modifier
+                .fillMaxWidth(0.33F)
+                .fillMaxHeight()
+                .background(StandardBackgroundBrush()),
+            )
             Divider(modifier = Modifier.fillMaxHeight())
             RecruitedList(modifier = Modifier.fillMaxSize())
         }
@@ -636,7 +643,7 @@ private fun Party(
                     val recruit = user.recruits.createNewRecruitToGuild()
                     user.coins += recruit.cost?.coins ?: 0
                     user.crystals += recruit.cost?.crystals ?: 0
-                    user.recruits.buyRecruit(user.recruits.guildList.last())
+                    user.recruits.buyRecruit(user.recruits.guildList.last(), replace = false)
                 },
                 modifier = Modifier,
             )
@@ -717,17 +724,16 @@ private fun World(
     onStart: (List<UnitTypes>) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val enemies = remember { mutableStateListOf<UnitTypes>() }
-
     Row(
         modifier = modifier
+            .background(getImageBitmap("textures/background/worldmap1.png") ?: emptyImageBitmap)
     ) {
         /*UnitList(
             units = allies,
             onAddUnit = { allies.add(it) },
             modifier = Modifier.weight(1F),
         )*/
-        Column(modifier = Modifier.weight(1F)) {  }
+        /*Column(modifier = Modifier.weight(1F)) {  }
 
         Divider(modifier = Modifier.fillMaxHeight())
 
@@ -744,7 +750,80 @@ private fun World(
             units = enemies,
             onAddUnit = { enemies.add(it) },
             modifier = Modifier.weight(1F),
+        )*/
+
+        val selected by remember { mutableStateOf<Location?>(user.worldMap.locations.first(),) }
+
+        Box(modifier = Modifier
+            .fillMaxWidth(0.33F)
+            .fillMaxHeight()
+            .background(StandardBackgroundBrush())
+        ) {
+            AppearDisappearAnimation(
+                visible = selected != null,
+            ) {
+                LocationInfo(
+                    selected!!,
+                    onStart = onStart,
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
+        }
+
+        Divider(modifier = Modifier.fillMaxHeight())
+
+        WorldMap(
+            worldMap = user.worldMap,
+            modifier = Modifier.weight(1F),
         )
+    }
+}
+
+@Composable
+private fun LocationInfo(
+    location: Location,
+    onStart: (List<UnitTypes>) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val enemies = remember { mutableStateListOf<UnitTypes>() }
+
+    Column(
+        modifier = modifier,
+    ) {
+        MedievalButton(
+            text = lang.start_button.replaceFirstChar { it.uppercaseChar() },
+            enabled = enemies.isNotEmpty() && user.recruits.selectedList.isNotEmpty(),
+            onClick = { onStart(enemies) },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Divider(
+            orientation = Orientation.Horizontal,
+            modifier = Modifier.fillMaxWidth(),
+        )
+
+        MedievalText(
+            text = "Тестові противники:",
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth(),
+        )
+        UnitList(
+            units = enemies,
+            onAddUnit = { enemies.add(it) },
+            modifier = Modifier.fillMaxWidth().weight(1F),
+        )
+    }
+}
+
+@Composable
+private fun WorldMap(
+    worldMap: WorldMap,
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier,
+    ) {
+
     }
 }
 

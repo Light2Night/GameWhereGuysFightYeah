@@ -19,10 +19,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.platform.Font
 import bigText
 import biggerPadding
+import colorBackgroundDarker
 import colorBorder
 import colorTextLighter
 import smallBorder
 import smallCorners
+import transparencySecond
 import ui.composable.shaders.ButtonBrush
 import ui.composable.shaders.MedievalShape
 
@@ -100,6 +102,7 @@ private fun MedievalButton(
         modifier = modifier
             .clickable(onClick = onClick, enabled = enabled)
             .background(ButtonBrush(), MedievalShape(smallCorners))
+            .background(colorBackgroundDarker.copy(alpha = if (enabled) 0F else transparencySecond))
             .border(smallBorder, colorBorder, MedievalShape(smallCorners))
             .clip(MedievalShape(smallCorners)),
     ) {

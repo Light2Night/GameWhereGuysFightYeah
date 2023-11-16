@@ -4,6 +4,7 @@ import Game.Units.Characters.UnitTypes
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
+import androidx.compose.foundation.gestures.onDrag
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -20,6 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.platform.Font
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
 import bigText
 import biggerPadding
 import border
@@ -752,7 +754,7 @@ private fun World(
             modifier = Modifier.weight(1F),
         )*/
 
-        val selected by remember { mutableStateOf<Location?>(user.worldMap.locations.first(),) }
+        var selected by remember { mutableStateOf<Location?>(user.worldMap.locations.first()) }
 
         Box(modifier = Modifier
             .fillMaxWidth(0.33F)
@@ -774,6 +776,7 @@ private fun World(
 
         WorldMap(
             worldMap = user.worldMap,
+            onSelect = { selected = it },
             modifier = Modifier.weight(1F),
         )
     }
@@ -815,16 +818,53 @@ private fun LocationInfo(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun WorldMap(
     worldMap: WorldMap,
+    onSelect: (Location) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
         modifier = modifier,
     ) {
+        var offsetX by remember { mutableStateOf(0.dp) }
+        var offsetY by remember { mutableStateOf(0.dp) }
 
+        Box(
+            modifier = Modifier
+                .padding(reallyHugePadding)
+                .texture(getImageBitmap("textures/background/4.png") ?: emptyImageBitmap, MedievalShape(corners))
+                .border(border, colorBorder, MedievalShape(corners))
+                .clip(MedievalShape(corners))
+                .fillMaxSize()
+                .onDrag {
+                    offsetX = max(0.dp, offsetX + it.x.dp)
+                    offsetY = max(0.dp, offsetY + it.y.dp)
+                }
+                .offset(offsetX, offsetY)
+        ) {
+            worldMap.locations.forEach { location ->
+                LocationMark(
+                    location = location,
+                    modifier = Modifier
+                        .offset(location.x.dp - (iconSize / 2), location.y.dp - (iconSize / 2))
+                        .clickable { onSelect(location) },
+                )
+            }
+        }
     }
+}
+
+@Composable
+private fun LocationMark(
+    location: Location,
+    modifier: Modifier = Modifier,
+) {
+    MedievalIcon(
+        icon = getImageBitmap(location.image) ?: emptyImageBitmap,
+        modifier.size(iconSize)
+    )
 }
 
 @Composable

@@ -44,7 +44,7 @@ import org.jetbrains.skiko.currentNanoTime
 import padding
 import properties.Properties
 import properties.user.recruit.*
-import properties.user.request.GuildRequest
+import properties.user.quest.Quest
 import reallyHugePadding
 import resourceWidth
 import settings
@@ -591,7 +591,7 @@ private fun RequestBoard(
 
 @Composable
 private fun RequestCard(
-    request: GuildRequest?,
+    request: Quest?,
     modifier: Modifier = Modifier,
 ) {
     Box(modifier = modifier) {

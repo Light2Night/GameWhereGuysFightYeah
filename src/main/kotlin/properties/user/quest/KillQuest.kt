@@ -1,4 +1,4 @@
-package properties.user.request
+package properties.user.quest
 
 import Game.Units.Characters.UnitTypes
 import Game.Event.Arguments.GameEndInfo
@@ -7,7 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import user
 
-class KillRequest(
+class KillQuest(
     override val id: Int,
     override val x: Int,
     override val y: Int,
@@ -20,7 +20,7 @@ class KillRequest(
     override val rewardExp: Int,
     val unitType: UnitTypes,
     val amount: Int,
-) : GuildRequest {
+) : Quest {
 
     var count by mutableStateOf(0)
         private set

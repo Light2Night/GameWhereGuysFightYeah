@@ -11,6 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
@@ -22,12 +23,14 @@ import androidx.compose.ui.text.platform.Font
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
+import androidx.compose.ui.unit.min
 import bigText
 import biggerPadding
 import border
 import colorBackground
 import colorBackgroundDarker
 import colorBorder
+import colorSelectedBorder
 import colorText
 import colorTextError
 import colorTextLight
@@ -730,45 +733,23 @@ private fun World(
         modifier = modifier
             .background(getImageBitmap("textures/background/worldmap1.png") ?: emptyImageBitmap)
     ) {
-        /*UnitList(
-            units = allies,
-            onAddUnit = { allies.add(it) },
-            modifier = Modifier.weight(1F),
-        )*/
-        /*Column(modifier = Modifier.weight(1F)) {  }
-
-        Divider(modifier = Modifier.fillMaxHeight())
-
-        MedievalButton(
-            text = lang.start_button.replaceFirstChar { it.uppercaseChar() },
-            enabled = enemies.isNotEmpty(),
-            onClick = { onStart(enemies) },
-            modifier = Modifier.fillMaxWidth(0.33F)
-        )
-
-        Divider(modifier = Modifier.fillMaxHeight())
-
-        UnitList(
-            units = enemies,
-            onAddUnit = { enemies.add(it) },
-            modifier = Modifier.weight(1F),
-        )*/
-
-        var selected by remember { mutableStateOf<Location?>(user.worldMap.locations.first()) }
+        var selected by remember { mutableStateOf<Location?>(null) }
 
         Box(modifier = Modifier
             .fillMaxWidth(0.33F)
             .fillMaxHeight()
             .background(StandardBackgroundBrush())
         ) {
-            AppearDisappearAnimation(
-                visible = selected != null,
-            ) {
-                LocationInfo(
-                    selected!!,
-                    onStart = onStart,
-                    modifier = Modifier.fillMaxSize()
-                )
+            Crossfade(
+                selected,
+            ) { location ->
+                if (location != null) {
+                    LocationInfo(
+                        location,
+                        onStart = onStart,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
             }
         }
 
@@ -776,6 +757,7 @@ private fun World(
 
         WorldMap(
             worldMap = user.worldMap,
+            selected = selected,
             onSelect = { selected = it },
             modifier = Modifier.weight(1F),
         )
@@ -788,16 +770,48 @@ private fun LocationInfo(
     onStart: (List<UnitTypes>) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val enemies = remember { mutableStateListOf<UnitTypes>() }
+    val enemies = remember {
+        val recruitFactory = RecruitFactory()
+        val randomEnemies = mutableStateListOf<UnitTypes>()
+
+        repeat(Random(currentNanoTime()).nextInt(1, 5)) {
+            recruitFactory.getPreset(location.enemies.random())?.let { randomEnemies.add(it.data.type) }
+        }
+
+        if (randomEnemies.all { it == UnitTypes.HEALER }) {
+            val replacement = recruitFactory.getPreset(location.enemies.filterNot { it == 2 }.random())
+
+            replacement?.let { randomEnemies.set(Random(currentNanoTime()).nextInt(0, randomEnemies.size), it.data.type) }
+        }
+
+        randomEnemies
+    }
 
     Column(
         modifier = modifier,
     ) {
-        MedievalButton(
-            text = lang.start_button.replaceFirstChar { it.uppercaseChar() },
-            enabled = enemies.isNotEmpty() && user.recruits.selectedList.isNotEmpty(),
-            onClick = { onStart(enemies) },
-            modifier = Modifier.fillMaxWidth()
+        MedievalText(
+            text = location.name,
+            fontSize = bigText,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth(),
+        )
+
+        MedievalText(
+            text = location.description,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth(),
+        )
+
+        MedievalText(
+            text = "Противники на цій локації:",
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth(),
+        )
+        UnitList(
+            units = enemies,
+            modifier = Modifier.fillMaxWidth().weight(1F),
         )
 
         Divider(
@@ -805,15 +819,11 @@ private fun LocationInfo(
             modifier = Modifier.fillMaxWidth(),
         )
 
-        MedievalText(
-            text = "Тестові противники:",
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth(),
-        )
-        UnitList(
-            units = enemies,
-            onAddUnit = { enemies.add(it) },
-            modifier = Modifier.fillMaxWidth().weight(1F),
+        MedievalButton(
+            text = lang.start_button.replaceFirstChar { it.uppercaseChar() },
+            enabled = enemies.isNotEmpty() && user.recruits.selectedList.isNotEmpty(),
+            onClick = { onStart(enemies) },
+            modifier = Modifier.fillMaxWidth()
         )
     }
 }
@@ -822,31 +832,44 @@ private fun LocationInfo(
 @Composable
 private fun WorldMap(
     worldMap: WorldMap,
+    selected: Location?,
     onSelect: (Location) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Box(
-        modifier = modifier,
-    ) {
-        var offsetX by remember { mutableStateOf(0.dp) }
-        var offsetY by remember { mutableStateOf(0.dp) }
+    val mapImage by remember { mutableStateOf(getImageBitmap("textures/background/map.png") ?: emptyImageBitmap) }
 
+    var offsetX by remember { mutableStateOf(0.dp) }
+    var offsetY by remember { mutableStateOf(0.dp) }
+
+    var minX by remember { mutableStateOf(0.dp) }
+    var minY by remember { mutableStateOf(0.dp) }
+
+    Box(
+        modifier = modifier
+            .padding(reallyHugePadding)
+            .texture(getImageBitmap("textures/background/4.png") ?: emptyImageBitmap, MedievalShape(corners))
+            .border(border, colorBorder, MedievalShape(corners))
+            .clip(MedievalShape(corners))
+            .onDrag {
+                offsetX = max(minX, min(0.dp, offsetX + it.x.dp))
+                offsetY = max(minY, min(0.dp, offsetY + it.y.dp))
+            },
+    ) {
         Box(
             modifier = Modifier
-                .padding(reallyHugePadding)
-                .texture(getImageBitmap("textures/background/4.png") ?: emptyImageBitmap, MedievalShape(corners))
-                .border(border, colorBorder, MedievalShape(corners))
-                .clip(MedievalShape(corners))
                 .fillMaxSize()
-                .onDrag {
-                    offsetX = max(0.dp, offsetX + it.x.dp)
-                    offsetY = max(0.dp, offsetY + it.y.dp)
-                }
                 .offset(offsetX, offsetY)
+                .drawBehind {
+                    drawImage(mapImage)
+
+                    minX = -(mapImage.width - size.width).dp
+                    minY = -(mapImage.height - size.height).dp
+                }
         ) {
             worldMap.locations.forEach { location ->
                 LocationMark(
                     location = location,
+                    selected = selected?.id == location.id,
                     modifier = Modifier
                         .offset(location.x.dp - (iconSize / 2), location.y.dp - (iconSize / 2))
                         .clickable { onSelect(location) },
@@ -859,11 +882,14 @@ private fun WorldMap(
 @Composable
 private fun LocationMark(
     location: Location,
+    selected: Boolean,
     modifier: Modifier = Modifier,
 ) {
     MedievalIcon(
         icon = getImageBitmap(location.image) ?: emptyImageBitmap,
-        modifier.size(iconSize)
+        modifier = modifier
+            .size(iconSize)
+            .border(8.dp, if (selected) colorSelectedBorder else Color.Transparent, MedievalShape(smallCorners))
     )
 }
 
@@ -895,28 +921,12 @@ private fun Settings(
 @Composable
 private fun UnitList(
     units: List<UnitTypes>,
-    onAddUnit: (UnitTypes) -> Unit,
     modifier: Modifier
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier,
     ) {
-        MedievalButton(
-            text = "Додати варвара",
-            onClick = { onAddUnit(UnitTypes.BARBARIAN) },
-        )
-
-        MedievalButton(
-            text = "Додати мага",
-            onClick = { onAddUnit(UnitTypes.MAGICIAN) },
-        )
-
-        MedievalButton(
-            text = "Додати цілитель",
-            onClick = { onAddUnit(UnitTypes.HEALER) },
-        )
-
         units.forEach { unit ->
             UnitInfo(
                 unitType = unit,

@@ -11,5 +11,5 @@ data class Location(
     val level: Int,
     val danger: Int,
     val image: String,
-    val enemies: List<String>,
+    val enemies: List<Int>,
 ) : HasID

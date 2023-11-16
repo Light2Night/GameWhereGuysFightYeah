@@ -38,6 +38,8 @@ class RecruitFactory {
         Recruit(2, 2, "test2", "description_test2", 1, 1, "textures/characters/healer_placeholder.png", HealerData()),
     )
 
+    fun getPreset(charID: Int) = presets.find { it.charID == charID }
+
     fun createRandomUnique(
         list: List<Recruit>,
         levels: IntRange = 1..1,

@@ -8,6 +8,6 @@ class GameEndedEvent(
     private val gameData: GameData,
 ) : GameEndEventable {
     override fun onEvent(info: GameEndInfo) {
-        gameData.gameResult.value = info
+        gameData.gameResult = info
     }
 }

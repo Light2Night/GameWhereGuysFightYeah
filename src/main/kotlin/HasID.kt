@@ -4,13 +4,6 @@ interface HasID {
 
 fun Collection<HasID>.uniqueId(): Int {
     var newID = 0
-    forEach {
-        if (it.id != newID) {
-            return newID
-        }
-
-        newID++
-    }
-
+    while (newID in this.map { it.id }) { newID++ }
     return newID
 }

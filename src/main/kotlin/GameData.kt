@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import properties.user.recruit.Recruit
+import properties.user.worldMap.Location
 
 class GameData(
     game: Game,
@@ -26,7 +27,9 @@ class GameData(
     val currentActionIndex = mutableStateOf<Int?>(null)
     val currentAction get() = currentActionIndex.value?.let { actionInfoList[it] }
 
-    val gameResult = mutableStateOf<GameEndInfo?>(null)
+    var gameResult by mutableStateOf<GameEndInfo?>(null)
+
+    var location: Location? = null
 
     init {
         updateUnits(game.units)
@@ -72,6 +75,7 @@ class GameData(
 
         currentUnit = null
         selectedUnit = null
-        gameResult.value = null
+        gameResult = null
+        location = null
     }
 }

@@ -1,6 +1,7 @@
 package properties.user.recruit
 
 import Game.Units.Characters.UnitTypes
+import properties.resources.Cost
 import uniqueId
 
 class RecruitFactory {
@@ -62,9 +63,10 @@ class RecruitFactory {
             name = name,
             id = list.uniqueId(),
             level = levels.random(),
-            cost = RecruitCost(
+            cost = Cost(
                 coins = costCoins.random(),
                 crystals = costCrystals.random(),
+                0,
             )
         )
     }
@@ -92,9 +94,10 @@ class RecruitFactory {
             name = name,
             id = list.uniqueId(),
             level = levels.random(),
-            cost = RecruitCost(
+            cost = Cost(
                 coins = costCoins.random(),
                 crystals = costCrystals.random(),
+                0,
             )
         )
     }

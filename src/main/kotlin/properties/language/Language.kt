@@ -22,6 +22,9 @@ data class Language(
 
     val user_won: String,
     val ai_won: String,
+
+    val no_recruits: String,
+    val too_small_level: String,
 ) {
     fun getUnitName(type: UnitTypes): String = when(type) {
         UnitTypes.BARBARIAN -> barbarian_name

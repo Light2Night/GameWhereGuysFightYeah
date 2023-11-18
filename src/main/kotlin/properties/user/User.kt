@@ -2,6 +2,7 @@ package properties.user
 
 import androidx.compose.ui.graphics.ImageBitmap
 import getImageBitmap
+import properties.resources.UserResources
 import properties.user.recruit.RecruitStorage
 import properties.user.quest.QuestStorage
 import properties.user.worldMap.WorldMap
@@ -9,11 +10,13 @@ import properties.user.worldMap.WorldMap
 //@Serializable
 data class User(
     var name: String = "Test_Name",
-    var coins: Int = 0,
-    var crystals: Int = 0,
-    var exp: Int = 30,
+    var resources: UserResources = UserResources(
+        coins = 50,
+        crystals = 3,
+        exp = 0,
+    ),
     var expTarget: Int = 100,
-    var lvl: Int = 1,
+    var level: Int = 1,
     val requests: QuestStorage = QuestStorage(),
     val recruits: RecruitStorage = RecruitStorage(),
     val worldMap: WorldMap = WorldMap(),

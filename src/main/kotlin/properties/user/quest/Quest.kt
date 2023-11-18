@@ -2,6 +2,7 @@ package properties.user.quest
 
 import Game.Event.Arguments.GameEndInfo
 import HasID
+import properties.resources.Reward
 
 interface Quest : HasID {
     override val id: Int
@@ -11,13 +12,15 @@ interface Quest : HasID {
     val description: String
     val icon: String
     val requiredLevel: Int
-    val rewardCoins: Int
-    val rewardCrystals: Int
-    val rewardExp: Int
+    val reward: Reward
 
     val progressString: String
 
     fun update(endInfo: GameEndInfo)
     fun isCompleted(): Boolean
-    fun getReward()
+    fun getReward() {
+        if (isCompleted()) {
+            reward.giveToUser()
+        }
+    }
 }

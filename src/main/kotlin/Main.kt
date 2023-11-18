@@ -53,10 +53,9 @@ fun main() = application {
     Window(onCloseRequest = ::exitApplication, state = windowState) {
         when (screen) {
             Screen.Main -> MainMenu(
-                onStart = { enemies ->
+                onStart = { enemies, location ->
                     game.reset()
-                    //allies.forEach { game.addAlly(it) }
-                    //enemies.forEach { game.addEnemy(it) }
+                    gameData.location = location
 
                     user.recruits.selectedList.forEach {
                         val newUnit = when (it.data.type) {
@@ -114,9 +113,10 @@ fun main() = application {
                     .background(colorBackground)
             )
             Screen.Results -> ResultsScreen(
-                result = gameData.gameResult.value!!,
+                result = gameData.gameResult!!,
+                location = gameData.location!!,
                 onBack = {
-                    user.requests.updateAllRequests(gameData.gameResult.value!!)
+                    user.requests.updateAllRequests(gameData.gameResult!!)
                     user.requests.checkAllRequests()
                     gameData.reset()
                     screen = Screen.Main

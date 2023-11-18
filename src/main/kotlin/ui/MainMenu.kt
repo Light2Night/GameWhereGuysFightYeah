@@ -48,6 +48,7 @@ import longAnimationDuration
 import org.jetbrains.skiko.currentNanoTime
 import padding
 import properties.Properties
+import properties.resources.Cost
 import properties.user.recruit.*
 import properties.user.quest.Quest
 import reallyHugePadding
@@ -68,7 +69,7 @@ import kotlin.random.Random
 
 @Composable
 fun MainMenu(
-    onStart: (List<UnitTypes>) -> Unit,
+    onStart: (List<UnitTypes>, Location) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val tabs by remember {
@@ -204,7 +205,7 @@ private fun UserResourcesInfo(
             )
 
             MedievalText(
-                user.coins.toString(),
+                user.resources.coins.toString(),
                 fontSize = bigText,
                 fontWeight = FontWeight.Bold,
             )
@@ -222,7 +223,7 @@ private fun UserResourcesInfo(
             )
 
             MedievalText(
-                user.crystals.toString(),
+                user.resources.crystals.toString(),
                 fontSize = bigText,
                 fontWeight = FontWeight.Bold,
             )
@@ -246,7 +247,7 @@ private fun UserInfo(
                 horizontalArrangement = Arrangement.spacedBy(padding),
             ) {
                 MedievalText(
-                    "${lang.level_short.uppercase()}. ${user.lvl}",
+                    "${lang.level_short.uppercase()}. ${user.level}",
                     color = colorTextSecond,
                 )
 
@@ -260,14 +261,14 @@ private fun UserInfo(
                 contentAlignment = Alignment.Center,
             ) {
                 MedievalProgressbar(
-                    value = user.exp,
+                    value = user.resources.exp,
                     min = 0,
                     max = user.expTarget,
                     modifier = Modifier.size(256.dp, 16.dp),
                 )
 
                 MedievalText(
-                    text = "${lang.exp_short.uppercase()}: ${user.exp}/${user.expTarget}",
+                    text = "${lang.exp_short.uppercase()}: ${user.resources.exp}/${user.expTarget}",
                     fontSize = smallText,
                     color = colorTextLight,
                 )
@@ -504,7 +505,7 @@ private fun RecruitUnitTextData(
 
 @Composable
 private fun Cost(
-    cost: RecruitCost,
+    cost: Cost,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -524,7 +525,7 @@ private fun Cost(
 
                 MedievalText(
                     cost.coins.toString(),
-                    color = if (user.coins >= cost.coins) colorText else colorTextError,
+                    color = if (user.resources.coins >= cost.coins) colorText else colorTextError,
                     fontSize = bigText,
                     fontWeight = FontWeight.Bold,
                 )
@@ -544,7 +545,7 @@ private fun Cost(
 
                 MedievalText(
                     cost.crystals.toString(),
-                    color = if (user.crystals >= cost.crystals) colorText else colorTextError,
+                    color = if (user.resources.crystals >= cost.crystals) colorText else colorTextError,
                     fontSize = bigText,
                     fontWeight = FontWeight.Bold,
                 )
@@ -646,8 +647,8 @@ private fun Party(
                 text = "додати тестового найманця",
                 onClick = {
                     val recruit = user.recruits.createNewRecruitToGuild()
-                    user.coins += recruit.cost?.coins ?: 0
-                    user.crystals += recruit.cost?.crystals ?: 0
+                    user.resources.coins += recruit.cost?.coins ?: 0
+                    user.resources.crystals += recruit.cost?.crystals ?: 0
                     user.recruits.buyRecruit(user.recruits.guildList.last(), replace = false)
                 },
                 modifier = Modifier,
@@ -726,7 +727,7 @@ private fun RecruitedList(
 
 @Composable
 private fun World(
-    onStart: (List<UnitTypes>) -> Unit,
+    onStart: (List<UnitTypes>, Location) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -767,7 +768,7 @@ private fun World(
 @Composable
 private fun LocationInfo(
     location: Location,
-    onStart: (List<UnitTypes>) -> Unit,
+    onStart: (List<UnitTypes>, Location) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val enemies = remember {
@@ -775,11 +776,11 @@ private fun LocationInfo(
         val randomEnemies = mutableStateListOf<UnitTypes>()
 
         repeat(Random(currentNanoTime()).nextInt(1, 5)) {
-            recruitFactory.getPreset(location.enemies.random())?.let { randomEnemies.add(it.data.type) }
+            recruitFactory.getPreset(location.enemyTypes.random())?.let { randomEnemies.add(it.data.type) }
         }
 
         if (randomEnemies.all { it == UnitTypes.HEALER }) {
-            val replacement = recruitFactory.getPreset(location.enemies.filterNot { it == 2 }.random())
+            val replacement = recruitFactory.getPreset(location.enemyTypes.filterNot { it == 2 }.random())
 
             replacement?.let { randomEnemies.set(Random(currentNanoTime()).nextInt(0, randomEnemies.size), it.data.type) }
         }
@@ -814,16 +815,31 @@ private fun LocationInfo(
             modifier = Modifier.fillMaxWidth().weight(1F),
         )
 
-        Divider(
-            orientation = Orientation.Horizontal,
-            modifier = Modifier.fillMaxWidth(),
-        )
+        if (location.level > user.level) {
+            MedievalText(
+                text = lang.too_small_level.replaceFirstChar { it.uppercaseChar() },
+                textAlign = TextAlign.Center,
+                color = colorTextError,
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
+
+        if (user.recruits.selectedList.isEmpty()) {
+            MedievalText(
+                text = lang.no_recruits.replaceFirstChar { it.uppercaseChar() },
+                textAlign = TextAlign.Center,
+                color = colorTextError,
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
 
         MedievalButton(
             text = lang.start_button.replaceFirstChar { it.uppercaseChar() },
             enabled = enemies.isNotEmpty() && user.recruits.selectedList.isNotEmpty(),
-            onClick = { onStart(enemies) },
-            modifier = Modifier.fillMaxWidth()
+            onClick = { onStart(enemies, location) },
+            modifier = Modifier
+                .padding(padding)
+                .fillMaxWidth()
         )
     }
 }

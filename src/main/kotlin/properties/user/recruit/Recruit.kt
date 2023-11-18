@@ -7,6 +7,7 @@ import Game.Units.Factories.ViewModels.BaseUnitViewModel
 import Game.Units.Factories.ViewModels.HealerViewModel
 import Game.Units.Factories.ViewModels.MageViewModel
 import HasID
+import properties.resources.Cost
 
 data class Recruit(
     override val id: Int,
@@ -17,7 +18,7 @@ data class Recruit(
     var level: Int,
     val profileImage: String,
     val data: RecruitData,
-    var cost: RecruitCost? = null,
+    var cost: Cost? = null,
 ) : HasID {
     fun toViewModel(): BaseUnitViewModel {
         return when (data) {

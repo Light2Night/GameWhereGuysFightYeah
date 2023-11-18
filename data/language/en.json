@@ -15,5 +15,8 @@
   "healer_name": "healer",
 
   "user_won": "You destroyed the enemy!",
-  "ai_won": "The enemy defeated you!"
+  "ai_won": "The enemy defeated you!",
+
+  "no_recruits": "No recruits in your party!",
+  "too_small_level": "Your level is too low!"
 }

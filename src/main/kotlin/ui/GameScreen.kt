@@ -85,7 +85,7 @@ fun GameScreen(
                 gameData = gameData,
                 onAction = {
                     game.next()
-                    gameData.gameResult.value?.let { onEnd() }
+                    gameData.gameResult?.let { onEnd() }
 
                     if (game.getUnitById(gameData.selectedUnit?.id ?: 0) == null) {
                         game.selectedUnitIndex =

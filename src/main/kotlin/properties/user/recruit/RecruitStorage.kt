@@ -17,7 +17,12 @@ class RecruitStorage {
     val selectedList: List<Recruit> get() = selectedRecruitsList
 
     fun createNewRecruitToGuild(): Recruit {
-        val newRecruit = factory.createRandomUnique(recruitsList + guildRecruitList, costCoins = 1..3)
+        val newRecruit = factory.createRandomUnique(
+            list = recruitsList + guildRecruitList,
+            costCoins = 5..50,
+            costCrystals = 0..3
+        )
+
         guildRecruitList.add(newRecruit)
         return newRecruit
     }
@@ -28,8 +33,7 @@ class RecruitStorage {
         guildRecruitList.remove(recruit)
         recruitsList.add(recruit)
 
-        user.coins -= recruit.cost!!.coins
-        user.crystals -= recruit.cost!!.crystals
+        recruit.cost?.let { user.resources.minus(it) }
 
         recruit.cost = null
 
@@ -37,7 +41,7 @@ class RecruitStorage {
     }
 
     fun selectRecruit(recruit: Recruit) {
-        if (selectedRecruitsList.contains(recruit) || selectedRecruitsList.size >= maxSelections) return
+        if (selectedRecruitsList.find { it.id == recruit.id } != null || selectedRecruitsList.size >= maxSelections) return
 
         selectedRecruitsList.add(recruit)
     }

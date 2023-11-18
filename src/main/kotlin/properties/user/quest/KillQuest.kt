@@ -5,7 +5,7 @@ import Game.Event.Arguments.GameEndInfo
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import user
+import properties.resources.Reward
 
 class KillQuest(
     override val id: Int,
@@ -15,9 +15,7 @@ class KillQuest(
     override val description: String,
     override val icon: String,
     override val requiredLevel: Int,
-    override val rewardCoins: Int,
-    override val rewardCrystals: Int,
-    override val rewardExp: Int,
+    override val reward: Reward,
     val unitType: UnitTypes,
     val amount: Int,
 ) : Quest {
@@ -32,12 +30,4 @@ class KillQuest(
     }
 
     override fun isCompleted(): Boolean = count >= amount
-
-    override fun getReward() {
-        if (isCompleted()) {
-            user.coins += rewardCoins
-            user.crystals += rewardCrystals
-            user.exp += rewardExp
-        }
-    }
 }

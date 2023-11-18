@@ -1,9 +1,7 @@
 package properties.user.worldMap
 
 import HasID
-import org.jetbrains.skiko.currentNanoTime
 import properties.resources.Reward
-import kotlin.random.Random
 
 data class Location(
     override val id: Int,
@@ -20,9 +18,9 @@ data class Location(
 ) : HasID {
     fun getReward(): Reward {
         return Reward(
-            coins = Random(currentNanoTime()).nextInt(minReward.coins, maxReward.coins),
-            crystals = Random(currentNanoTime()).nextInt(minReward.crystals, maxReward.crystals),
-            exp = Random(currentNanoTime()).nextInt(minReward.exp, maxReward.exp),
+            coins = (minReward.coins..maxReward.coins).random(),
+            crystals = (minReward.crystals..maxReward.crystals).random(),
+            exp = (minReward.exp..maxReward.exp).random(),
         )
     }
 }

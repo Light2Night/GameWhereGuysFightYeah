@@ -1,3 +1,5 @@
+package gamedata
+
 import Game.Units.Characters.GameUnit
 import Game.Event.Arguments.Actions.ActionInfo
 import Game.Game
@@ -11,7 +13,7 @@ import properties.user.recruit.Recruit
 import properties.user.worldMap.Location
 
 class GameData(
-    game: Game,
+    val game: Game,
 ) {
     private val units = mutableStateListOf<GameUnit>()
     val allies get() = units.filter { it.team.playerType ==  PlayerTypes.Human }

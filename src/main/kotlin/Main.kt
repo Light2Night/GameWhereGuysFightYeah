@@ -4,7 +4,7 @@ import Game.Units.Factories.ViewModels.BarbarianViewModel
 import Game.Units.Factories.ViewModels.HealerViewModel
 import Game.Units.Factories.ViewModels.MageViewModel
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -16,6 +16,11 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
+import gamedata.GameData
+import gamedata.event.CurrentUnitChangedEvent
+import gamedata.event.GameEndedEvent
+import gamedata.event.MoveCompletedEvent
+import gamedata.event.SelectEvent
 import properties.Properties
 import properties.user.recruit.Recruit
 import properties.user.recruit.RecruitFactory
@@ -23,7 +28,6 @@ import ui.GameScreen
 import ui.MainMenu
 import ui.ResultsScreen
 import ui.Screen
-import ui.event.*
 
 fun main() = application {
     var firstTime by remember { mutableStateOf(true) }
@@ -42,7 +46,16 @@ fun main() = application {
 
     var screen by remember { mutableStateOf(Screen.Main) }
     val game by remember { mutableStateOf(Game()) }
-    val gameData by remember { mutableStateOf(GameData(game)) }
+    val gameData by remember {
+        val newGameData = GameData(game)
+
+        game.events.setSelectedIndexChangedEvent(SelectEvent(game, newGameData))
+        game.events.setCurrentIndexChangedEvent(CurrentUnitChangedEvent(game, newGameData))
+        game.events.setMoveCompletedEvent(MoveCompletedEvent(game, newGameData))
+        game.events.setGameEndEvent(GameEndedEvent(newGameData))
+
+        mutableStateOf(newGameData)
+    }
 
     val windowState = rememberWindowState(
         width = 1400.dp,
@@ -88,11 +101,6 @@ fun main() = application {
                     }
                     gameData.enemiesRecruits = createdEnemies
                     gameData.updateUnits(game.units)
-
-                    game.events.setSelectedIndexChangedEvent(SelectEvent(game, gameData))
-                    game.events.setCurrentIndexChangedEvent(CurrentUnitChangedEvent(game, gameData))
-                    game.events.setMoveCompletedEvent(MoveCompletedEvent(game, gameData))
-                    game.events.setGameEndEvent(GameEndedEvent(gameData))
 
                     game.start()
 

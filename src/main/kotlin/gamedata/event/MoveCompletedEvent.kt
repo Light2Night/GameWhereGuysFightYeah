@@ -1,8 +1,8 @@
-package ui.event
+package gamedata.event
 
 import Game.Event.Eventable
 import Game.Game
-import GameData
+import gamedata.GameData
 
 class MoveCompletedEvent(
     private val game: Game,

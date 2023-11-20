@@ -6,7 +6,7 @@ import Game.Units.Characters.Magician
 import Game.Game
 import Game.Move
 import Game.Actions
-import GameData
+import gamedata.GameData
 
 class ActionFabric(
     val game: Game,

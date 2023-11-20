@@ -11,7 +11,6 @@ interface Resources {
 
     fun giveToUser() {
         user.resources.plus(this)
-        user.level = calculateLevel(user.resources.exp)
     }
 
     fun plus(other: Resources) {

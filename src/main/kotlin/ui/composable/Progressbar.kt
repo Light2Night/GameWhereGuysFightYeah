@@ -5,9 +5,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import colorBackgroundDarker
 import emptyImageBitmap
 import getImageBitmap
@@ -22,9 +23,13 @@ fun MedievalProgressbar(
     orientation: Orientation = Orientation.Horizontal,
     modifier: Modifier = Modifier,
 ) {
-    val texture = when (orientation) {
-        Orientation.Vertical -> getImageBitmap("textures/background/divider.png") ?: emptyImageBitmap
-        Orientation.Horizontal -> getImageBitmap("textures/background/divider_h.png") ?: emptyImageBitmap
+    val texture by remember {
+        mutableStateOf(
+            when (orientation) {
+                Orientation.Vertical -> getImageBitmap("textures/background/divider.png") ?: emptyImageBitmap
+                Orientation.Horizontal -> getImageBitmap("textures/background/divider_h.png") ?: emptyImageBitmap
+            }
+        )
     }
 
     MedievalBox(modifier = modifier) {
@@ -35,9 +40,15 @@ fun MedievalProgressbar(
                 .background(colorBackgroundDarker.copy(alpha = transparencySecond))
         )
 
-        val size = (value.toFloat() - min.toFloat()) / (max.toFloat() - min.toFloat())
+        val size by remember(value, min, max) {
+            derivedStateOf {
+                (value.toFloat() - min.toFloat()) / (max.toFloat() - min.toFloat())
+            }
+        }
+
         Box(
             Modifier
+                .clipToBounds()
                 .repeatableTexture(texture, orientation)
                 .fillMaxHeight(if (orientation == Orientation.Vertical) size else 1F)
                 .fillMaxWidth(if (orientation == Orientation.Horizontal) size else 1F)

@@ -129,6 +129,80 @@ fun MainMenu(
             }
         }
     }
+
+    Column(
+        modifier = Modifier
+            .background(Color.Black.copy(0.7F))
+    ) {
+        var isDebugOpen by remember { mutableStateOf(false) }
+
+        MedievalText(
+            text = "debug options",
+            color = colorTextError,
+            modifier = Modifier.clickable { isDebugOpen = !isDebugOpen },
+        )
+
+        if (isDebugOpen) {
+            Column(
+                modifier = Modifier
+                    .clickable {
+                        val recruit = user.recruits.createNewRecruitToGuild()
+                        user.resources.coins += recruit.cost?.coins ?: 0
+                        user.resources.crystals += recruit.cost?.crystals ?: 0
+                        user.recruits.buyRecruit(user.recruits.guildList.last(), replace = false)
+                    },
+            ) {
+                MedievalText(
+                    text = "додати тестового найманця ${user.recruits.selectedList.size}/5",
+                    color = colorTextError,
+                )
+                MedievalText(
+                    text = "Щоб вибрати найманця в паті нажми на нього в лівому списку.",
+                    color = colorTextError,
+                )
+                MedievalText(
+                    text = "Щоб прибрати найманця з паті нажми на нього в правому списку.",
+                    color = colorTextError,
+                )
+            }
+
+            MedievalText(
+                text = "+ 10 exp",
+                color = colorTextError,
+                modifier = Modifier.clickable { user.resources.exp += 10 }
+            )
+
+            MedievalText(
+                text = "- 10 exp",
+                color = colorTextError,
+                modifier = Modifier.clickable { user.resources.exp -= 10 }
+            )
+
+            MedievalText(
+                text = "+ 10 coins",
+                color = colorTextError,
+                modifier = Modifier.clickable { user.resources.coins += 10 }
+            )
+
+            MedievalText(
+                text = "- 10 coins",
+                color = colorTextError,
+                modifier = Modifier.clickable { user.resources.coins -= 10 }
+            )
+
+            MedievalText(
+                text = "+ 10 crystals",
+                color = colorTextError,
+                modifier = Modifier.clickable { user.resources.crystals += 10 }
+            )
+
+            MedievalText(
+                text = "- 10 crystals",
+                color = colorTextError,
+                modifier = Modifier.clickable { user.resources.crystals -= 10 }
+            )
+        }
+    }
 }
 
 @Composable
@@ -263,12 +337,12 @@ private fun UserInfo(
                 MedievalProgressbar(
                     value = user.resources.exp,
                     min = 0,
-                    max = user.expTarget,
+                    max = user.requiredExp,
                     modifier = Modifier.size(256.dp, 16.dp),
                 )
 
                 MedievalText(
-                    text = "${lang.exp_short.uppercase()}: ${user.resources.exp}/${user.expTarget}",
+                    text = "${lang.exp_short.uppercase()}: ${user.resources.exp}/${user.requiredExp}",
                     fontSize = smallText,
                     color = colorTextLight,
                 )
@@ -625,51 +699,18 @@ private fun RequestCard(
 private fun Party(
     modifier: Modifier = Modifier,
 ) {
-    Box(
+    Row(
         modifier = modifier
+            .fillMaxSize()
+            .background(getImageBitmap("textures/background/party1.png") ?: emptyImageBitmap)
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(getImageBitmap("textures/background/party1.png") ?: emptyImageBitmap)
-        ) {
-            PartyList(modifier = Modifier
-                .fillMaxWidth(0.33F)
-                .fillMaxHeight()
-                .background(StandardBackgroundBrush()),
-            )
-            Divider(modifier = Modifier.fillMaxHeight())
-            RecruitedList(modifier = Modifier.fillMaxSize())
-        }
-
-        Column {
-            MedievalButton(
-                text = "додати тестового найманця",
-                onClick = {
-                    val recruit = user.recruits.createNewRecruitToGuild()
-                    user.resources.coins += recruit.cost?.coins ?: 0
-                    user.resources.crystals += recruit.cost?.crystals ?: 0
-                    user.recruits.buyRecruit(user.recruits.guildList.last(), replace = false)
-                },
-                modifier = Modifier,
-            )
-            MedievalText(
-                text = "Щоб вибрати найманця в паті нажми на нього в лівому списку.",
-                color = colorTextError,
-            )
-            MedievalText(
-                text = "Щоб прибрати найманця з паті нажми на нього в правому списку.",
-                color = colorTextError,
-            )
-            MedievalText(
-                text = "(це для тестів, потім зроблю краще)",
-                color = colorTextError,
-            )
-            MedievalText(
-                text = "${user.recruits.selectedList.size}/5",
-                color = colorTextError,
-            )
-        }
+        PartyList(modifier = Modifier
+            .fillMaxWidth(0.33F)
+            .fillMaxHeight()
+            .background(StandardBackgroundBrush()),
+        )
+        Divider(modifier = Modifier.fillMaxHeight())
+        RecruitedList(modifier = Modifier.fillMaxSize())
     }
 }
 

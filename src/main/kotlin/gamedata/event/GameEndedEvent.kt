@@ -1,8 +1,8 @@
-package ui.event
+package gamedata.event
 
 import Game.Event.GameEndEventable
 import Game.Event.Arguments.GameEndInfo
-import GameData
+import gamedata.GameData
 
 class GameEndedEvent(
     private val gameData: GameData,

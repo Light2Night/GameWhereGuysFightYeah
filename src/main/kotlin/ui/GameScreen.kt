@@ -8,7 +8,7 @@ import Game.Effects.Effectable
 import Game.Effects.Healling
 import Game.Effects.Poisoning
 import Game.Game
-import GameData
+import gamedata.GameData
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
@@ -119,10 +119,10 @@ private fun SmokeArea(
 
     val xValues = remember { mutableStateListOf<State<Float>>() }
     repeat(amount) { index ->
-        val direction = Random(index).nextBoolean()
+        val direction = Random(currentNanoTime()).nextBoolean()
         val initial = if (direction) 0F else 1F
         val target = if (direction) 1F else 0F
-        val duration = Random(index).nextInt(30000..60000)
+        val duration = Random(currentNanoTime()).nextInt(30000..60000)
 
         val x = animations[index].animateFloat(
             initialValue = initial,
@@ -130,7 +130,7 @@ private fun SmokeArea(
             animationSpec = infiniteRepeatable(
                 animation = tween(duration, easing = LinearEasing),
                 initialStartOffset = StartOffset(
-                    offsetMillis = Random(index).nextInt(0..60000),
+                    offsetMillis = Random(currentNanoTime()).nextInt(0..60000),
                     offsetType = StartOffsetType.FastForward,
                 ),
                 repeatMode = RepeatMode.Reverse

@@ -1,6 +1,8 @@
 package Game.Units.Characters;
 
+import Game.Effects.Factories.EffectFactory;
 import Game.Event.Aggregates.UnitEventsAggregate;
+import Game.Statistics.Session.IUnitStatisticCollector;
 import Game.Units.Getters.CompositeAccessor;
 import Game.Effects.Effectable;
 import Exceptions.InvalidActionException;
@@ -19,6 +21,8 @@ public abstract class GameUnit {
     private ArrayList<Effectable> effects;
     private Team team;
     protected UnitEventsAggregate events;
+    protected IUnitStatisticCollector statisticCollector;
+    protected EffectFactory effectFactory;
 
     public int getId() {
         return id;
@@ -27,11 +31,14 @@ public abstract class GameUnit {
     public GameUnit(UnitSharedData sharedData) {
         this.accessor = sharedData.Accessor;
         this.events = sharedData.Events;
+        this.statisticCollector = sharedData.StatisticCollector;
+        this.effectFactory = sharedData.EffectFactory;
         this.team = sharedData.Team;
         this.id = sharedData.Id;
         this.name = sharedData.Name;
         this.maxHp = sharedData.MaxHp;
         this.hp = sharedData.Hp;
+
         this.effects = new ArrayList<>();
     }
 
@@ -55,10 +62,12 @@ public abstract class GameUnit {
         return new ArrayList<>(effects);
     }
 
-    public void takeDamage(int damage) {
+    public int takeDamage(int damage) {
         if (damage < 0) throw new IllegalArgumentException("damage");
 
-        hp -= Math.min(hp, damage);
+        int damageLeft = Math.min(hp, damage);
+        hp -= damageLeft;
+        return damageLeft;
     }
 
     public void heal(int newHp) {

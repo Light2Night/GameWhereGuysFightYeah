@@ -1,5 +1,6 @@
 package Game.Units.Factories;
 
+import Game.Effects.Factories.EffectFactory;
 import Game.Event.Aggregates.UnitEventsAggregate;
 import Game.Statistics.Session.IUnitStatisticCollector;
 import Game.Teams.Team;
@@ -20,12 +21,14 @@ public class UnitFactory {
     private final UnitEventsAggregate unitEvents;
     public final IUnitStatisticCollector statisticCollector;
     private final Team team;
+    private final EffectFactory effectFactory;
 
-    public UnitFactory(CompositeAccessor compositeAccessor, Team team, UnitEventsAggregate unitEvents, IUnitStatisticCollector statisticCollector) {
+    public UnitFactory(CompositeAccessor compositeAccessor, Team team, UnitEventsAggregate unitEvents, IUnitStatisticCollector statisticCollector, EffectFactory effectFactory) {
         this.compositeAccessor = compositeAccessor;
         this.team = team;
         this.unitEvents = unitEvents;
         this.statisticCollector = statisticCollector;
+        this.effectFactory = effectFactory;
     }
 
     public GameUnit createBarbarian(BarbarianViewModel data) {
@@ -33,15 +36,15 @@ public class UnitFactory {
     }
 
     public GameUnit createMagician(MageViewModel data) {
-        return new Magician(getSharedData(data), data.Damage, data.DamageDelta, data.PoisoningEffect);
+        return new Magician(getSharedData(data), data.Damage, data.DamageDelta);
     }
 
     public GameUnit createHealer(HealerViewModel data) {
-        return new Healer(getSharedData(data), data.Heal, data.HeallingEffect);
+        return new Healer(getSharedData(data), data.Heal);
     }
 
     private UnitSharedData getSharedData(BaseUnitViewModel data) {
         int id = IdGenerator.getId();
-        return new UnitSharedData(compositeAccessor, unitEvents, statisticCollector, id, team, data.Name, data.HP, data.MaxHP);
+        return new UnitSharedData(compositeAccessor, unitEvents, statisticCollector, id, team, data.Name, data.HP, data.MaxHP, effectFactory);
     }
 }

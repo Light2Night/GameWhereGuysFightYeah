@@ -19,6 +19,11 @@ public class Healing implements Effectable {
     }
 
     @Override
+    public EffectTypes getEffectType() {
+        return EffectTypes.HEALING;
+    }
+
+    @Override
     public void effect(GameUnit unit) {
         if (cyclesLeft == 0) return;
 

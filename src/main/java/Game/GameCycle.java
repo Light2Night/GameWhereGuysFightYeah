@@ -1,5 +1,6 @@
 package Game;
 
+import Game.Statistics.Session.IUnitStatisticCollector;
 import Game.Units.Getters.CompositeAccessor;
 import Game.Units.Characters.GameUnit;
 import Game.Event.Aggregates.GameEventsAggregate;
@@ -14,14 +15,18 @@ public class GameCycle {
     public GameCycle(CompositeAccessor accessor, GameEventsAggregate events) {
         this.accessor = accessor;
         this.events = events;
-        resetQueue();
+        resetFields();
     }
 
-    private void resetQueue() {
+    private void resetFields() {
         queue = new ArrayList<>();
         for (int i = 0; i < accessor.getUnitsAccessor().getQuantity(); i++) {
             queue.add(accessor.getUnitsAccessor().getUnitByIndex(i));
         }
+    }
+
+    private void resetQueue() {
+        resetFields();
         events.cycleLeft();
     }
 

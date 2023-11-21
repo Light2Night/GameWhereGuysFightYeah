@@ -5,12 +5,10 @@ import Game.Effects.Effectable;
 public class MageViewModel extends BaseUnitViewModel {
     public final int Damage;
     public final int DamageDelta;
-    public final Effectable PoisoningEffect;
 
-    public MageViewModel(String name, int hp, int maxHP, int damage, int damageDelta, Effectable poisoningEffect) {
+    public MageViewModel(String name, int hp, int maxHP, int damage, int damageDelta) {
         super(name, hp, maxHP);
         Damage = damage;
         DamageDelta = damageDelta;
-        PoisoningEffect = poisoningEffect;
     }
 }

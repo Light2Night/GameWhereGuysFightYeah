@@ -1,5 +1,6 @@
 package Game;
 
+import Game.Effects.Factories.EffectFactory;
 import Game.Event.Aggregates.UnitEventsAggregate;
 import Game.Event.Arguments.Actions.ActionInfo;
 import Game.Event.Arguments.GameEndInfo;
@@ -18,6 +19,7 @@ import Game.Units.Getters.UnitsAccessor;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Game {
     //region Fields
@@ -59,7 +61,7 @@ public class Game {
         events = new GameEventsAggregate();
         cycleActions = new ArrayList<>();
 
-        events.setCycleLeftEvent(new OnCycleLeft(units, cycleActions));
+        events.setCycleLeftEvent(new OnCycleLeft(units, cycleActions, sessionStatisticBuilder));
         unitEvents = new UnitEventsAggregate();
         unitEvents.setActionPerformedEvent(new OnAction(cycleActions));
 
@@ -73,8 +75,10 @@ public class Game {
 
         cycle = new GameCycle(compositeAccessor, events);
 
-        alliesFactory = new UnitFactory(compositeAccessor, human, unitEvents, sessionStatisticBuilder);
-        enemyFactory = new UnitFactory(compositeAccessor, ai, unitEvents, sessionStatisticBuilder);
+        EffectFactory effectFactory = new EffectFactory(sessionStatisticBuilder);
+        
+        alliesFactory = new UnitFactory(compositeAccessor, human, unitEvents, sessionStatisticBuilder, effectFactory);
+        enemyFactory = new UnitFactory(compositeAccessor, ai, unitEvents, sessionStatisticBuilder, effectFactory);
     }
 
     //region Setters
@@ -195,6 +199,8 @@ public class Game {
     }
 
     private void removeDeadUnits() {
-        units.removeIf(unit -> !unit.isAlive());
+        List<GameUnit> deadUnits = units.stream().filter(u -> !u.isAlive()).toList();
+        deadUnits.forEach(sessionStatisticBuilder::setDied);
+        units.removeAll(deadUnits);
     }
 }

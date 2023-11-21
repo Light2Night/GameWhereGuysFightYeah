@@ -39,7 +39,8 @@ public class Barbarian extends GameUnit implements Attackable {
 
     private void attack(GameUnit target) {
         int damage = getRandomDamage();
-        target.takeDamage(damage);
+        damage = target.takeDamage(damage);
+        statisticCollector.addDamage(this, damage);
         events.actionPerformed(new AttackActionInfo(this, target, Actions.Attack, damage));
     }
 

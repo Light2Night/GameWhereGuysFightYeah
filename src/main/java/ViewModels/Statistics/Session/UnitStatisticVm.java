@@ -9,25 +9,26 @@ public class UnitStatisticVm {
     public int Damage;
     public boolean IdDied;
     public ArrayList<EffectTypes> ImposedEffects;
-    public int ImposedEffectsCount;
 
-    public UnitStatisticVm(int damage, boolean idDied, ArrayList<EffectTypes> imposedEffects, int imposedEffectsCount) {
+    public int getImposedEffectsCount() {
+        return ImposedEffects.size();
+    }
+
+    public UnitStatisticVm(int damage, boolean idDied, ArrayList<EffectTypes> imposedEffects) {
         Damage = damage;
         IdDied = idDied;
         ImposedEffects = imposedEffects;
-        ImposedEffectsCount = imposedEffectsCount;
     }
 
     public UnitStatisticVm() {
-        this(0, false, new ArrayList<>(), 0);
+        this(0, false, new ArrayList<>());
     }
 
     public UnitStatisticVm(UnitStatisticCollector unitStatisticCollector) {
         this(
                 unitStatisticCollector.getDamage(),
                 unitStatisticCollector.getDied(),
-                unitStatisticCollector.getImposedEffects(),
-                unitStatisticCollector.getImposedEffectsCount()
+                unitStatisticCollector.getImposedEffects()
         );
     }
 }

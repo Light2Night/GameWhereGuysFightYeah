@@ -12,13 +12,11 @@ import java.util.Random;
 
 public class Healer extends GameUnit implements Heallable {
     private final int heal;
-    private final Effectable healingEffect;
 
-    public Healer(UnitSharedData sharedData, int heal, Effectable healingEffect) {
+    public Healer(UnitSharedData sharedData, int heal) {
         super(sharedData);
 
         this.heal = heal;
-        this.healingEffect = healingEffect;
     }
 
     @Override
@@ -53,6 +51,7 @@ public class Healer extends GameUnit implements Heallable {
         } else if (action.equals(Actions.Healing)) {
             Effectable effect = getHealingEffect();
             target.takeEffect(effect);
+            statisticCollector.addImposedEffect(this, effect.getEffectType());
             events.actionPerformed(new EffectActionInfo(this, target, Actions.Healing, effect));
         }
     }
@@ -64,6 +63,6 @@ public class Healer extends GameUnit implements Heallable {
 
     @Override
     public Effectable getHealingEffect() {
-        return healingEffect.clone();
+        return effectFactory.createHealing();
     }
 }

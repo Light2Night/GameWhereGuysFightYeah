@@ -1,5 +1,6 @@
 package Game.Units;
 
+import Game.Effects.Factories.EffectFactory;
 import Game.Event.Aggregates.UnitEventsAggregate;
 import Game.Statistics.Session.IUnitStatisticCollector;
 import Game.Teams.Team;
@@ -14,8 +15,9 @@ public class UnitSharedData {
     public final String Name;
     public final int Hp;
     public final int MaxHp;
+    public final EffectFactory EffectFactory;
 
-    public UnitSharedData(CompositeAccessor accessor, UnitEventsAggregate events, IUnitStatisticCollector statisticCollector, int id, Team team, String name, int hp, int maxHp) {
+    public UnitSharedData(CompositeAccessor accessor, UnitEventsAggregate events, IUnitStatisticCollector statisticCollector, int id, Team team, String name, int hp, int maxHp, Game.Effects.Factories.EffectFactory effectFactory) {
         Accessor = accessor;
         Events = events;
         StatisticCollector = statisticCollector;
@@ -24,5 +26,6 @@ public class UnitSharedData {
         Name = name;
         Hp = hp;
         MaxHp = maxHp;
+        EffectFactory = effectFactory;
     }
 }

@@ -17,14 +17,12 @@ import java.util.Random;
 public class Magician extends GameUnit implements Attackable, Magicable {
     public final int damage;
     public final int damageDelta;
-    public final Effectable magicalEffect;
 
-    public Magician(UnitSharedData sharedData, int damage, int damageDelta, Effectable magicalEffect) {
+    public Magician(UnitSharedData sharedData, int damage, int damageDelta) {
         super(sharedData);
 
         this.damage = damage;
         this.damageDelta = damageDelta;
-        this.magicalEffect = magicalEffect;
     }
 
     @Override
@@ -53,14 +51,24 @@ public class Magician extends GameUnit implements Attackable, Magicable {
 
     private void attack(GameUnit target, Actions action) {
         if (action.equals(Actions.Attack)) {
-            int damage = getRandomDamage();
-            target.takeDamage(damage);
-            events.actionPerformed(new AttackActionInfo(this, target, Actions.Attack, damage));
+            attack(target);
         } else if (action.equals(Actions.Poisoning)) {
-            Effectable effect = getMagicalEffect();
-            target.takeEffect(effect);
-            events.actionPerformed(new EffectActionInfo(this, target, Actions.Poisoning, effect));
+            poisoning(target);
         }
+    }
+
+    private void attack(GameUnit target) {
+        int damage = getRandomDamage();
+        damage = target.takeDamage(damage);
+        statisticCollector.addDamage(this, damage);
+        events.actionPerformed(new AttackActionInfo(this, target, Actions.Attack, damage));
+    }
+
+    private void poisoning(GameUnit target) {
+        Effectable effect = getMagicalEffect();
+        target.takeEffect(effect);
+        statisticCollector.addImposedEffect(this, effect.getEffectType());
+        events.actionPerformed(new EffectActionInfo(this, target, Actions.Poisoning, effect));
     }
 
     private int getRandomDamage() {
@@ -79,6 +87,6 @@ public class Magician extends GameUnit implements Attackable, Magicable {
 
     @Override
     public Effectable getMagicalEffect() {
-        return magicalEffect.clone();
+        return effectFactory.createPoisoning(this);
     }
 }

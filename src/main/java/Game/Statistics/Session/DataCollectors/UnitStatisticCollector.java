@@ -38,8 +38,4 @@ public class UnitStatisticCollector {
     public ArrayList<EffectTypes> getImposedEffects() {
         return (ArrayList<EffectTypes>) imposedEffects.clone();
     }
-
-    public int getImposedEffectsCount() {
-        return imposedEffects.size();
-    }
 }

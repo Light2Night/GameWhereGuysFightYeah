@@ -35,14 +35,12 @@ data class Recruit(
                 data.maxHP,
                 data.damage,
                 data.damageDelta,
-                Poisoning(),
             )
             is HealerData -> HealerViewModel(
                 name,
                 data.maxHP,
                 data.maxHP,
                 data.heal,
-                Healing(),
             )
             else -> throw Exception("Unknown Recruit Data")
         }

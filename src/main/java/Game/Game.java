@@ -146,12 +146,12 @@ public class Game {
     }
 
     public void next() throws GameIsNotStartedException {
-        if (!gameIsOn) {
-            throw new GameIsNotStartedException();
-        }
-
         if (checkTheEndAndFinishGameIfNeed()) {
             return;
+        }
+
+        if (!gameIsOn) {
+            throw new GameIsNotStartedException();
         }
 
         Integer id = cycle.next();

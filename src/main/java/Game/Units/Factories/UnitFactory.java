@@ -1,6 +1,7 @@
 package Game.Units.Factories;
 
 import Game.Event.Aggregates.UnitEventsAggregate;
+import Game.Statistics.Session.IStatisticCollector;
 import Game.Teams.Team;
 import Game.Units.Characters.Barbarian;
 import Game.Units.Characters.GameUnit;
@@ -16,13 +17,15 @@ import Helpers.IdGenerator;
 
 public class UnitFactory {
     private final CompositeAccessor compositeAccessor;
-    private final Team team;
     private final UnitEventsAggregate unitEvents;
+    public final IStatisticCollector statisticCollector;
+    private final Team team;
 
-    public UnitFactory(CompositeAccessor compositeAccessor, Team team, UnitEventsAggregate unitEvents) {
+    public UnitFactory(CompositeAccessor compositeAccessor, Team team, UnitEventsAggregate unitEvents, IStatisticCollector statisticCollector) {
         this.compositeAccessor = compositeAccessor;
         this.team = team;
         this.unitEvents = unitEvents;
+        this.statisticCollector = statisticCollector;
     }
 
     public GameUnit createBarbarian(BarbarianViewModel data) {
@@ -39,6 +42,6 @@ public class UnitFactory {
 
     private UnitSharedData getSharedData(BaseUnitViewModel data) {
         int id = IdGenerator.getId();
-        return new UnitSharedData(compositeAccessor, unitEvents, id, team, data.Name, data.HP, data.MaxHP);
+        return new UnitSharedData(compositeAccessor, unitEvents, statisticCollector, id, team, data.Name, data.HP, data.MaxHP);
     }
 }

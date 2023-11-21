@@ -9,6 +9,8 @@ import Game.Event.Handlers.OnAction;
 import Exceptions.GameIsNotStartedException;
 import Game.Event.Aggregates.GameEventsAggregate;
 import Game.Event.Handlers.OnCycleLeft;
+import Game.Statistics.Session.ISessionStatisticBuilder;
+import Game.Statistics.Session.SessionStatisticBuilder;
 import Game.Teams.Team;
 import Game.Units.Characters.*;
 import Game.Units.Factories.UnitFactory;
@@ -18,6 +20,7 @@ import Game.Units.Factories.ViewModels.MageViewModel;
 import Game.Units.Getters.CompositeAccessor;
 import Game.Units.Getters.TeamAccessor;
 import Game.Units.Getters.UnitsAccessor;
+import ViewModels.SessionStatisticVm;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -34,6 +37,8 @@ public class Game {
     private final CompositeAccessor compositeAccessor;
 
     private final GameCycle cycle;
+
+    private final ISessionStatisticBuilder sessionStatisticBuilder;
 
     @Nullable
     private Integer selectedUnitIndex = null;
@@ -54,6 +59,8 @@ public class Game {
     public Game() {
         gameIsOn = false;
 
+        sessionStatisticBuilder = new SessionStatisticBuilder();
+
         units = new ArrayList<>();
         events = new GameEventsAggregate();
         cycleActions = new ArrayList<>();
@@ -72,8 +79,8 @@ public class Game {
 
         cycle = new GameCycle(compositeAccessor, events);
 
-        alliesFactory = new UnitFactory(compositeAccessor, human, unitEvents);
-        enemyFactory = new UnitFactory(compositeAccessor, ai, unitEvents);
+        alliesFactory = new UnitFactory(compositeAccessor, human, unitEvents, sessionStatisticBuilder);
+        enemyFactory = new UnitFactory(compositeAccessor, ai, unitEvents, sessionStatisticBuilder);
     }
 
     //region Setters
@@ -93,13 +100,6 @@ public class Game {
         return units;
     }
 
-//    public GameUnit getCurrentUnit() {
-//        if (currentUnitIndex == null) {
-//            return null;
-//        }
-//        return unitsAccessor.getUnitByIndex(currentUnitIndex);
-//    }
-
     @Nullable
     public Integer getSelectedUnitIndex() {
         return selectedUnitIndex;
@@ -116,6 +116,15 @@ public class Game {
 
     public ArrayList<ActionInfo> getCycleActions() {
         return cycleActions;
+    }
+
+    public GameUnit getUnitById(int id) {
+        for (GameUnit unit : units) {
+            if (unit.getId() == id) {
+                return unit;
+            }
+        }
+        return null;
     }
     //endregion
 
@@ -160,8 +169,7 @@ public class Game {
         }
 
         removeDeadUnits();
-        if (checkTheEnd()) {
-            events.gameEnd(new GameEndInfo(getTeamWinner()));
+        if (checkTheEndAndFinishGameIfNeed()) {
             return;
         }
 
@@ -170,8 +178,7 @@ public class Game {
 
         while (enemiesAccessor.containsId(id)) {
             removeDeadUnits();
-            if (checkTheEnd()) {
-                events.gameEnd(new GameEndInfo(getTeamWinner()));
+            if (checkTheEndAndFinishGameIfNeed()) {
                 return;
             }
 
@@ -181,32 +188,21 @@ public class Game {
         }
 
         removeDeadUnits();
-        if (checkTheEnd()) {
-            events.gameEnd(new GameEndInfo(getTeamWinner()));
+        if (checkTheEndAndFinishGameIfNeed()) {
             return;
         }
         events.moveCompleted();
     }
 
-    public GameUnit getUnitById(int id) {
-        for (GameUnit unit : units) {
-            if (unit.getId() == id) {
-                return unit;
-            }
-        }
-        return null;
-    }
-
-    private Boolean checkTheEnd() {
+    private Boolean checkTheEndAndFinishGameIfNeed() {
         if (!isEnd()) {
             return false;
         }
 
-        if (alliesAccessor.getQuantity() == 0) {
-            events.gameEnd(new GameEndInfo(ai));
-        } else {
-            events.gameEnd(new GameEndInfo(human));
-        }
+        SessionStatisticVm statistic = sessionStatisticBuilder.build();
+        sessionStatisticBuilder.reset();
+
+        events.gameEnd(new GameEndInfo(getTeamWinner(), statistic));
 
         gameIsOn = false;
         return true;

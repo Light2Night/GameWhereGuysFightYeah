@@ -5,7 +5,7 @@ import Game.Units.Characters.GameUnit
 import Game.Units.Characters.Healer
 import Game.Units.Characters.Magician
 import Game.Effects.Effectable
-import Game.Effects.Healling
+import Game.Effects.Healing
 import Game.Effects.Poisoning
 import Game.Game
 import gamedata.GameData
@@ -338,7 +338,7 @@ private fun UnitTextData(
             is Healer -> {
                 MedievalText("HEAL: ${unit.heal}")
 
-                val effect = unit.healingEffect as Healling
+                val effect = unit.healingEffect as Healing
                 MedievalText("EFF: ${effect.heal} (${effect.durationInCycles} turns)")
             }
         }
@@ -377,7 +377,7 @@ private fun EffectIcon(
         ) {
             Image(
                 bitmap = when (effect) {
-                    is Healling -> getImageBitmap("textures/effect/healing.png")
+                    is Healing -> getImageBitmap("textures/effect/healing.png")
                     is Poisoning -> getImageBitmap("textures/effect/poison.png")
                     else -> emptyImageBitmap
                 } ?: emptyImageBitmap,

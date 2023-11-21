@@ -1,9 +1,9 @@
 package Game.Statistics.Session;
 
-import ViewModels.SessionStatisticVm;
+import ViewModels.Statistics.Session.FullSessionStatisticVm;
 
-public interface ISessionStatisticBuilder extends IStatisticCollector {
+public interface ISessionStatisticBuilder extends IUnitStatisticCollector, ICycleStatisticCollector {
     void reset();
 
-    SessionStatisticVm build();
+    FullSessionStatisticVm build();
 }

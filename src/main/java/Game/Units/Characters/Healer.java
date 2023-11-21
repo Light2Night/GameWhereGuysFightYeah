@@ -1,16 +1,11 @@
 package Game.Units.Characters;
 
 import Game.Actions;
-import Game.Event.Aggregates.UnitEventsAggregate;
 import Game.Event.Arguments.Actions.EffectActionInfo;
 import Game.Event.Arguments.Actions.HealActionInfo;
-import Game.Units.Factories.ViewModels.HealerViewModel;
-import Game.Units.Getters.CompositeAccessor;
 import Game.Effects.Effectable;
-import Game.Effects.Healling;
 import Exceptions.InvalidActionException;
 import Game.Move;
-import Game.Teams.Team;
 import Game.Units.UnitSharedData;
 
 import java.util.Random;

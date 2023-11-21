@@ -1,6 +1,6 @@
 package properties.user.recruit
 
-import Game.Effects.Healling
+import Game.Effects.Healing
 import Game.Effects.Poisoning
 import Game.Units.Factories.ViewModels.BarbarianViewModel
 import Game.Units.Factories.ViewModels.BaseUnitViewModel
@@ -42,7 +42,7 @@ data class Recruit(
                 data.maxHP,
                 data.maxHP,
                 data.heal,
-                Healling(),
+                Healing(),
             )
             else -> throw Exception("Unknown Recruit Data")
         }

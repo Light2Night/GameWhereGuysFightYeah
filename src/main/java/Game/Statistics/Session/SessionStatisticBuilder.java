@@ -1,14 +1,20 @@
 package Game.Statistics.Session;
 
+import Game.Effects.EffectTypes;
+import Game.Teams.Team;
 import Game.Units.Characters.GameUnit;
-import ViewModels.SessionStatisticVm;
-import kotlin.NotImplementedError;
+import ViewModels.Statistics.Session.FullSessionStatisticVm;
+import Game.Statistics.Session.DataCollectors.UnitStatisticCollector;
+import ViewModels.Statistics.Session.SessionStatisticVm;
+import ViewModels.Statistics.Session.TeamStatisticVm;
+import ViewModels.Statistics.Session.UnitStatisticVm;
 
 import java.util.Hashtable;
 import java.util.Map;
 
 public class SessionStatisticBuilder implements ISessionStatisticBuilder {
-    Map<GameUnit, UnitStatisticInfo> unitStatistics;
+    private Map<GameUnit, UnitStatisticCollector> unitStatistics;
+    private int cyclesCount;
 
     public SessionStatisticBuilder() {
         reset();
@@ -16,25 +22,91 @@ public class SessionStatisticBuilder implements ISessionStatisticBuilder {
 
     public void reset() {
         unitStatistics = new Hashtable<>();
+        cyclesCount = 0;
     }
 
     @Override
-    public SessionStatisticVm build() {
-//        throw new NotImplementedError();
-        return null;
+    public FullSessionStatisticVm build() {
+        Map<GameUnit, UnitStatisticVm> userStatisticVms = getUserStatisticVms();
+        Map<Team, TeamStatisticVm> teamStatisticVms = getTeamStatisticVms(userStatisticVms);
+        SessionStatisticVm sessionStatistic = getSessionStatisticVm(teamStatisticVms);
+
+        return new FullSessionStatisticVm(userStatisticVms, teamStatisticVms, sessionStatistic);
     }
 
-    private UnitStatisticInfo getStatistic(GameUnit unit) {
+    private SessionStatisticVm getSessionStatisticVm(Map<Team, TeamStatisticVm> teamStatisticVms) {
+        SessionStatisticVm vm = new SessionStatisticVm();
+
+        for (Map.Entry<Team, TeamStatisticVm> entry : teamStatisticVms.entrySet()) {
+            vm.Damage += entry.getValue().Damage;
+            vm.DeadUnits.addAll(entry.getValue().DeadUnits);
+            vm.ImposedEffects.addAll(entry.getValue().ImposedEffects);
+        }
+
+        vm.CyclesCount = cyclesCount;
+
+        return vm;
+    }
+
+    private Map<Team, TeamStatisticVm> getTeamStatisticVms(Map<GameUnit, UnitStatisticVm> unitStatisticVms) {
+        Map<Team, TeamStatisticVm> teamStatisticVms = new Hashtable<>();
+
+        for (Map.Entry<GameUnit, UnitStatisticVm> entry : unitStatisticVms.entrySet()) {
+            Team team = entry.getKey().getTeam();
+            if (!teamStatisticVms.containsKey(team)) {
+                teamStatisticVms.put(team, new TeamStatisticVm());
+            }
+
+            TeamStatisticVm teamVm = teamStatisticVms.get(team);
+            UnitStatisticVm unitVm = entry.getValue();
+
+            teamVm.Damage += unitVm.Damage;
+            if (unitVm.IdDied) {
+                teamVm.DeadUnits.add(entry.getKey());
+            }
+            teamVm.ImposedEffects.addAll(unitVm.ImposedEffects);
+        }
+
+        return teamStatisticVms;
+    }
+
+    private Map<GameUnit, UnitStatisticVm> getUserStatisticVms() {
+        Map<GameUnit, UnitStatisticVm> unitStatisticVms = new Hashtable<>();
+        for (Map.Entry<GameUnit, UnitStatisticCollector> entry : unitStatistics.entrySet()) {
+            unitStatisticVms.put(entry.getKey(), new UnitStatisticVm(entry.getValue()));
+        }
+        return unitStatisticVms;
+    }
+
+    private UnitStatisticCollector getStatistic(GameUnit unit) {
         if (!unitStatistics.containsKey(unit)) {
-            unitStatistics.put(unit, new UnitStatisticInfo());
+            unitStatistics.put(unit, new UnitStatisticCollector());
         }
 
         return unitStatistics.get(unit);
     }
 
     @Override
-    public IStatisticCollector addDamage(GameUnit unit, int damage) {
+    public IUnitStatisticCollector addDamage(GameUnit unit, int damage) {
         getStatistic(unit).addDamage(damage);
+        return this;
+    }
+
+    @Override
+    public IUnitStatisticCollector setDied(GameUnit unit) {
+        getStatistic(unit).setDied();
+        return this;
+    }
+
+    @Override
+    public IUnitStatisticCollector addImposedEffect(GameUnit unit, EffectTypes effect) {
+        getStatistic(unit).addImposedEffect(effect);
+        return this;
+    }
+
+    @Override
+    public ICycleStatisticCollector addCycle() {
+        cyclesCount++;
         return this;
     }
 }

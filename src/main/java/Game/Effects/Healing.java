@@ -2,18 +2,18 @@ package Game.Effects;
 
 import Game.Units.Characters.GameUnit;
 
-public class Healling implements Effectable {
+public class Healing implements Effectable {
     private int cyclesLeft;
     private final int durationInCycles;
     public final int heal;
 
-    public Healling(Healling healling) {
-        this.durationInCycles = healling.durationInCycles;
-        this.cyclesLeft = healling.cyclesLeft;
-        this.heal = healling.heal;
+    public Healing(Healing healing) {
+        this.durationInCycles = healing.durationInCycles;
+        this.cyclesLeft = healing.cyclesLeft;
+        this.heal = healing.heal;
     }
 
-    public Healling() {
+    public Healing() {
         durationInCycles = cyclesLeft = 3;
         heal = 10;
     }
@@ -49,6 +49,6 @@ public class Healling implements Effectable {
 
     @Override
     public Effectable clone() {
-        return new Healling(this);
+        return new Healing(this);
     }
 }

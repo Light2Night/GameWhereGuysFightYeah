@@ -1,13 +1,13 @@
 package Game.Event.Arguments;
 
 import Game.Teams.Team;
-import ViewModels.SessionStatisticVm;
+import ViewModels.Statistics.Session.FullSessionStatisticVm;
 
 public class GameEndInfo {
     private final Team teamWinner;
-    private final SessionStatisticVm sessionStatistic;
+    private final FullSessionStatisticVm sessionStatistic;
 
-    public GameEndInfo(Team teamWinner, SessionStatisticVm sessionStatistic) {
+    public GameEndInfo(Team teamWinner, FullSessionStatisticVm sessionStatistic) {
         this.teamWinner = teamWinner;
         this.sessionStatistic = sessionStatistic;
     }
@@ -16,7 +16,7 @@ public class GameEndInfo {
         return teamWinner;
     }
 
-    public SessionStatisticVm getSessionStatistic() {
+    public FullSessionStatisticVm getSessionStatistic() {
         return sessionStatistic;
     }
 }

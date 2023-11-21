@@ -1,7 +1,5 @@
 package Game;
 
-import Game.Effects.Healling;
-import Game.Effects.Poisoning;
 import Game.Event.Aggregates.UnitEventsAggregate;
 import Game.Event.Arguments.Actions.ActionInfo;
 import Game.Event.Arguments.GameEndInfo;
@@ -14,13 +12,9 @@ import Game.Statistics.Session.SessionStatisticBuilder;
 import Game.Teams.Team;
 import Game.Units.Characters.*;
 import Game.Units.Factories.UnitFactory;
-import Game.Units.Factories.ViewModels.BarbarianViewModel;
-import Game.Units.Factories.ViewModels.HealerViewModel;
-import Game.Units.Factories.ViewModels.MageViewModel;
 import Game.Units.Getters.CompositeAccessor;
 import Game.Units.Getters.TeamAccessor;
 import Game.Units.Getters.UnitsAccessor;
-import ViewModels.SessionStatisticVm;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -139,6 +133,7 @@ public class Game {
     public void reset() {
         units.clear();
         cycleActions.clear();
+        sessionStatisticBuilder.reset();
     }
 
     public void addUnit(GameUnit unit) {
@@ -181,10 +176,7 @@ public class Game {
             return false;
         }
 
-        SessionStatisticVm statistic = sessionStatisticBuilder.build();
-        sessionStatisticBuilder.reset();
-
-        events.gameEnd(new GameEndInfo(getTeamWinner(), statistic));
+        events.gameEnd(new GameEndInfo(getTeamWinner(), sessionStatisticBuilder.build()));
 
         gameIsOn = false;
         return true;

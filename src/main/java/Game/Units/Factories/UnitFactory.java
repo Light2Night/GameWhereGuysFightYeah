@@ -1,7 +1,7 @@
 package Game.Units.Factories;
 
 import Game.Event.Aggregates.UnitEventsAggregate;
-import Game.Statistics.Session.IStatisticCollector;
+import Game.Statistics.Session.IUnitStatisticCollector;
 import Game.Teams.Team;
 import Game.Units.Characters.Barbarian;
 import Game.Units.Characters.GameUnit;
@@ -18,10 +18,10 @@ import Helpers.IdGenerator;
 public class UnitFactory {
     private final CompositeAccessor compositeAccessor;
     private final UnitEventsAggregate unitEvents;
-    public final IStatisticCollector statisticCollector;
+    public final IUnitStatisticCollector statisticCollector;
     private final Team team;
 
-    public UnitFactory(CompositeAccessor compositeAccessor, Team team, UnitEventsAggregate unitEvents, IStatisticCollector statisticCollector) {
+    public UnitFactory(CompositeAccessor compositeAccessor, Team team, UnitEventsAggregate unitEvents, IUnitStatisticCollector statisticCollector) {
         this.compositeAccessor = compositeAccessor;
         this.team = team;
         this.unitEvents = unitEvents;

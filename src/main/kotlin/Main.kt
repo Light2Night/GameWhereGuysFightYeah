@@ -37,7 +37,7 @@ fun main() = application {
         Properties.loadLanguage(settings.language)
         Properties.loadUser()
 
-        repeat(3) {
+        while (user.recruits.guildList.size < 3) {
             user.recruits.createNewRecruitToGuild()
         }
 

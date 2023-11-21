@@ -18,7 +18,7 @@ public class GameCycle {
         resetFields();
     }
 
-    private void resetFields() {
+    public void resetFields() {
         queue = new ArrayList<>();
         for (int i = 0; i < accessor.getUnitsAccessor().getQuantity(); i++) {
             queue.add(accessor.getUnitsAccessor().getUnitByIndex(i));

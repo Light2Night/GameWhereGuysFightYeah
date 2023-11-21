@@ -76,7 +76,7 @@ public class Game {
         cycle = new GameCycle(compositeAccessor, events);
 
         EffectFactory effectFactory = new EffectFactory(sessionStatisticBuilder);
-        
+
         alliesFactory = new UnitFactory(compositeAccessor, human, unitEvents, sessionStatisticBuilder, effectFactory);
         enemyFactory = new UnitFactory(compositeAccessor, ai, unitEvents, sessionStatisticBuilder, effectFactory);
     }
@@ -136,6 +136,7 @@ public class Game {
 
     public void reset() {
         units.clear();
+        cycle.resetFields();
         cycleActions.clear();
         sessionStatisticBuilder.reset();
     }

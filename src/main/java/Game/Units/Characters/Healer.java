@@ -1,11 +1,11 @@
 package Game.Units.Characters;
 
 import Game.Actions;
+import Game.Event.Arguments.Actions.ActionInfo;
 import Game.Event.Arguments.Actions.EffectActionInfo;
 import Game.Event.Arguments.Actions.HealActionInfo;
 import Game.Effects.Effectable;
 import Exceptions.InvalidActionException;
-import Game.Move;
 import Game.Units.UnitSharedData;
 
 import java.util.Random;
@@ -20,16 +20,7 @@ public class Healer extends GameUnit implements Heallable {
     }
 
     @Override
-    public void move(Move move) throws InvalidActionException {
-        if (!(move.getAction().equals(Actions.Healing) || move.getAction().equals(Actions.InstantHealing)))
-            throw new InvalidActionException();
-
-        GameUnit target = accessor.getUnitsAccessor().getUnitById(move.getTargetId());
-        heal(target, move.getAction());
-    }
-
-    @Override
-    public void moveAI() {
+    public ActionInfo moveAI() throws InvalidActionException {
         Random random = new Random();
         int selectedAction = random.nextInt(1, 3);
         int index = random.nextInt(0, accessor.getEnemiesAccessor().getQuantity());
@@ -39,21 +30,34 @@ public class Healer extends GameUnit implements Heallable {
         if (selectedAction == 1) action = Actions.InstantHealing;
         else action = Actions.Healing;
 
-        System.out.printf("AI %s %d (%s)\n", selectedAction == 1 ? "миттєво лікує" : "накладає лікувальний ефект на юніта", accessor.getAlliesAccessor().getQuantity() + index + 1, target.toString());
-        heal(target, action);
+        return act(target, action);
     }
 
-    private void heal(GameUnit target, Actions action) {
+    protected ActionInfo act(GameUnit target, Actions action) throws InvalidActionException {
         if (action.equals(Actions.InstantHealing)) {
-            int heal = getHeal();
-            target.heal(heal);
-            events.actionPerformed(new HealActionInfo(this, target, Actions.Healing, heal));
+            return instantHealing(target);
         } else if (action.equals(Actions.Healing)) {
-            Effectable effect = getHealingEffect();
-            target.takeEffect(effect);
-            statisticCollector.addImposedEffect(this, effect.getEffectType());
-            events.actionPerformed(new EffectActionInfo(this, target, Actions.Healing, effect));
+            return healingEffect(target);
         }
+
+        throw new InvalidActionException();
+    }
+
+    private ActionInfo instantHealing(GameUnit target) {
+        int heal = getHeal();
+        target.heal(heal);
+        ActionInfo actionInfo = new HealActionInfo(this, target, Actions.Healing, heal);
+        events.actionPerformed(actionInfo);
+        return actionInfo;
+    }
+
+    private ActionInfo healingEffect(GameUnit target) {
+        Effectable effect = getHealingEffect();
+        target.takeEffect(effect);
+        statisticCollector.addImposedEffect(this, effect.getEffectType());
+        ActionInfo actionInfo = new EffectActionInfo(this, target, Actions.Healing, effect);
+        events.actionPerformed(actionInfo);
+        return actionInfo;
     }
 
     @Override

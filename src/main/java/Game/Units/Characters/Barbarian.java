@@ -1,10 +1,10 @@
 package Game.Units.Characters;
 
 import Game.Actions;
+import Game.Event.Arguments.Actions.ActionInfo;
 import Game.Event.Arguments.Actions.AttackActionInfo;
 import Exceptions.InvalidActionException;
 import Game.Move;
-import Game.Teams.Team;
 import Game.Units.UnitSharedData;
 
 import java.util.Random;
@@ -20,28 +20,24 @@ public class Barbarian extends GameUnit implements Attackable {
     }
 
     @Override
-    public void move(Move move) throws InvalidActionException {
-        if (!move.getAction().equals(Actions.Attack)) throw new InvalidActionException();
-
-        GameUnit target = accessor.getUnitsAccessor().getUnitById(move.getTargetId());
-        attack(target);
-    }
-
-    @Override
-    public void moveAI() {
+    public ActionInfo moveAI() throws InvalidActionException {
         int index = new Random().nextInt(0, accessor.getAlliesAccessor().getQuantity());
 
-        System.out.printf("AI атакує по %d (%s)\n", index + 1, accessor.getAlliesAccessor().getUnitByIndex(index));
-
         GameUnit target = accessor.getUnitsAccessor().getUnitByIndex(index);
-        attack(target);
+        return act(target, Actions.Attack);
     }
 
-    private void attack(GameUnit target) {
-        int damage = getRandomDamage();
-        damage = target.takeDamage(damage);
-        statisticCollector.addDamage(this, damage);
-        events.actionPerformed(new AttackActionInfo(this, target, Actions.Attack, damage));
+    protected ActionInfo act(GameUnit target, Actions action) throws InvalidActionException {
+        if (action.equals(Actions.Attack)) {
+            int damage = getRandomDamage();
+            damage = target.takeDamage(damage);
+            statisticCollector.addDamage(this, damage);
+            ActionInfo actionInfo = new AttackActionInfo(this, target, Actions.Attack, damage);
+            events.actionPerformed(actionInfo);
+            return actionInfo;
+        }
+
+        throw new InvalidActionException();
     }
 
     private int getRandomDamage() {

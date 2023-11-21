@@ -1,15 +1,12 @@
 package Game.Units.Characters;
 
+import Exceptions.InvalidActionException;
 import Game.Actions;
-import Game.Event.Aggregates.UnitEventsAggregate;
+import Game.Effects.Effectable;
+import Game.Event.Arguments.Actions.ActionInfo;
 import Game.Event.Arguments.Actions.AttackActionInfo;
 import Game.Event.Arguments.Actions.EffectActionInfo;
-import Game.Units.Getters.CompositeAccessor;
-import Game.Effects.Effectable;
-import Game.Effects.Poisoning;
-import Exceptions.InvalidActionException;
 import Game.Move;
-import Game.Teams.Team;
 import Game.Units.UnitSharedData;
 
 import java.util.Random;
@@ -26,16 +23,7 @@ public class Magician extends GameUnit implements Attackable, Magicable {
     }
 
     @Override
-    public void move(Move move) throws InvalidActionException {
-        if (!(move.getAction().equals(Actions.Attack) || move.getAction().equals(Actions.Poisoning)))
-            throw new InvalidActionException();
-
-        GameUnit target = accessor.getUnitsAccessor().getUnitById(move.getTargetId());
-        attack(target, move.getAction());
-    }
-
-    @Override
-    public void moveAI() {
+    public ActionInfo moveAI() throws InvalidActionException {
         Random random = new Random();
         int selectedAction = random.nextInt(1, 3);
         int index = random.nextInt(0, accessor.getAlliesAccessor().getQuantity());
@@ -45,30 +33,35 @@ public class Magician extends GameUnit implements Attackable, Magicable {
         if (selectedAction == 1) action = Actions.Attack;
         else action = Actions.Poisoning;
 
-        System.out.printf("AI %s %d (%s)\n", selectedAction == 1 ? "атакує магією по" : "накладає отруєння на юніта", index + 1, target.toString());
-        attack(target, action);
+        return act(target, action);
     }
 
-    private void attack(GameUnit target, Actions action) {
+    protected ActionInfo act(GameUnit target, Actions action) throws InvalidActionException {
         if (action.equals(Actions.Attack)) {
-            attack(target);
+            return attack(target);
         } else if (action.equals(Actions.Poisoning)) {
-            poisoning(target);
+            return poisoning(target);
         }
+
+        throw new InvalidActionException();
     }
 
-    private void attack(GameUnit target) {
+    private ActionInfo attack(GameUnit target) {
         int damage = getRandomDamage();
         damage = target.takeDamage(damage);
         statisticCollector.addDamage(this, damage);
-        events.actionPerformed(new AttackActionInfo(this, target, Actions.Attack, damage));
+        ActionInfo actionInfo = new AttackActionInfo(this, target, Actions.Attack, damage);
+        events.actionPerformed(actionInfo);
+        return actionInfo;
     }
 
-    private void poisoning(GameUnit target) {
+    private ActionInfo poisoning(GameUnit target) {
         Effectable effect = getMagicalEffect();
         target.takeEffect(effect);
         statisticCollector.addImposedEffect(this, effect.getEffectType());
-        events.actionPerformed(new EffectActionInfo(this, target, Actions.Poisoning, effect));
+        ActionInfo actionInfo = new EffectActionInfo(this, target, Actions.Poisoning, effect);
+        events.actionPerformed(actionInfo);
+        return actionInfo;
     }
 
     private int getRandomDamage() {

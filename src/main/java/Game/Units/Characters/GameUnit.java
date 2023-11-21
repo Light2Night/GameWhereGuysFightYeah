@@ -1,7 +1,9 @@
 package Game.Units.Characters;
 
+import Game.Actions;
 import Game.Effects.Factories.EffectFactory;
 import Game.Event.Aggregates.UnitEventsAggregate;
+import Game.Event.Arguments.Actions.ActionInfo;
 import Game.Statistics.Session.IUnitStatisticCollector;
 import Game.Units.Getters.CompositeAccessor;
 import Game.Effects.Effectable;
@@ -91,9 +93,14 @@ public abstract class GameUnit {
         effects.removeIf(e -> e.getCyclesLeft() == 0);
     }
 
-    public abstract void move(Move move) throws InvalidActionException;
+    public ActionInfo move(Move move) throws InvalidActionException {
+        GameUnit target = accessor.getUnitsAccessor().getUnitById(move.getTargetId());
+        return act(target, move.getAction());
+    }
 
-    public abstract void moveAI();
+    public abstract ActionInfo moveAI() throws InvalidActionException;
+
+    protected abstract ActionInfo act(GameUnit target, Actions action) throws InvalidActionException;
 
     @Override
     public String toString() {

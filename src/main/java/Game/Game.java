@@ -150,33 +150,17 @@ public class Game {
             throw new GameIsNotStartedException();
         }
 
-        removeDeadUnits();
         if (checkTheEndAndFinishGameIfNeed()) {
             return;
         }
 
         Integer id = cycle.next();
         setCurrentUnitId(id);
-
-        while (enemiesAccessor.containsId(id)) {
-            removeDeadUnits();
-            if (checkTheEndAndFinishGameIfNeed()) {
-                return;
-            }
-
-            enemiesAccessor.getUnitById(id).moveAI();
-            id = cycle.next();
-            setCurrentUnitId(id);
-        }
-
-        removeDeadUnits();
-        if (checkTheEndAndFinishGameIfNeed()) {
-            return;
-        }
         events.moveCompleted();
     }
 
-    private Boolean checkTheEndAndFinishGameIfNeed() {
+    public Boolean checkTheEndAndFinishGameIfNeed() {
+        removeDeadUnits();
         if (!isEnd()) {
             return false;
         }

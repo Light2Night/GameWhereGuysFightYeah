@@ -141,24 +141,6 @@ public class Game {
         cycleActions.clear();
     }
 
-    public void addAlly(UnitTypes type) {
-        units.add(createUnit(type, human));
-    }
-
-    public void addEnemy(UnitTypes type) {
-        units.add(createUnit(type, ai));
-    }
-
-    private GameUnit createUnit(UnitTypes type, Team team) {
-        UnitFactory factory = team == human ? alliesFactory : enemyFactory;
-
-        return switch (type) {
-            case BARBARIAN -> factory.createBarbarian(new BarbarianViewModel("Варвар", 200, 200, 15, 10));
-            case MAGICIAN -> factory.createMagician(new MageViewModel("Маг", 100, 100, 25, 20, new Poisoning()));
-            case HEALER -> factory.createHealer(new HealerViewModel("Цілитель", 125, 125, 20, new Healling()));
-        };
-    }
-
     public void addUnit(GameUnit unit) {
         units.add(unit);
     }

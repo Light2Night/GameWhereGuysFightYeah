@@ -15,7 +15,6 @@ class ActionFabric(
 ) {
     fun createActions(): List<Action> {
         val currentUnit = gameData.currentUnit ?: return emptyList()
-        val selectedUnit = gameData.selectedUnit ?: return emptyList()
 
         if (currentUnit.team.playerType == PlayerTypes.AI) {
             return emptyList()
@@ -24,22 +23,27 @@ class ActionFabric(
         return when (currentUnit) {
             is Barbarian -> listOf(
                 Action("атака") {
+                    val selectedUnit = gameData.selectedUnit ?: return@Action
                     currentUnit.move(Move(Actions.Attack, selectedUnit.id))
                 },
             )
             is Magician -> listOf(
                 Action("атака") {
+                    val selectedUnit = gameData.selectedUnit ?: return@Action
                     currentUnit.move(Move(Actions.Attack, selectedUnit.id))
                 },
                 Action("отруєння") {
+                    val selectedUnit = gameData.selectedUnit ?: return@Action
                     currentUnit.move(Move(Actions.Poisoning, selectedUnit.id))
                 },
             )
             is Healer -> listOf(
                 Action("миттєве лікування") {
+                    val selectedUnit = gameData.selectedUnit ?: return@Action
                     currentUnit.move(Move(Actions.InstantHealing, selectedUnit.id))
                 },
                 Action("лікувальний ефект") {
+                    val selectedUnit = gameData.selectedUnit ?: return@Action
                     currentUnit.move(Move(Actions.Healing, selectedUnit.id))
                 },
             )

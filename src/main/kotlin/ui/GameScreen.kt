@@ -444,7 +444,7 @@ private fun GameBoard(
             actions = ActionFabric(game, gameData).createActions()
 
             if (gameData.currentUnit?.team?.playerType == PlayerTypes.AI) {
-                actions.firstOrNull()?.action?.invoke()
+                gameData.currentUnit?.moveAI()
                 delay(normalAnimationDuration.toLong() * 2 + 1000L)
                 onAction()
             }

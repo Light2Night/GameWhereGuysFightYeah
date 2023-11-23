@@ -37,6 +37,8 @@ import hugeText
 import iconSize
 import imageHeight
 import imageWidth
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import normalAnimationDuration
 import org.jetbrains.skiko.currentNanoTime
 import padding
@@ -417,6 +419,8 @@ private fun GameBoard(
     onAction: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val coroutineScope = rememberCoroutineScope()
+
     Column(
         modifier = modifier
     ) {
@@ -441,11 +445,20 @@ private fun GameBoard(
             animationSpec = tween(normalAnimationDuration),
         ) { unit ->
             if (unit != null) {
-                Actions(
-                    actions = ActionFabric(game, gameData).createActions(),
-                    selectedUnitID = unit.id,
-                    onAction = onAction,
-                )
+                val actions = ActionFabric(game, gameData).createActions()
+
+                if (actions.firstOrNull()?.name == "AI") {
+                    coroutineScope.launch {
+                        delay(normalAnimationDuration.toLong() * 2)
+                        game.next()
+                    }
+                } else {
+                    Actions(
+                        actions = actions,
+                        selectedUnitID = unit.id,
+                        onAction = onAction,
+                    )
+                }
             }
         }
     }

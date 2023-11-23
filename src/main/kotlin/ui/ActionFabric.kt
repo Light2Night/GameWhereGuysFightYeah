@@ -6,6 +6,7 @@ import Game.Units.Characters.Magician
 import Game.Game
 import Game.Move
 import Game.Actions
+import Game.PlayerTypes
 import gamedata.GameData
 
 class ActionFabric(
@@ -15,6 +16,14 @@ class ActionFabric(
     fun createActions(): List<Action> {
         val currentUnit = gameData.currentUnit ?: return listOf()
         val selectedUnit = gameData.selectedUnit ?: return listOf()
+
+        if (currentUnit.team.playerType == PlayerTypes.AI) {
+            return listOf(
+                Action("AI") {
+                    currentUnit.moveAI()
+                }
+            )
+        }
 
         return when (currentUnit) {
             is Barbarian -> listOf(

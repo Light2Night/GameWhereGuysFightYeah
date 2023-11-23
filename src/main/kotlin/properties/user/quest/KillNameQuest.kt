@@ -9,7 +9,7 @@ import androidx.compose.runtime.setValue
 import isType
 import properties.resources.Reward
 
-class KillQuest(
+class KillNameQuest(
     override val id: Int,
     override val x: Int,
     override val y: Int,
@@ -18,7 +18,7 @@ class KillQuest(
     override val icon: String,
     override val requiredLevel: Int,
     override val reward: Reward,
-    val unitType: UnitTypes,
+    val unitName: String,
     val amount: Int,
 ) : Quest {
 
@@ -32,7 +32,7 @@ class KillQuest(
 
         var deadUnits = 0
         teams.forEach { team ->
-            val count = endInfo.sessionStatistic.TeamStatistics[team]?.DeadUnits?.filter { it.isType(unitType) }?.size
+            val count = endInfo.sessionStatistic.TeamStatistics[team]?.DeadUnits?.filter { it.name == unitName }?.size
             count?.let { deadUnits += it }
         }
 

@@ -1,3 +1,8 @@
+import Game.Units.Characters.Barbarian
+import Game.Units.Characters.GameUnit
+import Game.Units.Characters.Healer
+import Game.Units.Characters.Magician
+import Game.Units.Characters.UnitTypes
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.compose.ui.graphics.*
@@ -188,4 +193,15 @@ fun Map<String, *>.toStringList(): List<String> {
     val list = mutableListOf<String>()
     forEach { (string, _) -> list.add(string) }
     return list
+}
+
+
+/* -= game functions =- */
+fun GameUnit.isType(type: UnitTypes): Boolean {
+    return type == when (this) {
+        is Barbarian -> UnitTypes.BARBARIAN
+        is Magician -> UnitTypes.MAGICIAN
+        is Healer -> UnitTypes.HEALER
+        else -> null
+    }
 }

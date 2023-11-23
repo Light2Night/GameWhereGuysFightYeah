@@ -445,19 +445,27 @@ private fun GameBoard(
             animationSpec = tween(normalAnimationDuration),
         ) { unit ->
             if (unit != null) {
+                var isMoving by remember { mutableStateOf(false) }
                 val actions = ActionFabric(game, gameData).createActions()
 
-                if (actions.firstOrNull()?.name == "AI") {
-                    coroutineScope.launch {
-                        delay(normalAnimationDuration.toLong() * 2)
-                        game.next()
+                if (!isMoving) {
+                    if (actions.firstOrNull()?.name == "AI") {
+                        coroutineScope.launch {
+                            isMoving = true
+
+                            actions.first().action()
+                            delay(normalAnimationDuration.toLong() * 2 + 1000L)
+                            game.next()
+
+                            isMoving = false
+                        }
+
+                    } else {
+                        Actions(
+                            actions = actions,
+                            onAction = onAction,
+                        )
                     }
-                } else {
-                    Actions(
-                        actions = actions,
-                        selectedUnitID = unit.id,
-                        onAction = onAction,
-                    )
                 }
             }
         }
@@ -468,19 +476,20 @@ private fun GameBoard(
 @Composable
 private fun Actions(
     actions: List<Action>,
-    selectedUnitID: Int,
     onAction: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    FlowRow {
+    FlowRow(
+        modifier = modifier,
+    ) {
         actions.forEach { action ->
             MedievalButton(
                 text = action.name,
                 onClick = {
-                    action.action(selectedUnitID)
+                    action.action()
                     onAction()
                 },
-                modifier = modifier.padding(start = padding, top = padding),
+                modifier = Modifier.padding(start = padding, top = padding),
             )
         }
     }

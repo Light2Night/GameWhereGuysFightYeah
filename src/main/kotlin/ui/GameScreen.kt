@@ -8,6 +8,7 @@ import Game.Effects.Effectable
 import Game.Effects.Healing
 import Game.Effects.Poisoning
 import Game.Game
+import Game.PlayerTypes
 import gamedata.GameData
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.*
@@ -38,7 +39,6 @@ import iconSize
 import imageHeight
 import imageWidth
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import normalAnimationDuration
 import org.jetbrains.skiko.currentNanoTime
 import padding
@@ -419,8 +419,6 @@ private fun GameBoard(
     onAction: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val coroutineScope = rememberCoroutineScope()
-
     Column(
         modifier = modifier
     ) {
@@ -431,7 +429,7 @@ private fun GameBoard(
             side = Side.Down,
             duration = normalAnimationDuration,
             delayIn = normalAnimationDuration,
-        ) { index, unit ->
+        ) { _, unit ->
             UnitInfo(
                 unit = unit,
                 isSelected = unit.id == gameData.selectedUnit?.id,
@@ -440,33 +438,27 @@ private fun GameBoard(
             )
         }
 
+        var actions by remember { mutableStateOf(ActionFabric(game, gameData).createActions()) }
+
+        LaunchedEffect(gameData.currentUnit) {
+            actions = ActionFabric(game, gameData).createActions()
+
+            if (gameData.currentUnit?.team?.playerType == PlayerTypes.AI) {
+                actions.firstOrNull()?.action?.invoke()
+                delay(normalAnimationDuration.toLong() * 2 + 1000L)
+                onAction()
+            }
+        }
+
         Crossfade(
             gameData.currentUnit,
             animationSpec = tween(normalAnimationDuration),
         ) { unit ->
             if (unit != null) {
-                var isMoving by remember { mutableStateOf(false) }
-                val actions = ActionFabric(game, gameData).createActions()
-
-                if (!isMoving) {
-                    if (actions.firstOrNull()?.name == "AI") {
-                        coroutineScope.launch {
-                            isMoving = true
-
-                            actions.first().action()
-                            delay(normalAnimationDuration.toLong() * 2 + 1000L)
-                            game.next()
-
-                            isMoving = false
-                        }
-
-                    } else {
-                        Actions(
-                            actions = actions,
-                            onAction = onAction,
-                        )
-                    }
-                }
+                Actions(
+                    actions = actions,
+                    onAction = onAction,
+                )
             }
         }
     }

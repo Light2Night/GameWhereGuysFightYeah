@@ -14,15 +14,11 @@ class ActionFabric(
     val gameData: GameData,
 ) {
     fun createActions(): List<Action> {
-        val currentUnit = gameData.currentUnit ?: return listOf()
-        val selectedUnit = gameData.selectedUnit ?: return listOf()
+        val currentUnit = gameData.currentUnit ?: return emptyList()
+        val selectedUnit = gameData.selectedUnit ?: return emptyList()
 
         if (currentUnit.team.playerType == PlayerTypes.AI) {
-            return listOf(
-                Action("AI") {
-                    currentUnit.moveAI()
-                }
-            )
+            return emptyList()
         }
 
         return when (currentUnit) {

@@ -124,8 +124,8 @@ fun main() = application {
                 result = gameData.gameResult!!,
                 location = gameData.location!!,
                 onBack = {
-                    user.requests.updateAllRequests(gameData.gameResult!!)
-                    user.requests.checkAllRequests()
+                    user.requests.updateAllQuests(gameData)
+                    user.requests.checkAllQuests()
                     gameData.reset()
                     screen = Screen.Main
                 },

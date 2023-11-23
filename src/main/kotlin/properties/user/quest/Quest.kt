@@ -1,7 +1,7 @@
 package properties.user.quest
 
-import Game.Event.Arguments.GameEndInfo
 import HasID
+import gamedata.GameData
 import properties.resources.Reward
 
 interface Quest : HasID {
@@ -16,7 +16,7 @@ interface Quest : HasID {
 
     val progressString: String
 
-    fun update(endInfo: GameEndInfo)
+    fun update(gameData: GameData)
     fun isCompleted(): Boolean
     fun getReward() {
         if (isCompleted()) {

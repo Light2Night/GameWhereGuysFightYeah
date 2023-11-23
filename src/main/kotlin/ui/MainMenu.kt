@@ -646,7 +646,7 @@ private fun RequestBoard(
                 ) {
                     repeat(2) { y ->
                         RequestCard(
-                            request = user.requests.getRequestByPosition(x, y),
+                            request = user.requests.getQuestByPosition(x, y),
                             modifier = Modifier
                                 .weight(1F)
                                 .fillMaxWidth()

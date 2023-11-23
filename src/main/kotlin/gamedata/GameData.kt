@@ -11,6 +11,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import properties.user.recruit.Recruit
 import properties.user.worldMap.Location
+import user
 
 class GameData(
     val game: Game,
@@ -35,6 +36,12 @@ class GameData(
 
     init {
         updateUnits(game.units)
+    }
+
+    fun getRecruitByID(id: Int): Recruit? {
+        val allRecruits = enemiesRecruits + user.recruits.selectedList
+        val charId = unitIDs[id]
+        return allRecruits.find { it.id == charId }
     }
 
     fun updateUnits(units: List<GameUnit>) {

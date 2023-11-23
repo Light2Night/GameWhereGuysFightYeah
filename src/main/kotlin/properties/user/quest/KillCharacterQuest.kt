@@ -8,7 +8,7 @@ import gamedata.GameData
 import properties.resources.Reward
 import kotlin.math.min
 
-class KillNameQuest(
+class KillCharacterQuest(
     override val id: Int,
     override val x: Int,
     override val y: Int,
@@ -17,7 +17,7 @@ class KillNameQuest(
     override val icon: String,
     override val requiredLevel: Int,
     override val reward: Reward,
-    val charName: String,
+    val charID: Int,
     val amount: Int,
 ) : Quest {
 
@@ -34,7 +34,7 @@ class KillNameQuest(
         teams.forEach { team ->
             val deadUnits = endInfo.sessionStatistic.TeamStatistics[team]?.DeadUnits ?: return@forEach
             val recruits = deadUnits.mapNotNull { gameData.getRecruitByID(it.id) }
-            deadCount += recruits.filter { it.name == charName }.size
+            deadCount += recruits.filter { it.id == charID }.size
         }
 
         count = min(amount, count + deadCount)

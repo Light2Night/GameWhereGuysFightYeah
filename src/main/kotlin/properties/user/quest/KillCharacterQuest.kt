@@ -40,5 +40,9 @@ class KillCharacterQuest(
         count = min(amount, count + deadCount)
     }
 
+    override fun forceComplete() {
+        count = amount
+    }
+
     override fun isCompleted(): Boolean = count >= amount
 }

@@ -4,6 +4,8 @@ import Game.Units.Characters.UnitTypes
 import org.jetbrains.skiko.currentNanoTime
 import properties.resources.Reward
 import properties.user.recruit.RecruitFactory
+import uniqueId
+import user
 import kotlin.random.Random
 
 class QuestFactory {
@@ -26,7 +28,7 @@ class QuestFactory {
         )
 
         return KillQuest(
-            0,
+            user.quests.list.uniqueId(),
             x,
             y,
             "",
@@ -49,7 +51,7 @@ class QuestFactory {
         )
 
         return KillCharacterQuest(
-            0,
+            user.quests.list.uniqueId(),
             x,
             y,
             "",
@@ -72,7 +74,7 @@ class QuestFactory {
         )
 
         return KillNameQuest(
-            0,
+            user.quests.list.uniqueId(),
             x,
             y,
             "",

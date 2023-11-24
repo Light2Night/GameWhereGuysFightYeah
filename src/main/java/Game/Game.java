@@ -27,9 +27,6 @@ public class Game {
 
     private Boolean gameIsOn;
 
-    private final TeamAccessor alliesAccessor;
-    private final TeamAccessor enemiesAccessor;
-    private final UnitsAccessor unitsAccessor;
     private final CompositeAccessor compositeAccessor;
 
     private final GameCycle cycle;
@@ -65,9 +62,9 @@ public class Game {
         human = new Team(1, PlayerTypes.Human, "Human");
         ai = new Team(2, PlayerTypes.AI, "AI");
 
-        alliesAccessor = new TeamAccessor(units, human);
-        enemiesAccessor = new TeamAccessor(units, ai);
-        unitsAccessor = new UnitsAccessor(units);
+        TeamAccessor alliesAccessor = new TeamAccessor(units, human);
+        TeamAccessor enemiesAccessor = new TeamAccessor(units, ai);
+        UnitsAccessor unitsAccessor = new UnitsAccessor(units);
         compositeAccessor = new CompositeAccessor(alliesAccessor, enemiesAccessor, unitsAccessor);
 
         cycle = new GameCycle(compositeAccessor, events);
@@ -171,11 +168,11 @@ public class Game {
     }
 
     private Boolean isEnd() {
-        return alliesAccessor.getQuantity() == 0 || enemiesAccessor.getQuantity() == 0;
+        return compositeAccessor.getAlliesAccessor().getQuantity() == 0 || compositeAccessor.getEnemiesAccessor().getQuantity() == 0;
     }
 
     private Team getTeamWinner() {
-        if (alliesAccessor.getQuantity() == 0) {
+        if (compositeAccessor.getAlliesAccessor().getQuantity() == 0) {
             return ai;
         } else {
             return human;

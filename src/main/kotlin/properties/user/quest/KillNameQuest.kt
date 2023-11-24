@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import gamedata.GameData
+import lang
 import properties.resources.Reward
 import kotlin.math.min
 
@@ -12,7 +13,7 @@ class KillNameQuest(
     override val id: Int,
     override val x: Int,
     override val y: Int,
-    override val name: String,
+    name: String,
     override val description: String,
     override val icon: String,
     override val requiredLevel: Int,
@@ -20,6 +21,16 @@ class KillNameQuest(
     val charName: String,
     val amount: Int,
 ) : Quest {
+
+    private val _name = name
+    override val name: String get() = run {
+        _name.ifBlank {
+            lang.kill_quest_name
+                .replaceFirstChar { it.uppercaseChar() }
+                .replace("<amount>", amount.toString())
+                .replace("<name>", charName)
+        }
+    }
 
     var count by mutableStateOf(0)
         private set

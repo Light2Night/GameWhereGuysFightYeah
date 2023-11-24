@@ -5,14 +5,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import gamedata.GameData
+import lang
 import properties.resources.Reward
+import properties.user.recruit.RecruitFactory
 import kotlin.math.min
 
 class KillCharacterQuest(
     override val id: Int,
     override val x: Int,
     override val y: Int,
-    override val name: String,
+    name: String,
     override val description: String,
     override val icon: String,
     override val requiredLevel: Int,
@@ -20,6 +22,16 @@ class KillCharacterQuest(
     val charID: Int,
     val amount: Int,
 ) : Quest {
+
+    private val _name = name
+    override val name: String get() = run {
+        _name.ifBlank {
+            lang.kill_quest_name
+                .replaceFirstChar { it.uppercaseChar() }
+                .replace("<amount>", amount.toString())
+                .replace("<name>", RecruitFactory().getPreset(charID)?.name ?: "<ERROR>")
+        }
+    }
 
     var count by mutableStateOf(0)
         private set

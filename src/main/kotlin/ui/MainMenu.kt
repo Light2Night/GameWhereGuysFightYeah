@@ -198,7 +198,7 @@ fun MainMenu(
             MedievalText(
                 text = "- 100 crystals",
                 color = colorTextError,
-                modifier = Modifier.clickable { user.resources.crystals -= 10 }
+                modifier = Modifier.clickable { user.resources.crystals -= 100 }
             )
         }
     }

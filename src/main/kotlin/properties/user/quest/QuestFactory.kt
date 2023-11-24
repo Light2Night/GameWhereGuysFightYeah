@@ -1,7 +1,6 @@
 package properties.user.quest
 
 import Game.Units.Characters.UnitTypes
-import lang
 import org.jetbrains.skiko.currentNanoTime
 import properties.resources.Reward
 import properties.user.recruit.RecruitFactory
@@ -25,17 +24,13 @@ class QuestFactory {
             Random(currentNanoTime()).nextInt(0, amount / 2),
             Random(currentNanoTime()).nextInt(amount, (amount * 2.5).toInt()),
         )
-        val questName = lang.kill_quest_name
-            .replaceFirstChar { it.uppercaseChar() }
-            .replace("<amount>", amount.toString())
-            .replace("<name>", type.name)
 
         return KillQuest(
             0,
             x,
             y,
-            questName,
-            questName,
+            "",
+            "",
             "Test_Icon",
             1,
             reward,
@@ -52,17 +47,13 @@ class QuestFactory {
             Random(currentNanoTime()).nextInt(0, amount / 2),
             Random(currentNanoTime()).nextInt(amount, (amount * 2.5).toInt()),
         )
-        val questName = lang.kill_quest_name
-            .replaceFirstChar { it.uppercaseChar() }
-            .replace("<amount>", amount.toString())
-            .replace("<name>", character.name)
 
         return KillCharacterQuest(
             0,
             x,
             y,
-            questName,
-            questName,
+            "",
+            "",
             "Test_Icon",
             1,
             reward,
@@ -79,17 +70,13 @@ class QuestFactory {
             Random(currentNanoTime()).nextInt(0, amount / 2),
             Random(currentNanoTime()).nextInt(amount, (amount * 2.5).toInt()),
         )
-        val questName = lang.kill_quest_name
-            .replaceFirstChar { it.uppercaseChar() }
-            .replace("<amount>", amount.toString())
-            .replace("<name>", name)
 
         return KillNameQuest(
             0,
             x,
             y,
-            questName,
-            questName,
+            "",
+            "",
             "Test_Icon",
             1,
             reward,

@@ -45,7 +45,6 @@ public class Game {
     private final Team ai;
 
     private final GameEventsAggregate events;
-    private final UnitEventsAggregate unitEvents;
     private final ArrayList<ActionInfo> cycleActions;
 
     public final UnitFactory alliesFactory;
@@ -62,8 +61,6 @@ public class Game {
         cycleActions = new ArrayList<>();
 
         events.setCycleLeftEvent(new OnCycleLeft(units, cycleActions, sessionStatisticBuilder));
-        unitEvents = new UnitEventsAggregate();
-        unitEvents.setActionPerformedEvent(new OnAction(cycleActions));
 
         human = new Team(1, PlayerTypes.Human, "Human");
         ai = new Team(2, PlayerTypes.AI, "AI");
@@ -75,6 +72,8 @@ public class Game {
 
         cycle = new GameCycle(compositeAccessor, events);
 
+        UnitEventsAggregate unitEvents = new UnitEventsAggregate();
+        unitEvents.setActionPerformedEvent(new OnAction(cycleActions));
         EffectFactory effectFactory = new EffectFactory(sessionStatisticBuilder);
 
         alliesFactory = new UnitFactory(compositeAccessor, human, unitEvents, sessionStatisticBuilder, effectFactory);

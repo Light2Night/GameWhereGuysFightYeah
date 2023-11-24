@@ -29,17 +29,9 @@ public class Healing implements Effectable {
 
         cyclesLeft--;
 
-        if (unit.getHp() == 0) {
-            return;
-        }
-
-        System.out.printf("Юніт (%s) відновлює %d здоров'я завдяки зіллю відновлення\n", unit.toString(), heal);
+        if (unit.getHp() == 0) return;
 
         unit.heal(heal);
-
-        if (cyclesLeft > 0) {
-            System.out.printf("Відновлення діятиме ще циклів: %d\n", cyclesLeft);
-        }
     }
 
     @Override

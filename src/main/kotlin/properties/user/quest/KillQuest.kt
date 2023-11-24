@@ -40,5 +40,9 @@ class KillQuest(
         count += deadUnits
     }
 
+    override fun forceComplete() {
+        count = amount
+    }
+
     override fun isCompleted(): Boolean = count >= amount
 }

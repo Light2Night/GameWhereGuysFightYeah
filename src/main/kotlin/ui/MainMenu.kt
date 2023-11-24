@@ -143,7 +143,9 @@ fun MainMenu(
         )
 
         if (isDebugOpen) {
-            Column(
+            MedievalText(
+                text = "add test recruit ${user.recruits.selectedList.size}/5",
+                color = colorTextError,
                 modifier = Modifier
                     .clickable {
                         val recruit = user.recruits.createNewRecruitToGuild()
@@ -151,53 +153,50 @@ fun MainMenu(
                         user.resources.crystals += recruit.cost?.crystals ?: 0
                         user.recruits.buyRecruit(user.recruits.guildList.last(), replace = false)
                     },
-            ) {
-                MedievalText(
-                    text = "додати тестового найманця ${user.recruits.selectedList.size}/5",
-                    color = colorTextError,
-                )
-                MedievalText(
-                    text = "Щоб вибрати найманця в паті нажми на нього в лівому списку.",
-                    color = colorTextError,
-                )
-                MedievalText(
-                    text = "Щоб прибрати найманця з паті нажми на нього в правому списку.",
-                    color = colorTextError,
-                )
-            }
-
-            MedievalText(
-                text = "+ 10 exp",
-                color = colorTextError,
-                modifier = Modifier.clickable { user.resources.exp += 10 }
             )
 
             MedievalText(
-                text = "- 10 exp",
+                text = "complete quest",
                 color = colorTextError,
-                modifier = Modifier.clickable { user.resources.exp -= 10 }
+                modifier = Modifier
+                    .clickable {
+                        user.quests.list.random().forceComplete()
+                        user.quests.checkAllQuests()
+                    },
             )
 
             MedievalText(
-                text = "+ 10 coins",
+                text = "+ 100 exp",
                 color = colorTextError,
-                modifier = Modifier.clickable { user.resources.coins += 10 }
+                modifier = Modifier.clickable { user.resources.exp += 100 }
             )
 
             MedievalText(
-                text = "- 10 coins",
+                text = "- 100 exp",
                 color = colorTextError,
-                modifier = Modifier.clickable { user.resources.coins -= 10 }
+                modifier = Modifier.clickable { user.resources.exp -= 100 }
             )
 
             MedievalText(
-                text = "+ 10 crystals",
+                text = "+ 100 coins",
                 color = colorTextError,
-                modifier = Modifier.clickable { user.resources.crystals += 10 }
+                modifier = Modifier.clickable { user.resources.coins += 100 }
             )
 
             MedievalText(
-                text = "- 10 crystals",
+                text = "- 100 coins",
+                color = colorTextError,
+                modifier = Modifier.clickable { user.resources.coins -= 100 }
+            )
+
+            MedievalText(
+                text = "+ 100 crystals",
+                color = colorTextError,
+                modifier = Modifier.clickable { user.resources.crystals += 100 }
+            )
+
+            MedievalText(
+                text = "- 100 crystals",
                 color = colorTextError,
                 modifier = Modifier.clickable { user.resources.crystals -= 10 }
             )
@@ -646,7 +645,7 @@ private fun RequestBoard(
                 ) {
                     repeat(2) { y ->
                         RequestCard(
-                            request = user.requests.getQuestByPosition(x, y),
+                            request = user.quests.getQuestByPosition(x, y),
                             modifier = Modifier
                                 .weight(1F)
                                 .fillMaxWidth()

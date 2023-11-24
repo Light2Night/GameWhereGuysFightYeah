@@ -18,5 +18,7 @@
   "ai_won": "The enemy defeated you!",
 
   "no_recruits": "No recruits in your party!",
-  "too_small_level": "Your level is too low!"
+  "too_small_level": "Your level is too low!",
+
+  "kill_quest_name": "Kill <amount> <name>"
 }

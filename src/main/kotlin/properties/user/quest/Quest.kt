@@ -17,6 +17,7 @@ interface Quest : HasID {
     val progressString: String
 
     fun update(gameData: GameData)
+    fun forceComplete()
     fun isCompleted(): Boolean
     fun getReward() {
         if (isCompleted()) {

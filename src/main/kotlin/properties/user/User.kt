@@ -20,7 +20,7 @@ data class User(
         exp = 0,
     ),
     var level: Int = 1,
-    val requests: QuestStorage = QuestStorage(),
+    val quests: QuestStorage = QuestStorage(),
     val recruits: RecruitStorage = RecruitStorage(),
     val worldMap: WorldMap = WorldMap(),
 ) {

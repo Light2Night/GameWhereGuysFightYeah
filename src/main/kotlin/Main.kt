@@ -41,6 +41,10 @@ fun main() = application {
             user.recruits.createNewRecruitToGuild()
         }
 
+        while (user.quests.list.size < 6) {
+            user.quests.createQuest()
+        }
+
         firstTime = false
     }
 
@@ -126,8 +130,8 @@ fun main() = application {
                 result = gameData.gameResult!!,
                 location = gameData.location!!,
                 onBack = {
-                    user.requests.updateAllQuests(gameData)
-                    user.requests.checkAllQuests()
+                    user.quests.updateAllQuests(gameData)
+                    user.quests.checkAllQuests()
                     gameData.reset()
                     screen = Screen.Main
                 },

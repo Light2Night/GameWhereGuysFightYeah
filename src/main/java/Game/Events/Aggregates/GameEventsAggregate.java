@@ -1,9 +1,9 @@
-package Game.Event.Aggregates;
+package Game.Events.Aggregates;
 
-import Game.Event.Arguments.UnitId;
-import Game.Event.Event;
-import Game.Event.EventGeneric;
-import Game.Event.Arguments.GameEndInfo;
+import Game.Events.Arguments.UnitId;
+import Game.Events.Event;
+import Game.Events.EventGeneric;
+import Game.Events.Arguments.GameEndInfo;
 
 public class GameEventsAggregate {
     public final EventGeneric<UnitId> SelectedIndexChangedEvent = new EventGeneric<>();

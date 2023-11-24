@@ -1,14 +1,15 @@
 package Game;
 
 import Game.Effects.Factories.EffectFactory;
-import Game.Event.Aggregates.UnitEventsAggregate;
-import Game.Event.Arguments.Actions.ActionInfo;
-import Game.Event.Arguments.GameEndInfo;
-import Game.Event.Arguments.UnitId;
-import Game.Event.Handlers.OnAction;
+import Game.Events.Aggregates.UnitEventsAggregate;
+import Game.Events.Arguments.Actions.ActionInfo;
+import Game.Events.Arguments.GameEndInfo;
+import Game.Events.Arguments.UnitId;
+import Game.Events.Handlers.OnAction;
 import Exceptions.GameIsNotStartedException;
-import Game.Event.Aggregates.GameEventsAggregate;
-import Game.Event.Handlers.OnCycleLeft;
+import Game.Events.Aggregates.GameEventsAggregate;
+import Game.Events.Handlers.OnActionCompleted;
+import Game.Events.Handlers.OnCycleLeft;
 import Game.Statistics.Session.ISessionStatisticBuilder;
 import Game.Statistics.Session.SessionStatisticBuilder;
 import Game.Teams.Team;
@@ -20,11 +21,11 @@ import Game.Units.Getters.UnitsAccessor;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Game {
     //region Fields
     private final ArrayList<GameUnit> units;
+    private final UnitsManager unitsManager;
 
     private Boolean gameIsOn;
 
@@ -52,16 +53,16 @@ public class Game {
     public Game() {
         gameIsOn = false;
 
-        sessionStatisticBuilder = new SessionStatisticBuilder();
-
         units = new ArrayList<>();
+        sessionStatisticBuilder = new SessionStatisticBuilder();
         events = new GameEventsAggregate();
         cycleActions = new ArrayList<>();
 
-        events.CycleLeftEvent.addHandler(new OnCycleLeft(units, cycleActions, sessionStatisticBuilder));
-
         human = new Team(1, PlayerTypes.Human, "Human");
         ai = new Team(2, PlayerTypes.AI, "AI");
+
+        unitsManager = new UnitsManager(units, sessionStatisticBuilder);
+        events.CycleLeftEvent.addHandler(new OnCycleLeft(units, cycleActions, sessionStatisticBuilder));
 
         TeamAccessor alliesAccessor = new TeamAccessor(units, human);
         TeamAccessor enemiesAccessor = new TeamAccessor(units, ai);
@@ -72,6 +73,7 @@ public class Game {
 
         UnitEventsAggregate unitEvents = new UnitEventsAggregate();
         unitEvents.ActionPerformedEvent.addHandler(new OnAction(cycleActions));
+        unitEvents.ActionPerformedEvent.addHandler(new OnActionCompleted(unitsManager));
         EffectFactory effectFactory = new EffectFactory(sessionStatisticBuilder);
 
         alliesFactory = new UnitFactory(compositeAccessor, human, unitEvents, sessionStatisticBuilder, effectFactory);
@@ -148,7 +150,7 @@ public class Game {
     }
 
     public Boolean checkTheEndAndFinishGameIfNeed() {
-        removeDeadUnits();
+        unitsManager.removeDeadUnits();
         if (!isEnd()) {
             return false;
         }
@@ -169,11 +171,5 @@ public class Game {
         } else {
             return human;
         }
-    }
-
-    private void removeDeadUnits() {
-        List<GameUnit> deadUnits = units.stream().filter(u -> !u.isAlive()).toList();
-        deadUnits.forEach(sessionStatisticBuilder::setDied);
-        units.removeAll(deadUnits);
     }
 }

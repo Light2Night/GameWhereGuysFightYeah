@@ -3,9 +3,9 @@ package Game.Units.Characters;
 import Exceptions.InvalidActionException;
 import Game.Actions;
 import Game.Effects.Effectable;
-import Game.Event.Arguments.Actions.ActionInfo;
-import Game.Event.Arguments.Actions.AttackActionInfo;
-import Game.Event.Arguments.Actions.EffectActionInfo;
+import Game.Events.Arguments.Actions.ActionInfo;
+import Game.Events.Arguments.Actions.AttackActionInfo;
+import Game.Events.Arguments.Actions.EffectActionInfo;
 import Game.Units.UnitSharedData;
 
 import java.util.Random;

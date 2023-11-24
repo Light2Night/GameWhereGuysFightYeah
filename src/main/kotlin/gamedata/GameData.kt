@@ -1,9 +1,9 @@
 package gamedata
 
 import Game.Units.Characters.GameUnit
-import Game.Event.Arguments.Actions.ActionInfo
+import Game.Events.Arguments.Actions.ActionInfo
 import Game.Game
-import Game.Event.Arguments.GameEndInfo
+import Game.Events.Arguments.GameEndInfo
 import Game.PlayerTypes
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf

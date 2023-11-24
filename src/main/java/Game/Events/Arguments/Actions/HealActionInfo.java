@@ -1,4 +1,4 @@
-package Game.Event.Arguments.Actions;
+package Game.Events.Arguments.Actions;
 
 import Game.Actions;
 import Game.Units.Characters.GameUnit;

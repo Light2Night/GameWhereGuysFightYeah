@@ -1,7 +1,7 @@
-package Game.Event.Handlers;
+package Game.Events.Handlers;
 
-import Game.Event.Arguments.Actions.ActionInfo;
-import Game.Event.HandlerGeneric;
+import Game.Events.Arguments.Actions.ActionInfo;
+import Game.Events.HandlerGeneric;
 
 import java.util.ArrayList;
 

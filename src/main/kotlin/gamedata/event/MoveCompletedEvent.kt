@@ -1,6 +1,6 @@
 package gamedata.event
 
-import Game.Event.Handler
+import Game.Events.Handler
 import Game.Game
 import gamedata.GameData
 

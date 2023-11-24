@@ -1,4 +1,4 @@
-package Game.Event;
+package Game.Events;
 
 import java.util.ArrayList;
 

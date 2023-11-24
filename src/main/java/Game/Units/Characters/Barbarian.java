@@ -1,8 +1,8 @@
 package Game.Units.Characters;
 
 import Game.Actions;
-import Game.Event.Arguments.Actions.ActionInfo;
-import Game.Event.Arguments.Actions.AttackActionInfo;
+import Game.Events.Arguments.Actions.ActionInfo;
+import Game.Events.Arguments.Actions.AttackActionInfo;
 import Exceptions.InvalidActionException;
 import Game.Units.UnitSharedData;
 

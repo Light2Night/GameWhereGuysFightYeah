@@ -1,4 +1,4 @@
-package Game.Event.Arguments;
+package Game.Events.Arguments;
 
 import Game.Teams.Team;
 import ViewModels.Statistics.Session.FullSessionStatisticVm;

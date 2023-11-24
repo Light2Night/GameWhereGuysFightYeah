@@ -2,8 +2,8 @@ package Game.Units.Characters;
 
 import Game.Actions;
 import Game.Effects.Factories.EffectFactory;
-import Game.Event.Aggregates.UnitEventsAggregate;
-import Game.Event.Arguments.Actions.ActionInfo;
+import Game.Events.Aggregates.UnitEventsAggregate;
+import Game.Events.Arguments.Actions.ActionInfo;
 import Game.Statistics.Session.IUnitStatisticCollector;
 import Game.Units.Getters.CompositeAccessor;
 import Game.Effects.Effectable;

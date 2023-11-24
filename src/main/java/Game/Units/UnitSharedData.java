@@ -1,7 +1,7 @@
 package Game.Units;
 
 import Game.Effects.Factories.EffectFactory;
-import Game.Event.Aggregates.UnitEventsAggregate;
+import Game.Events.Aggregates.UnitEventsAggregate;
 import Game.Statistics.Session.IUnitStatisticCollector;
 import Game.Teams.Team;
 import Game.Units.Getters.CompositeAccessor;

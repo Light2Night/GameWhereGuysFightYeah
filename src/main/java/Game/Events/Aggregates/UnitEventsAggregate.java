@@ -1,7 +1,7 @@
-package Game.Event.Aggregates;
+package Game.Events.Aggregates;
 
-import Game.Event.Arguments.Actions.ActionInfo;
-import Game.Event.EventGeneric;
+import Game.Events.Arguments.Actions.ActionInfo;
+import Game.Events.EventGeneric;
 
 public class UnitEventsAggregate {
     public final EventGeneric<ActionInfo> ActionPerformedEvent = new EventGeneric<>();

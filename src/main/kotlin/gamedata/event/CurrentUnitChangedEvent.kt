@@ -1,7 +1,7 @@
 package gamedata.event
 
-import Game.Event.Arguments.UnitId
-import Game.Event.HandlerGeneric
+import Game.Events.Arguments.UnitId
+import Game.Events.HandlerGeneric
 import Game.Game
 import gamedata.GameData
 

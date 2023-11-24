@@ -1,9 +1,9 @@
-package Game.Event.Handlers;
+package Game.Events.Handlers;
 
-import Game.Event.Handler;
+import Game.Events.Handler;
 import Game.Statistics.Session.ICycleStatisticCollector;
 import Game.Units.Characters.GameUnit;
-import Game.Event.Arguments.Actions.ActionInfo;
+import Game.Events.Arguments.Actions.ActionInfo;
 
 import java.util.ArrayList;
 

@@ -1,6 +1,6 @@
 package ui
 
-import Game.Event.Arguments.GameEndInfo
+import Game.Events.Arguments.GameEndInfo
 import Game.PlayerTypes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement

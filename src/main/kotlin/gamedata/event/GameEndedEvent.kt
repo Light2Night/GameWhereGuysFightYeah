@@ -1,7 +1,7 @@
 package gamedata.event
 
-import Game.Event.Arguments.GameEndInfo
-import Game.Event.HandlerGeneric
+import Game.Events.Arguments.GameEndInfo
+import Game.Events.HandlerGeneric
 import gamedata.GameData
 
 class GameEndedEvent(

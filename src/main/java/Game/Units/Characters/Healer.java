@@ -1,9 +1,9 @@
 package Game.Units.Characters;
 
 import Game.Actions;
-import Game.Event.Arguments.Actions.ActionInfo;
-import Game.Event.Arguments.Actions.EffectActionInfo;
-import Game.Event.Arguments.Actions.HealActionInfo;
+import Game.Events.Arguments.Actions.ActionInfo;
+import Game.Events.Arguments.Actions.EffectActionInfo;
+import Game.Events.Arguments.Actions.HealActionInfo;
 import Game.Effects.Effectable;
 import Exceptions.InvalidActionException;
 import Game.Units.UnitSharedData;

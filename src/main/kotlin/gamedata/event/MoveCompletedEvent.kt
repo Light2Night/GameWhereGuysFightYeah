@@ -1,14 +1,14 @@
 package gamedata.event
 
-import Game.Event.Eventable
+import Game.Event.Handler
 import Game.Game
 import gamedata.GameData
 
 class MoveCompletedEvent(
     private val game: Game,
     private val gameData: GameData,
-) : Eventable {
-    override fun onEvent() {
+) : Handler() {
+    override fun handle() {
         gameData.updateUnits(game.units)
 
         val currentActionIndex = gameData.currentActionIndex.value ?: 0

@@ -1,13 +1,13 @@
 package gamedata.event
 
-import Game.Event.GameEndEventable
 import Game.Event.Arguments.GameEndInfo
+import Game.Event.HandlerGeneric
 import gamedata.GameData
 
 class GameEndedEvent(
     private val gameData: GameData,
-) : GameEndEventable {
-    override fun onEvent(info: GameEndInfo) {
+) : HandlerGeneric<GameEndInfo>() {
+    override fun handle(info: GameEndInfo) {
         gameData.gameResult = info
     }
 }

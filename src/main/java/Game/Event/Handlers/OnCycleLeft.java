@@ -1,16 +1,16 @@
 package Game.Event.Handlers;
 
+import Game.Event.Handler;
 import Game.Statistics.Session.ICycleStatisticCollector;
 import Game.Units.Characters.GameUnit;
 import Game.Event.Arguments.Actions.ActionInfo;
-import Game.Event.Eventable;
 
 import java.util.ArrayList;
 
-public class OnCycleLeft implements Eventable {
-    private ArrayList<GameUnit> units;
-    private ArrayList<ActionInfo> cycleActions;
-    private ICycleStatisticCollector statisticCollector;
+public class OnCycleLeft extends Handler {
+    private final ArrayList<GameUnit> units;
+    private final ArrayList<ActionInfo> cycleActions;
+    private final ICycleStatisticCollector statisticCollector;
 
     public OnCycleLeft(ArrayList<GameUnit> units, ArrayList<ActionInfo> cycleActions, ICycleStatisticCollector statisticCollector) {
         this.units = units;
@@ -19,7 +19,7 @@ public class OnCycleLeft implements Eventable {
     }
 
     @Override
-    public void onEvent() {
+    public void handle() {
         executeEffectsForAll();
         cycleActions.clear();
         statisticCollector.addCycle();

@@ -1,15 +1,15 @@
 package gamedata.event
 
-import Game.Event.Eventable
+import Game.Event.Handler
 import Game.Game
 import gamedata.GameData
 
 class SelectEvent(
     private val game: Game,
     private val gameData: GameData,
-) : Eventable {
+) : Handler() {
 
-    override fun onEvent() {
+    override fun handle() {
         game.selectedUnitIndex?.let { gameData.selectedUnit = game.getUnitById(it) ?: return }
     }
 }

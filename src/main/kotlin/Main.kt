@@ -49,10 +49,10 @@ fun main() = application {
     val gameData by remember {
         val newGameData = GameData(game)
 
-        game.events.setSelectedIndexChangedEvent(SelectEvent(game, newGameData))
-        game.events.setCurrentIndexChangedEvent(CurrentUnitChangedEvent(game, newGameData))
-        game.events.setMoveCompletedEvent(MoveCompletedEvent(game, newGameData))
-        game.events.setGameEndEvent(GameEndedEvent(newGameData))
+        game.events.SelectedIndexChangedEvent.addHandler(SelectEvent(game, newGameData))
+        game.events.CurrentIndexChangedEvent.addHandler(CurrentUnitChangedEvent(game, newGameData))
+        game.events.MoveCompletedEvent.addHandler(MoveCompletedEvent(game, newGameData))
+        game.events.GameEndEvent.addHandler(GameEndedEvent(newGameData))
 
         mutableStateOf(newGameData)
     }
@@ -110,6 +110,7 @@ fun main() = application {
                     .fillMaxSize()
                     .background(colorBackground)
             )
+
             Screen.Game -> GameScreen(
                 game = game,
                 gameData = gameData,
@@ -120,6 +121,7 @@ fun main() = application {
                     .fillMaxSize()
                     .background(colorBackground)
             )
+
             Screen.Results -> ResultsScreen(
                 result = gameData.gameResult!!,
                 location = gameData.location!!,

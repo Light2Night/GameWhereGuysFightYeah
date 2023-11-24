@@ -6,7 +6,6 @@ import Game.Effects.Effectable;
 import Game.Event.Arguments.Actions.ActionInfo;
 import Game.Event.Arguments.Actions.AttackActionInfo;
 import Game.Event.Arguments.Actions.EffectActionInfo;
-import Game.Move;
 import Game.Units.UnitSharedData;
 
 import java.util.Random;
@@ -51,7 +50,7 @@ public class Magician extends GameUnit implements Attackable, Magicable {
         damage = target.takeDamage(damage);
         statisticCollector.addDamage(this, damage);
         ActionInfo actionInfo = new AttackActionInfo(this, target, Actions.Attack, damage);
-        events.actionPerformed(actionInfo);
+        events.ActionPerformedEvent.invoke(actionInfo);
         return actionInfo;
     }
 
@@ -60,7 +59,7 @@ public class Magician extends GameUnit implements Attackable, Magicable {
         target.takeEffect(effect);
         statisticCollector.addImposedEffect(this, effect.getEffectType());
         ActionInfo actionInfo = new EffectActionInfo(this, target, Actions.Poisoning, effect);
-        events.actionPerformed(actionInfo);
+        events.ActionPerformedEvent.invoke(actionInfo);
         return actionInfo;
     }
 

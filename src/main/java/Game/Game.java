@@ -57,7 +57,7 @@ public class Game {
         events = new GameEventsAggregate();
         cycleActions = new ArrayList<>();
 
-        events.setCycleLeftEvent(new OnCycleLeft(units, cycleActions, sessionStatisticBuilder));
+        events.CycleLeftEvent.addHandler(new OnCycleLeft(units, cycleActions, sessionStatisticBuilder));
 
         human = new Team(1, PlayerTypes.Human, "Human");
         ai = new Team(2, PlayerTypes.AI, "AI");
@@ -70,7 +70,7 @@ public class Game {
         cycle = new GameCycle(compositeAccessor, events);
 
         UnitEventsAggregate unitEvents = new UnitEventsAggregate();
-        unitEvents.setActionPerformedEvent(new OnAction(cycleActions));
+        unitEvents.ActionPerformedEvent.addHandler(new OnAction(cycleActions));
         EffectFactory effectFactory = new EffectFactory(sessionStatisticBuilder);
 
         alliesFactory = new UnitFactory(compositeAccessor, human, unitEvents, sessionStatisticBuilder, effectFactory);
@@ -80,12 +80,12 @@ public class Game {
     //region Setters
     public void setSelectedUnitIndex(@Nullable Integer selectedUnitIndex) {
         this.selectedUnitIndex = selectedUnitIndex;
-        events.selectedIndexChanged();
+        events.SelectedIndexChangedEvent.invoke();
     }
 
     public void setCurrentUnitId(@Nullable Integer currentUnitIndex) {
         this.currentUnitIndex = currentUnitIndex;
-        events.currentIndexChanged();
+        events.CurrentIndexChangedEvent.invoke();
     }
     //endregion
 
@@ -152,7 +152,7 @@ public class Game {
 
         Integer id = cycle.next();
         setCurrentUnitId(id);
-        events.moveCompleted();
+        events.MoveCompletedEvent.invoke();
     }
 
     public Boolean checkTheEndAndFinishGameIfNeed() {
@@ -161,7 +161,7 @@ public class Game {
             return false;
         }
 
-        events.gameEnd(new GameEndInfo(getTeamWinner(), sessionStatisticBuilder.build()));
+        events.GameEndEvent.invoke(new GameEndInfo(getTeamWinner(), sessionStatisticBuilder.build()));
 
         gameIsOn = false;
         return true;

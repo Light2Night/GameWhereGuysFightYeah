@@ -4,7 +4,6 @@ import Game.Actions;
 import Game.Event.Arguments.Actions.ActionInfo;
 import Game.Event.Arguments.Actions.AttackActionInfo;
 import Exceptions.InvalidActionException;
-import Game.Move;
 import Game.Units.UnitSharedData;
 
 import java.util.Random;
@@ -33,7 +32,7 @@ public class Barbarian extends GameUnit implements Attackable {
             damage = target.takeDamage(damage);
             statisticCollector.addDamage(this, damage);
             ActionInfo actionInfo = new AttackActionInfo(this, target, Actions.Attack, damage);
-            events.actionPerformed(actionInfo);
+            events.ActionPerformedEvent.invoke(actionInfo);
             return actionInfo;
         }
 

@@ -76,7 +76,7 @@ fun GameScreen(
                 selectedUnitID = gameData.selectedUnit?.id ?: 0,
                 currentUnitId = gameData.currentUnit?.id ?: 0,
                 side = Side.Left,
-                onSelect = { game.selectedUnitIndex = it },
+                onSelect = { game.setSelectedUnitIndex(it) },
                 modifier = Modifier.weight(1F),
             )
 
@@ -90,8 +90,9 @@ fun GameScreen(
                     gameData.gameResult?.let { onEnd() }
 
                     if (game.getUnitById(gameData.selectedUnit?.id ?: 0) == null) {
-                        game.selectedUnitIndex =
+                        game.setSelectedUnitIndex(
                             gameData.enemies.lastOrNull()?.id ?: gameData.allies.firstOrNull()?.id ?: 0
+                        )
                     }
                 },
                 modifier = Modifier.weight(1F),
@@ -104,7 +105,7 @@ fun GameScreen(
                 selectedUnitID = gameData.selectedUnit?.id ?: 0,
                 currentUnitId = gameData.currentUnit?.id ?: 0,
                 side = Side.Right,
-                onSelect = { game.selectedUnitIndex = it },
+                onSelect = { game.setSelectedUnitIndex(it) },
                 modifier = Modifier.weight(1F),
             )
         }
@@ -433,7 +434,7 @@ private fun GameBoard(
             UnitInfo(
                 unit = unit,
                 isSelected = unit.id == gameData.selectedUnit?.id,
-                onSelect = { game.selectedUnitIndex = unit.id },
+                onSelect = { game.setSelectedUnitIndex(unit.id) },
                 modifier = Modifier.fillMaxWidth(),
             )
         }

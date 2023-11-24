@@ -4,6 +4,7 @@ import Game.Effects.Factories.EffectFactory;
 import Game.Event.Aggregates.UnitEventsAggregate;
 import Game.Event.Arguments.Actions.ActionInfo;
 import Game.Event.Arguments.GameEndInfo;
+import Game.Event.Arguments.UnitId;
 import Game.Event.Handlers.OnAction;
 import Exceptions.GameIsNotStartedException;
 import Game.Event.Aggregates.GameEventsAggregate;
@@ -80,12 +81,12 @@ public class Game {
     //region Setters
     public void setSelectedUnitIndex(@Nullable Integer selectedUnitIndex) {
         this.selectedUnitIndex = selectedUnitIndex;
-        events.SelectedIndexChangedEvent.invoke();
+        events.SelectedIndexChangedEvent.invoke(new UnitId(this.selectedUnitIndex));
     }
 
-    public void setCurrentUnitId(@Nullable Integer currentUnitIndex) {
+    public void setCurrentUnitIndex(@Nullable Integer currentUnitIndex) {
         this.currentUnitIndex = currentUnitIndex;
-        events.CurrentIndexChangedEvent.invoke();
+        events.CurrentIndexChangedEvent.invoke(new UnitId(this.currentUnitIndex));
     }
     //endregion
 
@@ -94,15 +95,6 @@ public class Game {
         return units;
     }
 
-    @Nullable
-    public Integer getSelectedUnitIndex() {
-        return selectedUnitIndex;
-    }
-
-    @Nullable
-    public Integer getCurrentUnitIndex() {
-        return currentUnitIndex;
-    }
 
     public GameEventsAggregate getEvents() {
         return events;
@@ -126,7 +118,7 @@ public class Game {
         gameIsOn = true;
 
         Integer unitId = cycle.next();
-        setCurrentUnitId(unitId);
+        setCurrentUnitIndex(unitId);
         setSelectedUnitIndex(unitId);
     }
 
@@ -151,7 +143,7 @@ public class Game {
         }
 
         Integer id = cycle.next();
-        setCurrentUnitId(id);
+        setCurrentUnitIndex(id);
         events.MoveCompletedEvent.invoke();
     }
 

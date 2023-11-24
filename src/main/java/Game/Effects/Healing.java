@@ -45,7 +45,7 @@ public class Healing implements Effectable {
     }
 
     @Override
-    public Effectable clone() {
+    public Healing copy() {
         return new Healing(this);
     }
 }

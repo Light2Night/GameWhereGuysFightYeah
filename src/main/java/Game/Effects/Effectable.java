@@ -2,7 +2,7 @@ package Game.Effects;
 
 import Game.Units.Characters.GameUnit;
 
-public interface Effectable extends Cloneable {
+public interface Effectable {
     EffectTypes getEffectType();
     void effect(GameUnit unit);
 
@@ -10,5 +10,5 @@ public interface Effectable extends Cloneable {
 
     int getDurationInCycles();
 
-    Effectable clone();
+    Effectable copy();
 }

@@ -51,7 +51,7 @@ public class Poisoning implements Effectable {
     }
 
     @Override
-    public Effectable clone() {
+    public Poisoning copy() {
         return new Poisoning(this);
     }
 }

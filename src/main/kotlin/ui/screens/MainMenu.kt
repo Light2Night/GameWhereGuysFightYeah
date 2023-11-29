@@ -1,4 +1,4 @@
-package ui
+package ui.screens
 
 import Game.Units.Characters.UnitTypes
 import androidx.compose.animation.Crossfade
@@ -63,6 +63,9 @@ import ui.composable.*
 import ui.composable.shaders.*
 import properties.user.worldMap.Location
 import properties.user.worldMap.WorldMap
+import ui.CheckManager
+import ui.CheckValue
+import ui.MainMenuTab
 import user
 import kotlin.math.ceil
 import kotlin.random.Random

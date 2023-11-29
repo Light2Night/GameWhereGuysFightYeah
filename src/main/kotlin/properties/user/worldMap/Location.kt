@@ -1,6 +1,6 @@
 package properties.user.worldMap
 
-import HasID
+import utilities.HasID
 import properties.resources.Reward
 
 data class Location(

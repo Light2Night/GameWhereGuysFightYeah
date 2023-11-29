@@ -1,4 +1,4 @@
-package ui
+package ui.screens
 
 import Game.Units.Characters.Barbarian
 import Game.Units.Characters.GameUnit
@@ -45,6 +45,9 @@ import padding
 import smallBorder
 import smallCorners
 import transparencyLight
+import ui.Action
+import ui.ActionFabric
+import ui.Side
 import ui.composable.*
 import ui.composable.shaders.MedievalShape
 import ui.composable.shaders.StandardBackgroundBrush

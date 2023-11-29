@@ -2,7 +2,7 @@ package properties.user.recruit
 
 import Game.Units.Characters.UnitTypes
 import properties.resources.Cost
-import uniqueId
+import utilities.uniqueId
 
 class RecruitFactory {
     private val mobBarbarianNames: List<String> = listOf(

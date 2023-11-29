@@ -4,7 +4,7 @@ import Game.Units.Characters.UnitTypes
 import org.jetbrains.skiko.currentNanoTime
 import properties.resources.Reward
 import properties.user.recruit.RecruitFactory
-import uniqueId
+import utilities.uniqueId
 import user
 import kotlin.random.Random
 

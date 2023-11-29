@@ -1,12 +1,10 @@
 package properties.user.recruit
 
-import Game.Effects.Healing
-import Game.Effects.Poisoning
 import Game.Units.Factories.ViewModels.BarbarianViewModel
 import Game.Units.Factories.ViewModels.BaseUnitViewModel
 import Game.Units.Factories.ViewModels.HealerViewModel
 import Game.Units.Factories.ViewModels.MageViewModel
-import HasID
+import utilities.HasID
 import properties.resources.Cost
 
 data class Recruit(

@@ -1,4 +1,4 @@
-package ui
+package ui.screens
 
 import Game.Events.Arguments.GameEndInfo
 import Game.PlayerTypes

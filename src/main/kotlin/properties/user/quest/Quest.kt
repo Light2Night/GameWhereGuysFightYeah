@@ -1,6 +1,6 @@
 package properties.user.quest
 
-import HasID
+import utilities.HasID
 import gamedata.GameData
 import properties.resources.Reward
 

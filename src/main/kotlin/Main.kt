@@ -24,9 +24,9 @@ import gamedata.event.SelectEvent
 import properties.Properties
 import properties.user.recruit.Recruit
 import properties.user.recruit.RecruitFactory
-import ui.GameScreen
-import ui.MainMenu
-import ui.ResultsScreen
+import ui.screens.GameScreen
+import ui.screens.MainMenu
+import ui.screens.ResultsScreen
 import ui.Screen
 
 fun main() = application {

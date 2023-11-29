@@ -84,6 +84,7 @@ fun GameScreen(
             side = Side.Down,
             onSelect = { game.setSelectedUnitIndex(it) },
             modifier = Modifier
+                .padding(top = padding)
                 .fillMaxHeight(0.4F)
                 .align(Alignment.TopCenter),
         )
@@ -103,6 +104,7 @@ fun GameScreen(
             side = Side.Up,
             onSelect = { game.setSelectedUnitIndex(it) },
             modifier = Modifier
+                .padding(bottom = padding)
                 .fillMaxHeight(0.4F)
                 .align(Alignment.BottomCenter),
         )
@@ -148,48 +150,6 @@ fun GameScreen(
                 )
             }
         }
-
-        /*Row(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            UnitList(
-                units = gameData.allies,
-                selectedUnitID = gameData.selectedUnit?.id ?: 0,
-                currentUnitId = gameData.currentUnit?.id ?: 0,
-                side = Side.Left,
-                onSelect = { game.setSelectedUnitIndex(it) },
-                modifier = Modifier.weight(1F),
-            )
-
-            Divider(modifier = Modifier.fillMaxHeight())
-
-            GameBoard(
-                game = game,
-                gameData = gameData,
-                onAction = {
-                    game.next()
-                    gameData.gameResult?.let { onEnd() }
-
-                    if (game.getUnitById(gameData.selectedUnit?.id ?: 0) == null) {
-                        game.setSelectedUnitIndex(
-                            gameData.enemies.lastOrNull()?.id ?: gameData.allies.firstOrNull()?.id ?: 0
-                        )
-                    }
-                },
-                modifier = Modifier.weight(1F),
-            )
-
-            Divider(modifier = Modifier.fillMaxHeight())
-
-            UnitList(
-                units = gameData.enemies,
-                selectedUnitID = gameData.selectedUnit?.id ?: 0,
-                currentUnitId = gameData.currentUnit?.id ?: 0,
-                side = Side.Right,
-                onSelect = { game.setSelectedUnitIndex(it) },
-                modifier = Modifier.weight(1F),
-            )
-        }*/
     }
 }
 
@@ -279,7 +239,7 @@ private fun UnitList(
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center,
+        horizontalArrangement = Arrangement.spacedBy(padding),
         modifier = modifier,
     ) {
         units.forEach { unit ->
@@ -290,7 +250,6 @@ private fun UnitList(
                 onSelect = { onSelect(unit.id) },
                 modifier = Modifier
                     .fillMaxHeight()
-                    .aspectRatio(imageWidth / imageHeight)
                     .offset(0.dp, if (unit.id == currentUnitId) if (side == Side.Down) 20.dp else (-20).dp else 0.dp),
             )
         }
@@ -305,10 +264,9 @@ private fun UnitInfo(
     onSelect: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
-    Box(
+    Row(
         modifier = modifier
             .clickable { onSelect() }
-            .padding(padding)
             .background(StandardBackgroundBrush(), MedievalShape(smallCorners))
             .border(
                 if (isSelected) border else smallBorder,
@@ -319,7 +277,8 @@ private fun UnitInfo(
     ) {
         Box(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxHeight()
+                .aspectRatio(imageWidth / imageHeight)
                 .padding(padding)
                 .border(smallBorder, colorBorder, MedievalShape(smallCorners))
                 .clip(MedievalShape(smallCorners)),
@@ -385,39 +344,14 @@ private fun UnitInfo(
                     .align(Alignment.BottomCenter),
             )
         }
-    }
-}
 
-@Composable
-private fun UnitTextData(
-    unit: GameUnit,
-    alignment: Alignment.Horizontal = Alignment.Start,
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        horizontalAlignment = alignment,
-        modifier = modifier,
-    ) {
-        MedievalText("HP: ${unit.hp}/${unit.maxHp}")
-
-        when (unit) {
-            is Barbarian -> {
-                MedievalText("DMG: ${unit.damage - unit.damageDelta}-${unit.damage}")
-            }
-
-            is Magician -> {
-                MedievalText("DMG: ${unit.damage - unit.damageDelta}-${unit.damage}")
-
-                val effect = unit.magicalEffect as Poisoning
-                MedievalText("EFF: ${effect.damage} (${effect.durationInCycles} turns)")
-            }
-
-            is Healer -> {
-                MedievalText("HEAL: ${unit.heal}")
-
-                val effect = unit.healingEffect as Healing
-                MedievalText("EFF: ${effect.heal} (${effect.durationInCycles} turns)")
-            }
+        if (unit.effects.isNotEmpty()) {
+            EffectsInfo(
+                effects = unit.effects,
+                modifier = Modifier.padding(top = padding, end = padding)
+            )
+        } else {
+            Box(modifier = Modifier.padding(top = padding, end = padding).size(iconSize))
         }
     }
 }
@@ -427,8 +361,8 @@ private fun EffectsInfo(
     effects: List<Effectable>,
     modifier: Modifier = Modifier,
 ) {
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(padding),
+    Column(
+        verticalArrangement = Arrangement.spacedBy(padding),
         modifier = modifier,
     ) {
         effects.forEach { effect ->
@@ -449,93 +383,37 @@ private fun EffectIcon(
     MedievalBox(
         modifier = modifier,
     ) {
-        Box(
-            modifier = Modifier
-        ) {
-            Image(
-                bitmap = when (effect) {
-                    is Healing -> getImageBitmap("textures/effect/healing.png")
-                    is Poisoning -> getImageBitmap("textures/effect/poison.png")
-                    else -> emptyImageBitmap
-                } ?: emptyImageBitmap,
-                contentDescription = "effect icon",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxWidth(),
-            )
+        Image(
+            bitmap = when (effect) {
+                is Healing -> getImageBitmap("textures/effect/healing.png")
+                is Poisoning -> getImageBitmap("textures/effect/poison.png")
+                else -> emptyImageBitmap
+            } ?: emptyImageBitmap,
+            contentDescription = "effect icon",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxWidth(),
+        )
 
-            MedievalText(
-                effect.cyclesLeft.toString(),
-                fontSize = hugeText,
-                color = colorTextLight,
-                modifier = Modifier.align(Alignment.Center)
-            )
+        MedievalText(
+            effect.cyclesLeft.toString(),
+            fontSize = hugeText,
+            color = colorTextLight,
+            modifier = Modifier.align(Alignment.Center)
+        )
 
-            MedievalText(
-                effect.cyclesLeft.toString(),
-                fontSize = hugeText,
-                color = Color.Black,
-                style = TextStyle.Default.copy(
-                    drawStyle = Stroke(
-                        miter = 1f,
-                        width = 1f,
-                        join = StrokeJoin.Round
-                    )
-                ),
-                modifier = Modifier.align(Alignment.Center)
-            )
-        }
-    }
-}
-
-@Composable
-private fun GameBoard(
-    game: Game,
-    gameData: GameData,
-    onAction: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = modifier
-    ) {
-        SlideTransition(
-            items = gameData.allies.plus(gameData.enemies),
-            currentIndex = gameData.allies.plus(gameData.enemies).indexOf(gameData.currentUnit),
-            orientation = Orientation.Vertical,
-            side = Side.Down,
-            duration = normalAnimationDuration,
-            delayIn = normalAnimationDuration,
-        ) { _, unit ->
-            /*UnitInfo(
-                unit = unit,
-                isSelected = unit.id == gameData.selectedUnit?.id,
-                onSelect = { game.setSelectedUnitIndex(unit.id) },
-                modifier = Modifier.fillMaxWidth(),
-            )*/
-        }
-
-        var actions by remember { mutableStateOf(ActionFabric(game, gameData).createActions()) }
-
-        LaunchedEffect(gameData.currentUnit) {
-            actions = ActionFabric(game, gameData).createActions()
-
-            if (gameData.currentUnit?.team?.playerType == PlayerTypes.AI) {
-                gameData.currentUnit?.moveAI()
-                delay(normalAnimationDuration.toLong() * 2 + 1000L)
-                onAction()
-            }
-        }
-
-        Crossfade(
-            gameData.currentUnit,
-            animationSpec = tween(normalAnimationDuration),
-        ) { unit ->
-            if (unit != null) {
-                Actions(
-                    actions = actions,
-                    onAction = onAction,
+        MedievalText(
+            effect.cyclesLeft.toString(),
+            fontSize = hugeText,
+            color = Color.Black,
+            style = TextStyle.Default.copy(
+                drawStyle = Stroke(
+                    miter = 1f,
+                    width = 1f,
+                    join = StrokeJoin.Round
                 )
-            }
-        }
+            ),
+            modifier = Modifier.align(Alignment.Center)
+        )
     }
 }
 

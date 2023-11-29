@@ -26,12 +26,14 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.dp
 import bigText
 import border
 import colorBackground
 import colorBorder
 import colorSelectedBorder
 import colorTextLight
+import colorTextLighter
 import emptyImageBitmap
 import getImageBitmap
 import hugeText
@@ -40,10 +42,13 @@ import imageHeight
 import imageWidth
 import kotlinx.coroutines.delay
 import normalAnimationDuration
+import normalText
 import org.jetbrains.skiko.currentNanoTime
 import padding
+import properties.user.recruit.Recruit
 import smallBorder
 import smallCorners
+import transparency
 import transparencyLight
 import ui.Action
 import ui.ActionFabric
@@ -71,7 +76,80 @@ fun GameScreen(
                 .fillMaxSize(),
         )
 
-        Row(
+        UnitList(
+            gameData = gameData,
+            units = gameData.enemies,
+            selectedUnitID = gameData.selectedUnit?.id ?: 0,
+            currentUnitId = gameData.currentUnit?.id ?: 0,
+            side = Side.Down,
+            onSelect = { game.setSelectedUnitIndex(it) },
+            modifier = Modifier
+                .fillMaxHeight(0.4F)
+                .align(Alignment.TopCenter),
+        )
+
+        Divider(
+            orientation = Orientation.Horizontal,
+            Modifier
+                .fillMaxWidth()
+                .align(Alignment.Center),
+        )
+
+        UnitList(
+            gameData = gameData,
+            units = gameData.allies,
+            selectedUnitID = gameData.selectedUnit?.id ?: 0,
+            currentUnitId = gameData.currentUnit?.id ?: 0,
+            side = Side.Up,
+            onSelect = { game.setSelectedUnitIndex(it) },
+            modifier = Modifier
+                .fillMaxHeight(0.4F)
+                .align(Alignment.BottomCenter),
+        )
+
+        var actions by remember { mutableStateOf(ActionFabric(game, gameData).createActions()) }
+
+        LaunchedEffect(gameData.currentUnit) {
+            actions = ActionFabric(game, gameData).createActions()
+
+            if (gameData.currentUnit?.team?.playerType == PlayerTypes.AI) {
+                gameData.currentUnit?.moveAI()
+                delay(normalAnimationDuration.toLong() * 2 + 1000L)
+
+                game.next()
+                gameData.gameResult?.let { onEnd() }
+
+                if (game.getUnitById(gameData.selectedUnit?.id ?: 0) == null) {
+                    game.setSelectedUnitIndex(
+                        gameData.enemies.lastOrNull()?.id ?: gameData.allies.firstOrNull()?.id ?: 0
+                    )
+                }
+            }
+        }
+
+        Crossfade(
+            gameData.currentUnit,
+            animationSpec = tween(normalAnimationDuration),
+            modifier = Modifier.align(Alignment.BottomStart),
+        ) { unit ->
+            if (unit != null) {
+                Actions(
+                    actions = actions,
+                    onAction = {
+                        game.next()
+                        gameData.gameResult?.let { onEnd() }
+
+                        if (game.getUnitById(gameData.selectedUnit?.id ?: 0) == null) {
+                            game.setSelectedUnitIndex(
+                                gameData.enemies.lastOrNull()?.id ?: gameData.allies.firstOrNull()?.id ?: 0
+                            )
+                        }
+                    },
+                )
+            }
+        }
+
+        /*Row(
             modifier = Modifier.fillMaxSize()
         ) {
             UnitList(
@@ -111,7 +189,7 @@ fun GameScreen(
                 onSelect = { game.setSelectedUnitIndex(it) },
                 modifier = Modifier.weight(1F),
             )
-        }
+        }*/
     }
 }
 
@@ -191,6 +269,7 @@ private fun SmokeArea(
 
 @Composable
 private fun UnitList(
+    gameData: GameData,
     selectedUnitID: Int,
     currentUnitId: Int,
     units: List<GameUnit>,
@@ -198,32 +277,22 @@ private fun UnitList(
     onSelect: (Int) -> Unit,
     modifier: Modifier
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier.verticalScroll(rememberScrollState()),
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center,
+        modifier = modifier,
     ) {
         units.forEach { unit ->
-            Box(
+            UnitInfo(
+                unit = unit,
+                recruit = gameData.getRecruitByID(unit.id) ?: return@forEach,
+                isSelected = unit.id == selectedUnitID,
+                onSelect = { onSelect(unit.id) },
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(imageHeight),
-            ) {
-                SlideAppearAnimation(
-                    visible = unit.id != currentUnitId,
-                    orientation = Orientation.Horizontal,
-                    side = side,
-                    duration = normalAnimationDuration,
-                    delayIn = normalAnimationDuration,
-                ) {
-                    UnitInfo(
-                        unit = unit,
-                        isSelected = unit.id == selectedUnitID,
-                        side = side,
-                        onSelect = { onSelect(unit.id) },
-                        modifier = Modifier.fillMaxWidth(),
-                    )
-                }
-            }
+                    .fillMaxHeight()
+                    .aspectRatio(imageWidth / imageHeight)
+                    .offset(0.dp, if (unit.id == currentUnitId) if (side == Side.Down) 20.dp else (-20).dp else 0.dp),
+            )
         }
     }
 }
@@ -231,13 +300,12 @@ private fun UnitList(
 @Composable
 private fun UnitInfo(
     unit: GameUnit,
+    recruit: Recruit,
     isSelected: Boolean,
-    side: Side = Side.Left,
     onSelect: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
-    Row(
-        horizontalArrangement = if (side == Side.Right) Arrangement.End else Arrangement.Start,
+    Box(
         modifier = modifier
             .clickable { onSelect() }
             .padding(padding)
@@ -249,51 +317,13 @@ private fun UnitInfo(
             )
             .clip(MedievalShape(smallCorners)),
     ) {
-        if (side == Side.Left) {
-            Image(
-                bitmap = getImageBitmap(
-                    when (unit) {
-                        is Barbarian -> "textures/characters/barbarian_placeholder.png"
-                        is Magician -> "textures/characters/magician_placeholder.png"
-                        is Healer -> "textures/characters/healer_placeholder.png"
-                        else -> ""
-                    }
-                ) ?: emptyImageBitmap,
-                contentDescription = unit.name,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .height(imageHeight)
-                    .width(imageWidth)
-                    .padding(padding)
-                    .background(colorBackground, MedievalShape(smallCorners))
-                    .border(smallBorder, colorBorder, MedievalShape(smallCorners))
-                    .clip(MedievalShape(smallCorners)),
-            )
-        }
-
-        Column(
-            horizontalAlignment = if (side == Side.Right) Alignment.End else Alignment.Start,
+        Box(
             modifier = Modifier
+                .fillMaxWidth()
+                .padding(padding)
+                .border(smallBorder, colorBorder, MedievalShape(smallCorners))
+                .clip(MedievalShape(smallCorners)),
         ) {
-            MedievalText(
-                text = "${unit.id} - ${unit.name.replaceFirstChar { it.uppercaseChar() }}",
-                fontSize = bigText,
-                fontWeight = FontWeight.Bold,
-            )
-
-            UnitTextData(
-                unit = unit,
-                alignment = if (side == Side.Right) Alignment.End else Alignment.Start,
-                modifier = Modifier,
-            )
-
-            EffectsInfo(
-                effects = unit.effects,
-                modifier = Modifier,
-            )
-        }
-
-        if (side == Side.Right) {
             Image(
                 bitmap = getImageBitmap(
                     when (unit) {
@@ -306,12 +336,53 @@ private fun UnitInfo(
                 contentDescription = unit.name,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .height(imageHeight)
-                    .width(imageWidth)
-                    .padding(padding)
+                    .fillMaxWidth()
                     .background(colorBackground, MedievalShape(smallCorners))
                     .border(smallBorder, colorBorder, MedievalShape(smallCorners))
                     .clip(MedievalShape(smallCorners)),
+            )
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(StandardBackgroundBrush(), MedievalShape(smallCorners), alpha = transparency)
+            ) {
+                MedievalBox(
+                    background = StandardBackgroundBrush(),
+                    modifier = Modifier
+                        .fillMaxWidth(0.2F)
+                        .aspectRatio(1F)
+                        .align(Alignment.TopStart),
+                ) {
+                    MedievalText(
+                        text = recruit.level.toString(),
+                        fontSize = bigText,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                    )
+                }
+
+                MedievalText(
+                    text = "${unit.id} - ${unit.name.replaceFirstChar { it.uppercaseChar() }}",
+                    fontSize = normalText,
+                    color = colorTextLighter,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .padding(start = padding)
+                        .fillMaxWidth(0.8F)
+                        .align(Alignment.CenterEnd)
+                )
+            }
+
+            MedievalProgressbar(
+                value = unit.hp,
+                min = 0,
+                max = unit.maxHp,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(16.dp)
+                    .align(Alignment.BottomCenter),
             )
         }
     }
@@ -434,12 +505,12 @@ private fun GameBoard(
             duration = normalAnimationDuration,
             delayIn = normalAnimationDuration,
         ) { _, unit ->
-            UnitInfo(
+            /*UnitInfo(
                 unit = unit,
                 isSelected = unit.id == gameData.selectedUnit?.id,
                 onSelect = { game.setSelectedUnitIndex(unit.id) },
                 modifier = Modifier.fillMaxWidth(),
-            )
+            )*/
         }
 
         var actions by remember { mutableStateOf(ActionFabric(game, gameData).createActions()) }
@@ -468,14 +539,13 @@ private fun GameBoard(
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun Actions(
     actions: List<Action>,
     onAction: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    FlowRow(
+    Column(
         modifier = modifier,
     ) {
         actions.forEach { action ->
@@ -485,7 +555,7 @@ private fun Actions(
                     action.action()
                     onAction()
                 },
-                modifier = Modifier.padding(start = padding, top = padding),
+                modifier = Modifier.padding(start = padding, bottom = padding),
             )
         }
     }

@@ -23,7 +23,7 @@ fun MedievalProgressbar(
     orientation: Orientation = Orientation.Horizontal,
     modifier: Modifier = Modifier,
 ) {
-    val texture by remember {
+    val textureBitmap by remember {
         mutableStateOf(
             when (orientation) {
                 Orientation.Vertical -> getImageBitmap("textures/background/divider.png") ?: emptyImageBitmap
@@ -36,7 +36,7 @@ fun MedievalProgressbar(
         Box(
             Modifier
                 .fillMaxSize()
-                .repeatableTexture(texture, orientation)
+                .repeatableTexture(textureBitmap, orientation)
                 .background(colorBackgroundDarker.copy(alpha = transparencySecond))
         )
 
@@ -49,7 +49,7 @@ fun MedievalProgressbar(
         Box(
             Modifier
                 .clipToBounds()
-                .repeatableTexture(texture, orientation)
+                .repeatableTexture(textureBitmap, orientation)
                 .fillMaxHeight(if (orientation == Orientation.Vertical) size else 1F)
                 .fillMaxWidth(if (orientation == Orientation.Horizontal) size else 1F)
                 .align(Alignment.TopStart)

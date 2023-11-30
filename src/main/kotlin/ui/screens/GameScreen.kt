@@ -493,14 +493,19 @@ private fun Actions(
         modifier = modifier,
     ) {
         actions.forEach { action ->
-            MedievalButton(
-                text = action.name,
-                onClick = {
-                    action.action()
-                    onAction()
-                },
-                modifier = Modifier.padding(start = padding, bottom = padding),
-            )
+            Row (
+                horizontalArrangement = Arrangement.spacedBy(padding),
+            ) {
+                MedievalButton(
+                    icon = action.image ?: emptyImageBitmap,
+                    text = action.name,
+                    onClick = {
+                        action.action()
+                        onAction()
+                    },
+                    modifier = Modifier.padding(start = padding, bottom = padding),
+                )
+            }
         }
     }
 }

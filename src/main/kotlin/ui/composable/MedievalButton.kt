@@ -4,24 +4,24 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.platform.Font
+import androidx.compose.ui.unit.dp
 import bigText
 import biggerPadding
 import colorBackgroundDarker
 import colorBorder
 import colorTextLighter
+import padding
 import smallBorder
 import smallCorners
 import transparencySecond
@@ -72,11 +72,16 @@ fun MedievalButton(
     modifier: Modifier = Modifier,
 ) {
     MedievalButton(onClick, enabled, modifier) {
-        Row {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.height(IntrinsicSize.Min)
+        ) {
+            var textHeight by remember { mutableStateOf(Int.MAX_VALUE.dp) }
+
             Image(
                 icon,
                 contentDescription = text,
-                modifier = Modifier.fillMaxHeight()
+                modifier = Modifier.padding(padding).height(textHeight + biggerPadding + biggerPadding - padding - padding)
             )
             Text(
                 text,
@@ -84,7 +89,11 @@ fun MedievalButton(
                 fontSize = bigText,
                 fontWeight = FontWeight.Bold,
                 fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
-                modifier = Modifier.padding(biggerPadding),
+                modifier = Modifier
+                    .padding(biggerPadding)
+                    .onGloballyPositioned {
+                        textHeight = it.size.height.dp
+                    },
             )
         }
     }

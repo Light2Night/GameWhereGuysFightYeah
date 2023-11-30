@@ -18,6 +18,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
@@ -46,12 +47,14 @@ import normalText
 import org.jetbrains.skiko.currentNanoTime
 import padding
 import properties.user.recruit.Recruit
+import settings
 import smallBorder
 import smallCorners
 import transparency
 import transparencyLight
-import ui.Action
-import ui.ActionFabric
+import transparencySecond
+import ui.action.Action
+import ui.action.ActionFabric
 import ui.Side
 import ui.composable.*
 import ui.composable.shaders.MedievalShape
@@ -66,6 +69,26 @@ fun GameScreen(
     onEnd: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    var actions by remember { mutableStateOf(ActionFabric(game, gameData).createActions()) }
+
+    LaunchedEffect(gameData.currentUnit) {
+        actions = ActionFabric(game, gameData).createActions()
+
+        if (gameData.currentUnit?.team?.playerType == PlayerTypes.AI) {
+            gameData.currentUnit?.moveAI()
+            delay(normalAnimationDuration.toLong() * 2 + 1000L)
+
+            game.next()
+            gameData.gameResult?.let { onEnd() }
+
+            if (game.getUnitById(gameData.selectedUnit?.id ?: 0) == null) {
+                game.setSelectedUnitIndex(
+                    gameData.enemies.lastOrNull()?.id ?: gameData.allies.firstOrNull()?.id ?: 0
+                )
+            }
+        }
+    }
+
     Box(
         modifier = modifier
     ) {
@@ -80,12 +103,14 @@ fun GameScreen(
             gameData = gameData,
             units = gameData.enemies,
             selectedUnitID = gameData.selectedUnit?.id ?: 0,
-            currentUnitId = gameData.currentUnit?.id ?: 0,
+            currentUnitID = gameData.currentUnit?.id ?: 0,
+            actions = actions,
             side = Side.Down,
             onSelect = { game.setSelectedUnitIndex(it) },
+            onAction = {},
             modifier = Modifier
                 .padding(top = padding)
-                .fillMaxHeight(0.4F)
+                .fillMaxHeight(0.35F)
                 .align(Alignment.TopCenter),
         )
 
@@ -100,24 +125,11 @@ fun GameScreen(
             gameData = gameData,
             units = gameData.allies,
             selectedUnitID = gameData.selectedUnit?.id ?: 0,
-            currentUnitId = gameData.currentUnit?.id ?: 0,
+            currentUnitID = gameData.currentUnit?.id ?: 0,
+            actions = actions,
             side = Side.Up,
             onSelect = { game.setSelectedUnitIndex(it) },
-            modifier = Modifier
-                .padding(bottom = padding)
-                .fillMaxHeight(0.4F)
-                .align(Alignment.BottomCenter),
-        )
-
-        var actions by remember { mutableStateOf(ActionFabric(game, gameData).createActions()) }
-
-        LaunchedEffect(gameData.currentUnit) {
-            actions = ActionFabric(game, gameData).createActions()
-
-            if (gameData.currentUnit?.team?.playerType == PlayerTypes.AI) {
-                gameData.currentUnit?.moveAI()
-                delay(normalAnimationDuration.toLong() * 2 + 1000L)
-
+            onAction = {
                 game.next()
                 gameData.gameResult?.let { onEnd() }
 
@@ -126,28 +138,48 @@ fun GameScreen(
                         gameData.enemies.lastOrNull()?.id ?: gameData.allies.firstOrNull()?.id ?: 0
                     )
                 }
-            }
-        }
+            },
+            modifier = Modifier
+                .padding(bottom = padding)
+                .fillMaxHeight(0.35F)
+                .align(Alignment.BottomCenter),
+        )
 
         Crossfade(
             gameData.currentUnit,
             animationSpec = tween(normalAnimationDuration),
-            modifier = Modifier.align(Alignment.BottomStart),
+            modifier = Modifier.align(Alignment.Center),
         ) { unit ->
             if (unit != null) {
-                Actions(
-                    actions = actions,
-                    onAction = {
-                        game.next()
-                        gameData.gameResult?.let { onEnd() }
+                if (settings.attack_buttons == 1) {
+                    Actions(
+                        actions = actions,
+                        onAction = {
+                            game.next()
+                            gameData.gameResult?.let { onEnd() }
 
-                        if (game.getUnitById(gameData.selectedUnit?.id ?: 0) == null) {
-                            game.setSelectedUnitIndex(
-                                gameData.enemies.lastOrNull()?.id ?: gameData.allies.firstOrNull()?.id ?: 0
-                            )
-                        }
-                    },
-                )
+                            if (game.getUnitById(gameData.selectedUnit?.id ?: 0) == null) {
+                                game.setSelectedUnitIndex(
+                                    gameData.enemies.lastOrNull()?.id ?: gameData.allies.firstOrNull()?.id ?: 0
+                                )
+                            }
+                        },
+                    )
+                } else if (settings.attack_buttons == 2) {
+                    ActionIcons(
+                        actions = actions,
+                        onAction = {
+                            game.next()
+                            gameData.gameResult?.let { onEnd() }
+
+                            if (game.getUnitById(gameData.selectedUnit?.id ?: 0) == null) {
+                                game.setSelectedUnitIndex(
+                                    gameData.enemies.lastOrNull()?.id ?: gameData.allies.firstOrNull()?.id ?: 0
+                                )
+                            }
+                        },
+                    )
+                }
             }
         }
     }
@@ -231,10 +263,12 @@ private fun SmokeArea(
 private fun UnitList(
     gameData: GameData,
     selectedUnitID: Int,
-    currentUnitId: Int,
+    currentUnitID: Int,
+    actions: List<Action>,
     units: List<GameUnit>,
     side: Side,
     onSelect: (Int) -> Unit,
+    onAction: () -> Unit,
     modifier: Modifier
 ) {
     Row(
@@ -246,11 +280,13 @@ private fun UnitList(
             UnitInfo(
                 unit = unit,
                 recruit = gameData.getRecruitByID(unit.id) ?: return@forEach,
+                side = side,
+                isCurrent = unit.id == currentUnitID,
+                actions = actions,
                 isSelected = unit.id == selectedUnitID,
                 onSelect = { onSelect(unit.id) },
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .offset(0.dp, if (unit.id == currentUnitId) if (side == Side.Down) 20.dp else (-20).dp else 0.dp),
+                onAction = onAction,
+                modifier = Modifier.fillMaxHeight(),
             )
         }
     }
@@ -260,89 +296,119 @@ private fun UnitList(
 private fun UnitInfo(
     unit: GameUnit,
     recruit: Recruit,
+    side: Side,
+    isCurrent: Boolean,
+    actions: List<Action>,
     isSelected: Boolean,
-    onSelect: () -> Unit = {},
+    onSelect: () -> Unit,
+    onAction: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
         modifier = modifier
-            .clickable { onSelect() }
-            .background(StandardBackgroundBrush(), MedievalShape(smallCorners))
-            .border(
-                if (isSelected) border else smallBorder,
-                if (isSelected) colorSelectedBorder else colorBorder,
-                MedievalShape(smallCorners)
-            )
-            .clip(MedievalShape(smallCorners)),
+            .background(StandardBackgroundBrush(), MedievalShape(smallCorners), transparencySecond)
+            .drawBehind {
+                drawOutline(
+                    MedievalShape(smallCorners).createOutline(size, layoutDirection, this),
+                    colorBorder,
+                    style = Stroke(smallBorder.toPx()),
+                )
+            },
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxHeight()
-                .aspectRatio(imageWidth / imageHeight)
-                .padding(padding)
-                .border(smallBorder, colorBorder, MedievalShape(smallCorners))
-                .clip(MedievalShape(smallCorners)),
-        ) {
-            Image(
-                bitmap = getImageBitmap(
-                    when (unit) {
-                        is Barbarian -> "textures/characters/barbarian_placeholder.png"
-                        is Magician -> "textures/characters/magician_placeholder.png"
-                        is Healer -> "textures/characters/healer_placeholder.png"
-                        else -> ""
-                    }
-                ) ?: emptyImageBitmap,
-                contentDescription = unit.name,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(colorBackground, MedievalShape(smallCorners))
-                    .border(smallBorder, colorBorder, MedievalShape(smallCorners))
-                    .clip(MedievalShape(smallCorners)),
-            )
-
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(StandardBackgroundBrush(), MedievalShape(smallCorners), alpha = transparency)
-            ) {
-                MedievalBox(
-                    background = StandardBackgroundBrush(),
-                    modifier = Modifier
-                        .fillMaxWidth(0.2F)
-                        .aspectRatio(1F)
-                        .align(Alignment.TopStart),
-                ) {
-                    MedievalText(
-                        text = recruit.level.toString(),
-                        fontSize = bigText,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                    )
-                }
-
-                MedievalText(
-                    text = "${unit.id} - ${unit.name.replaceFirstChar { it.uppercaseChar() }}",
-                    fontSize = normalText,
-                    color = colorTextLighter,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier
-                        .padding(start = padding)
-                        .fillMaxWidth(0.8F)
-                        .align(Alignment.CenterEnd)
+        Box {
+            if (isCurrent && settings.attack_buttons == 0) {
+                ActionIcons(
+                    actions = actions,
+                    onAction = onAction,
+                    modifier = Modifier.align(Alignment.BottomStart),
                 )
             }
 
-            MedievalProgressbar(
-                value = unit.hp,
-                min = 0,
-                max = unit.maxHp,
+            Box(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(16.dp)
-                    .align(Alignment.BottomCenter),
-            )
+                    .offset(0.dp, if (isCurrent) if (side == Side.Down) (iconSize + padding) else -(iconSize + padding) else 0.dp)
+                    .clickable { onSelect() }
+                    .fillMaxHeight()
+                    .aspectRatio(imageWidth / imageHeight)
+                    .padding(padding)
+                    .background(StandardBackgroundBrush(), MedievalShape(smallCorners))
+                    .border(
+                        if (isSelected) border else smallBorder,
+                        if (isSelected) colorSelectedBorder else colorBorder,
+                        MedievalShape(smallCorners)
+                    )
+                    .clip(MedievalShape(smallCorners)),
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .aspectRatio(imageWidth / imageHeight)
+                        .padding(padding)
+                        .border(smallBorder, colorBorder, MedievalShape(smallCorners))
+                        .clip(MedievalShape(smallCorners)),
+                ) {
+                    Image(
+                        bitmap = getImageBitmap(
+                            when (unit) {
+                                is Barbarian -> "textures/characters/barbarian_placeholder.png"
+                                is Magician -> "textures/characters/magician_placeholder.png"
+                                is Healer -> "textures/characters/healer_placeholder.png"
+                                else -> ""
+                            }
+                        ) ?: emptyImageBitmap,
+                        contentDescription = unit.name,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(colorBackground, MedievalShape(smallCorners))
+                            .border(smallBorder, colorBorder, MedievalShape(smallCorners))
+                            .clip(MedievalShape(smallCorners)),
+                    )
+
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(StandardBackgroundBrush(), MedievalShape(smallCorners), alpha = transparency)
+                    ) {
+                        MedievalBox(
+                            background = StandardBackgroundBrush(),
+                            modifier = Modifier
+                                .fillMaxWidth(0.2F)
+                                .aspectRatio(1F)
+                                .align(Alignment.TopStart),
+                        ) {
+                            MedievalText(
+                                text = recruit.level.toString(),
+                                fontSize = bigText,
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier
+                                    .align(Alignment.Center)
+                            )
+                        }
+
+                        MedievalText(
+                            text = "${unit.id} - ${unit.name.replaceFirstChar { it.uppercaseChar() }}",
+                            fontSize = normalText,
+                            color = colorTextLighter,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier
+                                .padding(start = padding)
+                                .fillMaxWidth(0.8F)
+                                .align(Alignment.CenterEnd)
+                        )
+                    }
+
+                    MedievalProgressbar(
+                        value = unit.hp,
+                        min = 0,
+                        max = unit.maxHp,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(16.dp)
+                            .align(Alignment.BottomCenter),
+                    )
+                }
+            }
         }
 
         if (unit.effects.isNotEmpty()) {
@@ -423,7 +489,7 @@ private fun Actions(
     onAction: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
+    Row(
         modifier = modifier,
     ) {
         actions.forEach { action ->
@@ -435,6 +501,34 @@ private fun Actions(
                 },
                 modifier = Modifier.padding(start = padding, bottom = padding),
             )
+        }
+    }
+}
+
+@Composable
+private fun ActionIcons(
+    actions: List<Action>,
+    onAction: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier,
+    ) {
+        actions.forEach { action ->
+            MedievalBox(
+                modifier = Modifier
+                    .padding(start = padding, bottom = padding)
+                    .clickable {
+                        action.action()
+                        onAction()
+                    },
+            ) {
+                Image(
+                    bitmap = action.image ?: emptyImageBitmap,
+                    contentDescription = "coin icon",
+                    modifier = Modifier.size(iconSize),
+                )
+            }
         }
     }
 }

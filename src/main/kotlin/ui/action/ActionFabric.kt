@@ -1,4 +1,4 @@
-package ui
+package ui.action
 
 import Game.Units.Characters.Barbarian
 import Game.Units.Characters.Healer
@@ -22,27 +22,27 @@ class ActionFabric(
 
         return when (currentUnit) {
             is Barbarian -> listOf(
-                Action("атака") {
+                Action("атака", Actions.Attack) {
                     val selectedUnit = gameData.selectedUnit ?: return@Action
                     currentUnit.move(Move(Actions.Attack, selectedUnit.id))
                 },
             )
             is Magician -> listOf(
-                Action("атака") {
+                Action("атака", Actions.Attack) {
                     val selectedUnit = gameData.selectedUnit ?: return@Action
                     currentUnit.move(Move(Actions.Attack, selectedUnit.id))
                 },
-                Action("отруєння") {
+                Action("отруєння", Actions.Poisoning) {
                     val selectedUnit = gameData.selectedUnit ?: return@Action
                     currentUnit.move(Move(Actions.Poisoning, selectedUnit.id))
                 },
             )
             is Healer -> listOf(
-                Action("миттєве лікування") {
+                Action("миттєве лікування", Actions.InstantHealing) {
                     val selectedUnit = gameData.selectedUnit ?: return@Action
                     currentUnit.move(Move(Actions.InstantHealing, selectedUnit.id))
                 },
-                Action("лікувальний ефект") {
+                Action("лікувальний ефект", Actions.Healing) {
                     val selectedUnit = gameData.selectedUnit ?: return@Action
                     currentUnit.move(Move(Actions.Healing, selectedUnit.id))
                 },

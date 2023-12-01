@@ -382,7 +382,7 @@ private fun Guild(
 
         Divider(modifier = Modifier.fillMaxHeight())
 
-        RequestBoard(
+        QuestBoard(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(reallyHugePadding)
@@ -636,7 +636,7 @@ private fun Cost(
 }
 
 @Composable
-private fun RequestBoard(
+private fun QuestBoard(
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -652,7 +652,7 @@ private fun RequestBoard(
                         .weight(1F),
                 ) {
                     repeat(2) { y ->
-                        RequestCard(
+                        QuestCard(
                             request = user.quests.getQuestByPosition(x, y),
                             modifier = Modifier
                                 .weight(1F)
@@ -677,7 +677,7 @@ private fun RequestBoard(
 }
 
 @Composable
-private fun RequestCard(
+private fun QuestCard(
     request: Quest?,
     modifier: Modifier = Modifier,
 ) {
@@ -978,18 +978,6 @@ private fun Settings(
                 Properties.saveSettings()
                 Properties.loadLanguage(settings.language)
             },
-        )
-
-        var attackButtons by remember { mutableStateOf(settings.attack_buttons) }
-        MedievalButton(
-            text = "Action Buttons: $attackButtons",
-            onClick = {
-                settings.attack_buttons = if (attackButtons == 0) 1 else if (attackButtons == 1) 2 else 0
-                attackButtons = settings.attack_buttons
-                Properties.saveSettings()
-                Properties.loadLanguage(settings.language)
-            },
-            modifier = Modifier.padding(top = biggerPadding),
         )
     }
 }

@@ -14,6 +14,16 @@
   "magician_name": "mage",
   "healer_name": "healer",
 
+  "damage": "damage: <amount>",
+  "heal": "heal: <amount>",
+  "poison": "poison: <amount> (<turns> turns)",
+  "healing": "healing: <amount> (<turns> turns)",
+
+  "attack_button": "attack",
+  "poison_button": "poison",
+  "instant_healing_button": "instant healing",
+  "healing_button": "healing",
+
   "user_won": "You destroyed the enemy!",
   "ai_won": "The enemy defeated you!",
 

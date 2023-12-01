@@ -11,17 +11,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.platform.Font
-import androidx.compose.ui.unit.dp
 import bigText
 import biggerPadding
 import colorBackgroundDarker
 import colorBorder
 import colorTextLighter
-import padding
+import iconSize
 import smallBorder
 import smallCorners
 import transparencySecond
@@ -76,24 +74,23 @@ fun MedievalButton(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.height(IntrinsicSize.Min)
         ) {
-            var textHeight by remember { mutableStateOf(Int.MAX_VALUE.dp) }
+            MedievalBox(
+                modifier = Modifier.height(iconSize)
+            ) {
+                Image(
+                    icon,
+                    contentDescription = text,
+                    modifier = Modifier.fillMaxHeight()
+                )
+            }
 
-            Image(
-                icon,
-                contentDescription = text,
-                modifier = Modifier.padding(padding).height(textHeight + biggerPadding + biggerPadding - padding - padding)
-            )
             Text(
                 text,
                 color = colorTextLighter,
                 fontSize = bigText,
                 fontWeight = FontWeight.Bold,
                 fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
-                modifier = Modifier
-                    .padding(biggerPadding)
-                    .onGloballyPositioned {
-                        textHeight = it.size.height.dp
-                    },
+                modifier = Modifier.padding(biggerPadding),
             )
         }
     }

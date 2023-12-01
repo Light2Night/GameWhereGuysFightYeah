@@ -20,6 +20,16 @@ data class Language(
     val magician_name: String,
     val healer_name: String,
 
+    val damage: String,
+    val heal: String,
+    val poison: String,
+    val healing: String,
+
+    val attack_button: String,
+    val poison_button: String,
+    val instant_healing_button: String,
+    val healing_button: String,
+
     val user_won: String,
     val ai_won: String,
 

@@ -6,7 +6,6 @@ import kotlinx.serialization.json.*
 @Serializable
 data class Settings(
     var language: String = "en",
-    var attack_buttons: Int = 0,
 ) {
     companion object {
         fun createFromJson(jsonObject: JsonObject): Settings? {
@@ -14,7 +13,6 @@ data class Settings(
                 val map = jsonObject.toMap()
                 val newSettings = Settings()
                 map["language"]?.jsonPrimitive?.contentOrNull?.let { newSettings.language = it }
-                map["attack_buttons"]?.jsonPrimitive?.intOrNull?.let { newSettings.attack_buttons = it }
 
                 newSettings
             } catch (e: Exception) {

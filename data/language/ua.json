@@ -14,6 +14,16 @@
   "magician_name": "маг",
   "healer_name": "цілитель",
 
+  "damage": "урон: <amount>",
+  "heal": "лікування: <amount>",
+  "poison": "отруєння: <amount> (<turns> хвилин)",
+  "healing": "лікування: <amount> (<turns> хвилин)",
+
+  "attack_button": "атака",
+  "poison_button": "отруєння",
+  "instant_healing_button": "миттєве лікування",
+  "healing_button": "лікування",
+
   "user_won": "Ви розгромили противника!",
   "ai_won": "Противник переміг!",
 

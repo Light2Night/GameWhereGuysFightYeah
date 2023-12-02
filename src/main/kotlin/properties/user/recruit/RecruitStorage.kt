@@ -27,6 +27,16 @@ class RecruitStorage {
         return newRecruit
     }
 
+    fun createNewRecruit(levels: IntRange): Recruit {
+        val newRecruit = factory.createRandomUnique(
+            list = recruitsList + guildRecruitList,
+            levels = levels,
+        ).also { it.cost = null }
+
+        recruitsList.add(newRecruit)
+        return newRecruit
+    }
+
     fun buyRecruit(recruit: Recruit, replace: Boolean = true) {
         if (recruit.cost?.isAvailableToBuy == false || recruit.cost == null) return
 

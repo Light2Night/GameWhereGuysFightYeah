@@ -49,6 +49,8 @@ import org.jetbrains.skiko.currentNanoTime
 import padding
 import properties.Properties
 import properties.resources.Cost
+import properties.user.chest.Chest
+import properties.user.chest.ChestType
 import properties.user.recruit.*
 import properties.user.quest.Quest
 import reallyHugePadding
@@ -73,6 +75,7 @@ import kotlin.random.Random
 @Composable
 fun MainMenu(
     onStart: (List<UnitTypes>, Location) -> Unit,
+    onChestOpen: (Chest) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val tabs by remember {
@@ -112,6 +115,7 @@ fun MainMenu(
         ) { checked ->
             when (checked) {
                 MainMenuTab.Guild -> Guild(
+                    onChestOpen = onChestOpen,
                     modifier = Modifier.fillMaxSize(),
                 )
 
@@ -367,6 +371,7 @@ private fun UserInfo(
 
 @Composable
 private fun Guild(
+    onChestOpen: (Chest) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -374,6 +379,7 @@ private fun Guild(
             .background(getImageBitmap("textures/background/guild1.png") ?: emptyImageBitmap)
     ) {
         Recruits(
+            onChestOpen = onChestOpen,
             modifier = Modifier
                 .fillMaxWidth(0.33F)
                 .fillMaxHeight()
@@ -392,14 +398,15 @@ private fun Guild(
 
 @Composable
 private fun Recruits(
+    onChestOpen: (Chest) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(modifier = modifier) {
         Column(modifier = Modifier.weight(1F)) {
             Row {
-                Chest(modifier = Modifier.weight(1F))
-                Chest(modifier = Modifier.weight(1F))
-                Chest(modifier = Modifier.weight(1F))
+                Chest(modifier = Modifier.weight(1F).clickable { onChestOpen(Chest(0, ChestType.Wooden)) })
+                Chest(modifier = Modifier.weight(1F).clickable { onChestOpen(Chest(0, ChestType.Gold)) })
+                Chest(modifier = Modifier.weight(1F).clickable { onChestOpen(Chest(0, ChestType.Crystal)) })
             }
 
             Divider(orientation = Orientation.Horizontal, modifier = Modifier.fillMaxWidth())

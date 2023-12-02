@@ -22,12 +22,14 @@ import gamedata.event.GameEndedEvent
 import gamedata.event.MoveCompletedEvent
 import gamedata.event.SelectEvent
 import properties.Properties
+import properties.user.chest.Chest
 import properties.user.recruit.Recruit
 import properties.user.recruit.RecruitFactory
 import ui.screens.GameScreen
 import ui.screens.MainMenu
 import ui.screens.ResultsScreen
 import ui.Screen
+import ui.screens.ChestScreen
 
 fun main() = application {
     var firstTime by remember { mutableStateOf(true) }
@@ -60,6 +62,8 @@ fun main() = application {
 
         mutableStateOf(newGameData)
     }
+
+    var chest by remember { mutableStateOf<Chest?>(null) }
 
     val windowState = rememberWindowState(
         width = 1400.dp,
@@ -110,20 +114,22 @@ fun main() = application {
 
                     screen = Screen.Game
                 },
+                onChestOpen = {
+                    chest = it
+                    screen = Screen.Chest
+                },
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(colorBackground)
+                    .background(colorBackground),
             )
 
             Screen.Game -> GameScreen(
                 game = game,
                 gameData = gameData,
-                onEnd = {
-                    screen = Screen.Results
-                },
+                onEnd = { screen = Screen.Results },
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(colorBackground)
+                    .background(colorBackground),
             )
 
             Screen.Results -> ResultsScreen(
@@ -137,7 +143,18 @@ fun main() = application {
                 },
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(colorBackground)
+                    .background(colorBackground),
+            )
+
+            Screen.Chest -> ChestScreen(
+                chest = chest!!,
+                onClose = {
+                    chest = null
+                    screen = Screen.Main
+                },
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(colorBackground),
             )
         }
     }

@@ -6,5 +6,5 @@ data class Chest(
 ) {
     val name get() = type.chestName
 
-    val sheet get() = type.rewardSheet
+    val sheet = type.rewardSheet
 }

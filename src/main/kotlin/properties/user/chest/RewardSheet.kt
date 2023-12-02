@@ -24,4 +24,8 @@ class RewardSheet(
         entries.add(entry)
         return entry
     }
+
+    fun giveReward() {
+        entries.forEach { it.giveReward() }
+    }
 }

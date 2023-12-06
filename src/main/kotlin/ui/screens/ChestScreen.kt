@@ -5,8 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import emptyImageBitmap
-import getImageBitmap
+import androidx.compose.ui.text.font.FontWeight
 import properties.user.chest.Chest
 import ui.ChestScreenState
 import ui.composable.MedievalButton
@@ -66,10 +65,14 @@ private fun ChestStart(
         modifier = modifier,
     ) {
         MedievalIcon(
-            icon = getImageBitmap("textures/assets/chest1.png") ?: emptyImageBitmap,
+            icon = chest.image,
             modifier = Modifier
                 .weight(1F)
                 .aspectRatio(1F),
+        )
+        MedievalText(
+            text = chest.name,
+            fontWeight = FontWeight.Bold,
         )
         MedievalButton(
             onClick = onStart,

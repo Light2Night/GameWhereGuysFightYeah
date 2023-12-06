@@ -10,6 +10,15 @@
   "level_short": "рівень",
   "exp_short": "досвід",
 
+  "wooden_chest_name": "дерев'яна скриня",
+  "stone_chest_name": "кам'яна скриня",
+  "iron_chest_name": "залізна скриня",
+  "gold_chest_name": "золота скриня",
+  "crystal_chest_name": "кристальна скриня",
+  "legendary_chest_name": "легендарна скриня",
+  "dragon_chest_name": "скриня дракона",
+  "empty_chest_slot": "порожньо",
+
   "barbarian_name": "варвар",
   "magician_name": "маг",
   "healer_name": "цілитель",

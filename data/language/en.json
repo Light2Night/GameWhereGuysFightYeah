@@ -10,6 +10,15 @@
   "level_short": "lvl",
   "exp_short": "exp",
 
+  "wooden_chest_name": "wooden chest",
+  "stone_chest_name": "stone chest",
+  "iron_chest_name": "iron chest",
+  "gold_chest_name": "gold chest",
+  "crystal_chest_name": "crystal chest",
+  "legendary_chest_name": "legendary chest",
+  "dragon_chest_name": "dragon chest",
+  "empty_chest_slot": "empty",
+
   "barbarian_name": "barbarian",
   "magician_name": "mage",
   "healer_name": "healer",

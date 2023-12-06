@@ -13,6 +13,15 @@ data class Language(
     val world_tab: String,
     val settings_tab: String,
 
+    val wooden_chest_name: String,
+    val stone_chest_name: String,
+    val iron_chest_name: String,
+    val gold_chest_name: String,
+    val crystal_chest_name: String,
+    val legendary_chest_name: String,
+    val dragon_chest_name: String,
+    val empty_chest_slot: String,
+
     val level_short: String,
     val exp_short: String,
 

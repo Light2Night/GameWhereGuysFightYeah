@@ -1,16 +1,30 @@
 package properties.user.chest
 
+import emptyImageBitmap
+import getImageBitmap
+import lang
+
 enum class ChestType {
     Wooden, Stone, Iron, Gold, Crystal, Legendary, Dragon;
 
     val chestName get() = when (this) {
-        Wooden -> "Wooden Chest"
-        Stone -> "Stone Chest"
-        Iron -> "Iron Chest"
-        Gold -> "Gold Chest"
-        Crystal -> "Crystal Chest"
-        Legendary -> "Legendary Chest"
-        Dragon -> "Dragon Chest"
+        Wooden -> lang.wooden_chest_name.replaceFirstChar { it.uppercaseChar() }
+        Stone -> lang.stone_chest_name.replaceFirstChar { it.uppercaseChar() }
+        Iron -> lang.iron_chest_name.replaceFirstChar { it.uppercaseChar() }
+        Gold -> lang.gold_chest_name.replaceFirstChar { it.uppercaseChar() }
+        Crystal -> lang.crystal_chest_name.replaceFirstChar { it.uppercaseChar() }
+        Legendary -> lang.legendary_chest_name.replaceFirstChar { it.uppercaseChar() }
+        Dragon -> lang.dragon_chest_name.replaceFirstChar { it.uppercaseChar() }
+    }
+
+    val image get() = when (this) {
+        Wooden -> getImageBitmap("textures/assets/chest1.png") ?: emptyImageBitmap
+        Stone -> getImageBitmap("textures/assets/chest1.png") ?: emptyImageBitmap
+        Iron -> getImageBitmap("textures/assets/chest1.png") ?: emptyImageBitmap
+        Gold -> getImageBitmap("textures/assets/chest1.png") ?: emptyImageBitmap
+        Crystal -> getImageBitmap("textures/assets/chest1.png") ?: emptyImageBitmap
+        Legendary -> getImageBitmap("textures/assets/chest1.png") ?: emptyImageBitmap
+        Dragon -> getImageBitmap("textures/assets/chest1.png") ?: emptyImageBitmap
     }
 
     val rewardSheet get() = when (this) {

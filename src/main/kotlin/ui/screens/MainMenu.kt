@@ -50,7 +50,6 @@ import padding
 import properties.Properties
 import properties.resources.Cost
 import properties.user.chest.Chest
-import properties.user.chest.ChestType
 import properties.user.recruit.*
 import properties.user.quest.Quest
 import reallyHugePadding
@@ -403,11 +402,7 @@ private fun Recruits(
 ) {
     Row(modifier = modifier) {
         Column(modifier = Modifier.weight(1F)) {
-            Row {
-                Chest(modifier = Modifier.weight(1F).clickable { onChestOpen(Chest(0, ChestType.Wooden)) })
-                Chest(modifier = Modifier.weight(1F).clickable { onChestOpen(Chest(0, ChestType.Gold)) })
-                Chest(modifier = Modifier.weight(1F).clickable { onChestOpen(Chest(0, ChestType.Crystal)) })
-            }
+            Chests(onChestOpen = onChestOpen)
 
             Divider(orientation = Orientation.Horizontal, modifier = Modifier.fillMaxWidth())
 
@@ -432,23 +427,51 @@ private fun Recruits(
 }
 
 @Composable
+private fun Chests(
+    onChestOpen: (Chest) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Row(modifier = modifier) {
+        repeat(user.chests.maxAmount) { i ->
+            user.chests.list[i]?.let { chest ->
+                Chest(
+                    chest = chest,
+                    onOpen = {
+                        user.chests.removeChest(chest)
+                        onChestOpen(chest)
+                    },
+                    modifier = Modifier.weight(1F).padding(padding)
+                )
+            } ?: Column(Modifier.weight(1F).padding(padding)) {
+                MedievalBox(modifier = Modifier.fillMaxWidth().aspectRatio(1F).padding(padding))
+                MedievalText(
+                    lang.empty_chest_slot.replaceFirstChar { it.uppercaseChar() },
+                    fontWeight = FontWeight.Bold,
+                )
+            }
+        }
+    }
+}
+
+@Composable
 private fun Chest(
+    chest: Chest,
+    onOpen: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier.padding(padding),
+        modifier = modifier.clickable { onOpen() },
     ) {
         MedievalIcon(
-            icon = getImageBitmap("textures/assets/chest1.png") ?: emptyImageBitmap,
+            icon = chest.image,
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(1F),
         )
 
         MedievalText(
-            text = "Chest",
-            fontSize = bigText,
+            text = chest.name,
             fontWeight = FontWeight.Bold,
         )
     }

@@ -3,10 +3,8 @@ package ui.screens
 import Game.Events.Arguments.GameEndInfo
 import Game.PlayerTypes
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -17,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.platform.Font
+import bigIconSize
 import bigText
 import colorTextError
 import emptyImageBitmap
@@ -25,10 +24,14 @@ import hugeText
 import lang
 import padding
 import properties.resources.Reward
+import properties.user.chest.Chest
 import properties.user.worldMap.Location
 import smallIconSize
 import ui.composable.MedievalButton
+import ui.composable.MedievalIcon
 import ui.composable.MedievalText
+import ui.composable.shaders.StandardBackgroundBrush
+import user
 
 @Composable
 fun ResultsScreen(
@@ -38,13 +41,26 @@ fun ResultsScreen(
     modifier: Modifier = Modifier,
 ) {
     val reward by remember {
-        mutableStateOf(if (result.teamWinner.playerType == PlayerTypes.Human) location.getReward() else Reward(0, 0, 0))
+        mutableStateOf(
+            if (result.teamWinner.playerType == PlayerTypes.Human)
+                location.getReward()
+            else
+                Reward(0, 0, 0)
+        )
+    }
+
+    val chest by remember {
+        mutableStateOf(
+            if (result.teamWinner.playerType == PlayerTypes.Human)
+                location.getRandomChestType()?.let { user.chests.addChest(it) }
+            else null
+        )
     }
 
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier,
+        modifier = modifier.background(StandardBackgroundBrush()),
     ) {
         Text(
             when (result.teamWinner.playerType) {
@@ -57,6 +73,13 @@ fun ResultsScreen(
             fontWeight = FontWeight.Bold,
             fontFamily = FontFamily(Font(resource = "fonts/cambria.ttc")),
         )
+
+        if (chest != null) {
+            ChestIcon(
+                chest = chest!!,
+                modifier = Modifier.width(bigIconSize),
+            )
+        }
 
         Reward(
             reward = reward,
@@ -71,6 +94,29 @@ fun ResultsScreen(
 
                 onBack()
             },
+        )
+    }
+}
+
+@Composable
+private fun ChestIcon(
+    chest: Chest,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier,
+    ) {
+        MedievalIcon(
+            icon = chest.image,
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(1F),
+        )
+
+        MedievalText(
+            text = chest.name,
+            fontWeight = FontWeight.Bold,
         )
     }
 }

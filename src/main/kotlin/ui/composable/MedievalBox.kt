@@ -9,18 +9,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.SolidColor
-import colorBackgroundSecond
 import colorBorder
 import smallBorder
 import smallCorners
 import ui.composable.shaders.MedievalShape
+import ui.composable.shaders.StandardBackgroundBrush
 
 @Composable
 fun MedievalBox(
-    background: Brush = SolidColor(colorBackgroundSecond),
+    background: Brush = StandardBackgroundBrush(),
     modifier: Modifier = Modifier,
-    content: @Composable BoxScope.() -> Unit,
+    content: @Composable BoxScope.() -> Unit = {},
 ) {
     Box(
         contentAlignment = Alignment.Center,

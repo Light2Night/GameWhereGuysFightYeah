@@ -7,6 +7,7 @@ import androidx.compose.ui.graphics.ImageBitmap
 import getImageBitmap
 import properties.resources.UserResources
 import properties.resources.calculateRequiredExp
+import properties.user.chest.ChestStorage
 import properties.user.recruit.RecruitStorage
 import properties.user.quest.QuestStorage
 import properties.user.worldMap.WorldMap
@@ -23,6 +24,7 @@ data class User(
     val quests: QuestStorage = QuestStorage(),
     val recruits: RecruitStorage = RecruitStorage(),
     val worldMap: WorldMap = WorldMap(),
+    val chests: ChestStorage = ChestStorage(),
 ) {
     val profileImage: ImageBitmap? get() =
         getImageBitmap("data/user/user.webp")

@@ -1,5 +1,6 @@
 package ui.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -11,6 +12,7 @@ import ui.ChestScreenState
 import ui.composable.MedievalButton
 import ui.composable.MedievalIcon
 import ui.composable.MedievalText
+import ui.composable.shaders.StandardBackgroundBrush
 
 @Composable
 fun ChestScreen(
@@ -21,7 +23,7 @@ fun ChestScreen(
     var screenState by remember { mutableStateOf(ChestScreenState.Start) }
 
     Box(
-        modifier = modifier,
+        modifier = modifier.background(StandardBackgroundBrush()),
     ) {
         when (screenState) {
             ChestScreenState.Start -> ChestStart(

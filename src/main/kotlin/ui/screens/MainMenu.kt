@@ -1024,7 +1024,6 @@ private fun UnitListMenu(
         units.forEach { unit ->
             UnitInfoMenu(
                 unitType = unit,
-                modifier = Modifier.fillMaxWidth(),
             )
         }
     }
@@ -1033,7 +1032,6 @@ private fun UnitListMenu(
 @Composable
 private fun UnitInfoMenu(
     unitType: UnitTypes,
-    modifier: Modifier = Modifier,
 ) {
     when (unitType) {
         UnitTypes.BARBARIAN -> Text(

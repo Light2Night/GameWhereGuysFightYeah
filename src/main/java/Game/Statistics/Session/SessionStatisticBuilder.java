@@ -99,6 +99,18 @@ public class SessionStatisticBuilder implements ISessionStatisticBuilder {
     }
 
     @Override
+    public IUnitStatisticCollector addReceivedDamage(GameUnit unit, int damageReceived) {
+        getStatistic(unit).addReceivedDamage(damageReceived);
+        return this;
+    }
+
+    @Override
+    public IUnitStatisticCollector addReceivedHeal(GameUnit unit, int healReceived) {
+        getStatistic(unit).addReceivedHeal(healReceived);
+        return this;
+    }
+
+    @Override
     public IUnitStatisticCollector setDied(GameUnit unit) {
         getStatistic(unit).setDied();
         return this;

@@ -68,12 +68,13 @@ public abstract class GameUnit {
     public int takeDamage(int damage) {
         if (damage < 0) throw new RuntimeException("damage");
 
-        int damageLeft = Math.min(hp, damage);
-        hp -= damageLeft;
+        int damageReceived = Math.min(hp, damage);
+        hp -= damageReceived;
+        statisticCollector.addReceivedDamage(this, damageReceived);
 
         if (!isAlive()) events.UnitDiedEvent.invoke(new DeadUnitInfo(this));
 
-        return damageLeft;
+        return damageReceived;
     }
 
     public int heal(int newHp) {
@@ -81,6 +82,7 @@ public abstract class GameUnit {
 
         int healed = Math.min(maxHp, hp + newHp) - hp;
         hp += healed;
+        statisticCollector.addReceivedHeal(this, healed);
 
         return healed;
     }

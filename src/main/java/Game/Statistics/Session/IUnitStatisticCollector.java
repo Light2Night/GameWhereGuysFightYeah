@@ -8,6 +8,10 @@ public interface IUnitStatisticCollector {
 
     IUnitStatisticCollector addHeal(GameUnit unit, int heal);
 
+    IUnitStatisticCollector addReceivedDamage(GameUnit unit, int damageReceived);
+
+    IUnitStatisticCollector addReceivedHeal(GameUnit unit, int healReceived);
+
     IUnitStatisticCollector setDied(GameUnit unit);
 
     IUnitStatisticCollector addImposedEffect(GameUnit unit, EffectTypes effect);

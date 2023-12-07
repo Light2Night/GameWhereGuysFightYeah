@@ -7,12 +7,16 @@ import java.util.ArrayList;
 public class UnitStatisticCollector {
     private int damage;
     private int heal;
+    private int damageReceived;
+    private int healReceived;
     private boolean died;
     private ArrayList<EffectTypes> imposedEffects;
 
     public UnitStatisticCollector() {
         damage = 0;
         heal = 0;
+        damageReceived = 0;
+        healReceived = 0;
         died = false;
         imposedEffects = new ArrayList<>();
     }
@@ -23,6 +27,14 @@ public class UnitStatisticCollector {
 
     public void addHeal(int heal) {
         this.heal += heal;
+    }
+
+    public void addReceivedDamage(int damageReceived) {
+        this.damageReceived += damageReceived;
+    }
+
+    public void addReceivedHeal(int healReceived) {
+        this.damageReceived += damageReceived;
     }
 
     public void setDied() {
@@ -39,6 +51,14 @@ public class UnitStatisticCollector {
 
     public int getHeal() {
         return heal;
+    }
+
+    public int getDamageReceived() {
+        return damageReceived;
+    }
+
+    public int getHealReceived() {
+        return healReceived;
     }
 
     public boolean getDied() {

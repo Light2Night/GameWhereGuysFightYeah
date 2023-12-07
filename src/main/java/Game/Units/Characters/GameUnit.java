@@ -4,24 +4,25 @@ import Game.Actions;
 import Game.Effects.Factories.EffectFactory;
 import Game.Events.Aggregates.UnitEventsAggregate;
 import Game.Events.Arguments.Actions.ActionInfo;
+import Game.Events.Arguments.DeadUnitInfo;
 import Game.Statistics.Session.IUnitStatisticCollector;
 import Game.Units.Getters.CompositeAccessor;
 import Game.Effects.Effectable;
 import Exceptions.InvalidActionException;
 import Game.Move;
 import Game.Teams.Team;
-import Game.Units.UnitSharedData;
+import Game.Effects.SharedDatas.UnitSharedData;
 
 import java.util.ArrayList;
 
 public abstract class GameUnit {
     protected final CompositeAccessor accessor;
     private final int id;
-    private String name;
+    private final String name;
     private final int maxHp;
     private int hp;
-    private ArrayList<Effectable> effects;
-    private Team team;
+    private final ArrayList<Effectable> effects;
+    private final Team team;
     protected UnitEventsAggregate events;
     protected IUnitStatisticCollector statisticCollector;
     protected EffectFactory effectFactory;
@@ -65,10 +66,13 @@ public abstract class GameUnit {
     }
 
     public int takeDamage(int damage) {
-        if (damage < 0) throw new IllegalArgumentException("damage");
+        if (damage < 0) throw new RuntimeException("damage");
 
         int damageLeft = Math.min(hp, damage);
         hp -= damageLeft;
+
+        if (!isAlive()) events.UnitDiedEvent.invoke(new DeadUnitInfo(this));
+
         return damageLeft;
     }
 
@@ -88,6 +92,8 @@ public abstract class GameUnit {
 
     public void executeEffects() {
         for (Effectable effect : effects) {
+            if (!isAlive()) break;
+
             effect.effect(this);
         }
         effects.removeIf(e -> e.getCyclesLeft() == 0);
@@ -101,9 +107,4 @@ public abstract class GameUnit {
     public abstract ActionInfo moveAI() throws InvalidActionException;
 
     protected abstract ActionInfo act(GameUnit target, Actions action) throws InvalidActionException;
-
-    @Override
-    public String toString() {
-        return String.format("%d | %-8s | %3s♥ | Ефектів: %1d", id, name, hp, effects.size());
-    }
 }

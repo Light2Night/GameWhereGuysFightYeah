@@ -26,6 +26,7 @@ public class OnCycleLeft extends Handler {
     }
 
     private void executeEffectsForAll() {
-        units.forEach(GameUnit::executeEffects);
+        ArrayList<GameUnit> queue = new ArrayList<>(units);
+        queue.forEach(GameUnit::executeEffects);
     }
 }

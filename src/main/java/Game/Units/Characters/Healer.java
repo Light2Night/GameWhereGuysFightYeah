@@ -6,7 +6,7 @@ import Game.Events.Arguments.Actions.EffectActionInfo;
 import Game.Events.Arguments.Actions.HealActionInfo;
 import Game.Effects.Effectable;
 import Exceptions.InvalidActionException;
-import Game.Units.UnitSharedData;
+import Game.Effects.SharedDatas.UnitSharedData;
 
 import java.util.Random;
 

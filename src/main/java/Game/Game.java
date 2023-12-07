@@ -1,6 +1,8 @@
 package Game;
 
 import Game.Effects.Factories.EffectFactory;
+import Game.Effects.SharedDatas.EffectSharedData;
+import Game.Events.Aggregates.EffectEventsAggregate;
 import Game.Events.Aggregates.UnitEventsAggregate;
 import Game.Events.Arguments.Actions.ActionInfo;
 import Game.Events.Arguments.GameEndInfo;
@@ -8,8 +10,8 @@ import Game.Events.Arguments.UnitId;
 import Game.Events.Handlers.OnAction;
 import Exceptions.GameIsNotStartedException;
 import Game.Events.Aggregates.GameEventsAggregate;
-import Game.Events.Handlers.OnActionCompleted;
 import Game.Events.Handlers.OnCycleLeft;
+import Game.Events.Handlers.OnUnitDied;
 import Game.Statistics.Session.ISessionStatisticBuilder;
 import Game.Statistics.Session.SessionStatisticBuilder;
 import Game.Teams.Team;
@@ -61,7 +63,6 @@ public class Game {
         human = new Team(1, PlayerTypes.Human, "Human");
         ai = new Team(2, PlayerTypes.AI, "AI");
 
-        unitsManager = new UnitsManager(units, sessionStatisticBuilder);
         events.CycleLeftEvent.addHandler(new OnCycleLeft(units, cycleActions, sessionStatisticBuilder));
 
         TeamAccessor alliesAccessor = new TeamAccessor(units, human);
@@ -71,10 +72,17 @@ public class Game {
 
         cycle = new GameCycle(compositeAccessor, events);
 
+        unitsManager = new UnitsManager(units, cycle, sessionStatisticBuilder);
+
+
         UnitEventsAggregate unitEvents = new UnitEventsAggregate();
         unitEvents.ActionPerformedEvent.addHandler(new OnAction(cycleActions));
-        unitEvents.ActionPerformedEvent.addHandler(new OnActionCompleted(unitsManager));
-        EffectFactory effectFactory = new EffectFactory(sessionStatisticBuilder);
+        unitEvents.UnitDiedEvent.addHandler(new OnUnitDied(unitsManager));
+
+        EffectEventsAggregate effectsEvents = new EffectEventsAggregate();
+
+        EffectSharedData effectSharedData = new EffectSharedData(sessionStatisticBuilder, effectsEvents);
+        EffectFactory effectFactory = new EffectFactory(effectSharedData);
 
         alliesFactory = new UnitFactory(compositeAccessor, human, unitEvents, sessionStatisticBuilder, effectFactory);
         enemyFactory = new UnitFactory(compositeAccessor, ai, unitEvents, sessionStatisticBuilder, effectFactory);
@@ -96,7 +104,6 @@ public class Game {
     public ArrayList<GameUnit> getUnits() {
         return units;
     }
-
 
     public GameEventsAggregate getEvents() {
         return events;
@@ -136,6 +143,8 @@ public class Game {
     }
 
     public void next() throws GameIsNotStartedException {
+        Integer id = cycle.next();
+
         if (checkTheEndAndFinishGameIfNeed()) {
             return;
         }
@@ -144,16 +153,12 @@ public class Game {
             throw new GameIsNotStartedException();
         }
 
-        Integer id = cycle.next();
         setCurrentUnitIndex(id);
         events.MoveCompletedEvent.invoke();
     }
 
     public Boolean checkTheEndAndFinishGameIfNeed() {
-        unitsManager.removeDeadUnits();
-        if (!isEnd()) {
-            return false;
-        }
+        if (!isEnd()) return false;
 
         events.GameEndEvent.invoke(new GameEndInfo(getTeamWinner(), sessionStatisticBuilder.build()));
 

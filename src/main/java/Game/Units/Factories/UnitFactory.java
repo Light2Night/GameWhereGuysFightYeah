@@ -13,7 +13,7 @@ import Game.Units.Factories.ViewModels.BaseUnitViewModel;
 import Game.Units.Factories.ViewModels.HealerViewModel;
 import Game.Units.Factories.ViewModels.MageViewModel;
 import Game.Units.Getters.CompositeAccessor;
-import Game.Units.UnitSharedData;
+import Game.Effects.SharedDatas.UnitSharedData;
 import Helpers.IdGenerator;
 
 public class UnitFactory {

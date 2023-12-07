@@ -1,19 +1,16 @@
 package Game.Effects;
 
+import Game.Effects.SharedDatas.EffectSharedData;
 import Game.Units.Characters.GameUnit;
 
-public class Healing implements Effectable {
+public class Healing extends Effect {
     private int cyclesLeft;
     private final int durationInCycles;
     public final int heal;
 
-    public Healing(Healing healing) {
-        this.durationInCycles = healing.durationInCycles;
-        this.cyclesLeft = healing.cyclesLeft;
-        this.heal = healing.heal;
-    }
+    public Healing(EffectSharedData sharedData) {
+        super(sharedData);
 
-    public Healing() {
         durationInCycles = cyclesLeft = 3;
         heal = 10;
     }
@@ -45,7 +42,7 @@ public class Healing implements Effectable {
     }
 
     @Override
-    public Healing copy() {
-        return new Healing(this);
+    public Healing clone() throws CloneNotSupportedException {
+        return (Healing) super.clone();
     }
 }

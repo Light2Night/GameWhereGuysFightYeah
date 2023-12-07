@@ -25,13 +25,11 @@ public class GameCycle {
     }
 
     private void resetQueue() {
-        resetFields();
         events.CycleLeftEvent.invoke();
+        resetFields();
     }
 
     public Integer next() {
-        removeDeadUnits();
-
         if (queue.isEmpty()) {
             resetQueue();
         }
@@ -44,7 +42,7 @@ public class GameCycle {
         return unit.getId();
     }
 
-    private void removeDeadUnits() {
-        queue.removeIf(unit -> !unit.isAlive());
+    public void removeUnitFromQueue(GameUnit unit) {
+        queue.remove(unit);
     }
 }

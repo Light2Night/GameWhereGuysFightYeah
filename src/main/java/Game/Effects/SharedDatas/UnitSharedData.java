@@ -1,4 +1,4 @@
-package Game.Units;
+package Game.Effects.SharedDatas;
 
 import Game.Effects.Factories.EffectFactory;
 import Game.Events.Aggregates.UnitEventsAggregate;

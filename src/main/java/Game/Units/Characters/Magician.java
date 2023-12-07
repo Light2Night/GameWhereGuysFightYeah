@@ -6,13 +6,14 @@ import Game.Effects.Effectable;
 import Game.Events.Arguments.Actions.ActionInfo;
 import Game.Events.Arguments.Actions.AttackActionInfo;
 import Game.Events.Arguments.Actions.EffectActionInfo;
-import Game.Units.UnitSharedData;
+import Game.Effects.SharedDatas.UnitSharedData;
 
 import java.util.Random;
 
 public class Magician extends GameUnit implements Attackable, Magicable {
     public final int damage;
     public final int damageDelta;
+    private final Random random = new Random();
 
     public Magician(UnitSharedData sharedData, int damage, int damageDelta) {
         super(sharedData);
@@ -50,7 +51,9 @@ public class Magician extends GameUnit implements Attackable, Magicable {
         damage = target.takeDamage(damage);
         statisticCollector.addDamage(this, damage);
         ActionInfo actionInfo = new AttackActionInfo(this, target, Actions.Attack, damage);
+
         events.ActionPerformedEvent.invoke(actionInfo);
+
         return actionInfo;
     }
 
@@ -59,12 +62,14 @@ public class Magician extends GameUnit implements Attackable, Magicable {
         target.takeEffect(effect);
         statisticCollector.addImposedEffect(this, effect.getEffectType());
         ActionInfo actionInfo = new EffectActionInfo(this, target, Actions.Poisoning, effect);
+
         events.ActionPerformedEvent.invoke(actionInfo);
+
         return actionInfo;
     }
 
     private int getRandomDamage() {
-        return new Random().nextInt(getDamage() - getDamageDelta(), getDamage() + getDamageDelta() + 1);
+        return random.nextInt(getDamage() - getDamageDelta(), getDamage() + getDamageDelta() + 1);
     }
 
     @Override
@@ -79,6 +84,6 @@ public class Magician extends GameUnit implements Attackable, Magicable {
 
     @Override
     public Effectable getMagicalEffect() {
-        return effectFactory.createPoisoning(this);
+        return effectFactory.createPoisoning();
     }
 }

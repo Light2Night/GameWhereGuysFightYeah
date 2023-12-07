@@ -1,26 +1,15 @@
 package Game.Effects;
 
-import Game.Statistics.Session.IUnitStatisticCollector;
+import Game.Effects.SharedDatas.EffectSharedData;
 import Game.Units.Characters.GameUnit;
 
-public class Poisoning implements Effectable {
+public class Poisoning extends Effect {
     private int cyclesLeft;
     private final int durationInCycles;
     public final int damage;
-    private final IUnitStatisticCollector statisticCollector;
-    private final GameUnit unit;
 
-    public Poisoning(Poisoning poisoning) {
-        this.durationInCycles = poisoning.durationInCycles;
-        this.cyclesLeft = poisoning.cyclesLeft;
-        this.damage = poisoning.damage;
-        this.statisticCollector = poisoning.statisticCollector;
-        this.unit = poisoning.unit;
-    }
-
-    public Poisoning(IUnitStatisticCollector statisticCollector, GameUnit unit) {
-        this.statisticCollector = statisticCollector;
-        this.unit = unit;
+    public Poisoning(EffectSharedData sharedData) {
+        super(sharedData);
 
         durationInCycles = cyclesLeft = 2;
         damage = 15;
@@ -37,7 +26,7 @@ public class Poisoning implements Effectable {
         cyclesLeft--;
 
         int damageTakenByEnemy = unit.takeDamage(damage);
-        statisticCollector.addDamage(unit, damageTakenByEnemy);
+        sharedData.StatisticCollector.addDamage(unit, damageTakenByEnemy);
     }
 
     @Override
@@ -51,7 +40,7 @@ public class Poisoning implements Effectable {
     }
 
     @Override
-    public Poisoning copy() {
-        return new Poisoning(this);
+    public Poisoning clone() throws CloneNotSupportedException {
+        return (Poisoning) super.clone();
     }
 }

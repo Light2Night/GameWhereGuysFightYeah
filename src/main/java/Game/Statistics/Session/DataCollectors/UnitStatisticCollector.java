@@ -7,18 +7,20 @@ import java.util.ArrayList;
 public class UnitStatisticCollector {
     private int damage;
     private int heal;
-    private int damageReceived;
-    private int healReceived;
+    private int receivedDamage;
+    private int receivedHeal;
     private boolean died;
     private ArrayList<EffectTypes> imposedEffects;
+    private ArrayList<EffectTypes> receivedEffects;
 
     public UnitStatisticCollector() {
         damage = 0;
         heal = 0;
-        damageReceived = 0;
-        healReceived = 0;
+        receivedDamage = 0;
+        receivedHeal = 0;
         died = false;
         imposedEffects = new ArrayList<>();
+        receivedEffects = new ArrayList<>();
     }
 
     public void addDamage(int damage) {
@@ -29,12 +31,12 @@ public class UnitStatisticCollector {
         this.heal += heal;
     }
 
-    public void addReceivedDamage(int damageReceived) {
-        this.damageReceived += damageReceived;
+    public void addReceivedDamage(int receivedDamage) {
+        this.receivedDamage += receivedDamage;
     }
 
-    public void addReceivedHeal(int healReceived) {
-        this.damageReceived += damageReceived;
+    public void addReceivedHeal(int receivedHeal) {
+        this.receivedHeal += receivedHeal;
     }
 
     public void setDied() {
@@ -45,6 +47,10 @@ public class UnitStatisticCollector {
         imposedEffects.add(effect);
     }
 
+    public void addReceivedEffect(EffectTypes effect) {
+        receivedEffects.add(effect);
+    }
+
     public int getDamage() {
         return damage;
     }
@@ -53,12 +59,12 @@ public class UnitStatisticCollector {
         return heal;
     }
 
-    public int getDamageReceived() {
-        return damageReceived;
+    public int getReceivedDamage() {
+        return receivedDamage;
     }
 
-    public int getHealReceived() {
-        return healReceived;
+    public int getReceivedHeal() {
+        return receivedHeal;
     }
 
     public boolean getDied() {
@@ -67,5 +73,9 @@ public class UnitStatisticCollector {
 
     public ArrayList<EffectTypes> getImposedEffects() {
         return (ArrayList<EffectTypes>) imposedEffects.clone();
+    }
+
+    public ArrayList<EffectTypes> getReceivedEffects() {
+        return (ArrayList<EffectTypes>) receivedEffects.clone();
     }
 }

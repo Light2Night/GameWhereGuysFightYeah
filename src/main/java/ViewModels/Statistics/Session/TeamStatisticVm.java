@@ -22,16 +22,23 @@ public class TeamStatisticVm {
         return ImposedEffects.size();
     }
 
-    public TeamStatisticVm() {
-        this(0, 0, 0, 0, new ArrayList<>(), new ArrayList<>());
+    public ArrayList<EffectTypes> ReceivedEffects;
+
+    public int getReceivedEffectsCount() {
+        return ReceivedEffects.size();
     }
 
-    public TeamStatisticVm(int damage, int heal, int receivedDamage, int receivedHeal, ArrayList<GameUnit> deadUnits, ArrayList<EffectTypes> imposedEffects) {
+    public TeamStatisticVm() {
+        this(0, 0, 0, 0, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+    }
+
+    public TeamStatisticVm(int damage, int heal, int receivedDamage, int receivedHeal, ArrayList<GameUnit> deadUnits, ArrayList<EffectTypes> imposedEffects, ArrayList<EffectTypes> receivedEffects) {
         Damage = damage;
         Heal = heal;
         ReceivedDamage = receivedDamage;
         ReceivedHeal = receivedHeal;
-        this.DeadUnits = deadUnits;
+        DeadUnits = deadUnits;
         ImposedEffects = imposedEffects;
+        ReceivedEffects = receivedEffects;
     }
 }

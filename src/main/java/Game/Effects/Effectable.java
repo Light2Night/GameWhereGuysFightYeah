@@ -3,7 +3,7 @@ package Game.Effects;
 import Game.Units.Characters.GameUnit;
 
 public interface Effectable extends Cloneable {
-    EffectTypes getEffectType();
+    EffectTypes getType();
 
     void effect(GameUnit target);
 

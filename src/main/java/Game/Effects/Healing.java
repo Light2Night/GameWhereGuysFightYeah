@@ -16,7 +16,7 @@ public class Healing extends Effect {
     }
 
     @Override
-    public EffectTypes getEffectType() {
+    public EffectTypes getType() {
         return EffectTypes.HEALING;
     }
 

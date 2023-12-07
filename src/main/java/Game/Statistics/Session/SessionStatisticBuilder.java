@@ -39,8 +39,12 @@ public class SessionStatisticBuilder implements ISessionStatisticBuilder {
 
         for (Map.Entry<Team, TeamStatisticVm> entry : teamStatisticVms.entrySet()) {
             vm.Damage += entry.getValue().Damage;
+            vm.Heal += entry.getValue().Heal;
+            vm.ReceivedDamage += entry.getValue().ReceivedDamage;
+            vm.ReceivedHeal += entry.getValue().ReceivedHeal;
             vm.DeadUnits.addAll(entry.getValue().DeadUnits);
             vm.ImposedEffects.addAll(entry.getValue().ImposedEffects);
+            vm.ReceivedEffects.addAll(entry.getValue().ReceivedEffects);
         }
 
         vm.CyclesCount = cyclesCount;
@@ -61,10 +65,14 @@ public class SessionStatisticBuilder implements ISessionStatisticBuilder {
             UnitStatisticVm unitVm = entry.getValue();
 
             teamVm.Damage += unitVm.Damage;
+            teamVm.Heal += unitVm.Heal;
+            teamVm.ReceivedDamage += unitVm.ReceivedDamage;
+            teamVm.ReceivedHeal += unitVm.ReceivedHeal;
             if (unitVm.IdDied) {
                 teamVm.DeadUnits.add(entry.getKey());
             }
             teamVm.ImposedEffects.addAll(unitVm.ImposedEffects);
+            teamVm.ReceivedEffects.addAll(unitVm.ReceivedEffects);
         }
 
         return teamStatisticVms;
@@ -99,14 +107,14 @@ public class SessionStatisticBuilder implements ISessionStatisticBuilder {
     }
 
     @Override
-    public IUnitStatisticCollector addReceivedDamage(GameUnit unit, int damageReceived) {
-        getStatistic(unit).addReceivedDamage(damageReceived);
+    public IUnitStatisticCollector addReceivedDamage(GameUnit unit, int receivedDamage) {
+        getStatistic(unit).addReceivedDamage(receivedDamage);
         return this;
     }
 
     @Override
-    public IUnitStatisticCollector addReceivedHeal(GameUnit unit, int healReceived) {
-        getStatistic(unit).addReceivedHeal(healReceived);
+    public IUnitStatisticCollector addReceivedHeal(GameUnit unit, int receivedHeal) {
+        getStatistic(unit).addReceivedHeal(receivedHeal);
         return this;
     }
 
@@ -119,6 +127,12 @@ public class SessionStatisticBuilder implements ISessionStatisticBuilder {
     @Override
     public IUnitStatisticCollector addImposedEffect(GameUnit unit, EffectTypes effect) {
         getStatistic(unit).addImposedEffect(effect);
+        return this;
+    }
+
+    @Override
+    public IUnitStatisticCollector addReceivedEffect(GameUnit unit, EffectTypes effect) {
+        getStatistic(unit).addReceivedEffect(effect);
         return this;
     }
 

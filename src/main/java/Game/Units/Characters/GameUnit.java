@@ -93,6 +93,7 @@ public abstract class GameUnit {
 
     public void takeEffect(Effectable effect) {
         effects.add(effect);
+        statisticCollector.addReceivedEffect(this, effect.getType());
     }
 
     public void executeEffects() {

@@ -15,4 +15,6 @@ public interface IUnitStatisticCollector {
     IUnitStatisticCollector setDied(GameUnit unit);
 
     IUnitStatisticCollector addImposedEffect(GameUnit unit, EffectTypes effect);
+
+    IUnitStatisticCollector addReceivedEffect(GameUnit unit, EffectTypes effect);
 }

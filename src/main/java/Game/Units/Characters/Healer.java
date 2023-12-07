@@ -57,7 +57,7 @@ public class Healer extends GameUnit implements Heallable {
     private ActionInfo healingEffect(GameUnit target) {
         Effectable effect = getHealingEffect();
         target.takeEffect(effect);
-        statisticCollector.addImposedEffect(this, effect.getEffectType());
+        statisticCollector.addImposedEffect(this, effect.getType());
         ActionInfo actionInfo = new EffectActionInfo(this, target, Actions.Healing, effect);
 
         events.ActionPerformedEvent.invoke(actionInfo);

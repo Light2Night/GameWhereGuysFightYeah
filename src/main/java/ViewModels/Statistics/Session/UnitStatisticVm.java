@@ -17,27 +17,35 @@ public class UnitStatisticVm {
         return ImposedEffects.size();
     }
 
-    public UnitStatisticVm(int damage, int heal, int receivedDamage, int receivedHeal, boolean idDied, ArrayList<EffectTypes> imposedEffects) {
+    public ArrayList<EffectTypes> ReceivedEffects;
+
+    public int getReceivedEffectsCount() {
+        return ReceivedEffects.size();
+    }
+
+    public UnitStatisticVm(int damage, int heal, int receivedDamage, int receivedHeal, boolean idDied, ArrayList<EffectTypes> imposedEffects, ArrayList<EffectTypes> receivedEffects) {
         Damage = damage;
         Heal = heal;
         ReceivedDamage = receivedDamage;
         ReceivedHeal = receivedHeal;
         IdDied = idDied;
         ImposedEffects = imposedEffects;
+        ReceivedEffects = receivedEffects;
     }
 
     public UnitStatisticVm() {
-        this(0, 0, 0, 0, false, new ArrayList<>());
+        this(0, 0, 0, 0, false, new ArrayList<>(), new ArrayList<>());
     }
 
     public UnitStatisticVm(UnitStatisticCollector collector) {
         this(
                 collector.getDamage(),
                 collector.getHeal(),
-                collector.getDamageReceived(),
-                collector.getHealReceived(),
+                collector.getReceivedDamage(),
+                collector.getReceivedHeal(),
                 collector.getDied(),
-                collector.getImposedEffects()
+                collector.getImposedEffects(),
+                collector.getReceivedEffects()
         );
     }
 }

@@ -22,19 +22,26 @@ public class SessionStatisticVm {
         return ImposedEffects.size();
     }
 
+    public ArrayList<EffectTypes> ReceivedEffects;
+
+    public int getReceivedEffectsCount() {
+        return ReceivedEffects.size();
+    }
+
     public int CyclesCount;
 
     public SessionStatisticVm() {
-        this(0, 0, 0, 0, new ArrayList<>(), new ArrayList<>(), 0);
+        this(0, 0, 0, 0, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), 0);
     }
 
-    public SessionStatisticVm(int damage, int heal, int receivedDamage, int receivedHeal, ArrayList<GameUnit> deadUnits, ArrayList<EffectTypes> imposedEffects, int cyclesCount) {
+    public SessionStatisticVm(int damage, int heal, int receivedDamage, int receivedHeal, ArrayList<GameUnit> deadUnits, ArrayList<EffectTypes> imposedEffects, ArrayList<EffectTypes> receivedEffects, int cyclesCount) {
         Damage = damage;
         Heal = heal;
         ReceivedDamage = receivedDamage;
         ReceivedHeal = receivedHeal;
         DeadUnits = deadUnits;
         ImposedEffects = imposedEffects;
+        ReceivedEffects = receivedEffects;
         CyclesCount = cyclesCount;
     }
 }

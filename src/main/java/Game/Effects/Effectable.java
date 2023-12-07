@@ -5,7 +5,7 @@ import Game.Units.Characters.GameUnit;
 public interface Effectable extends Cloneable {
     EffectTypes getEffectType();
 
-    void effect(GameUnit unit);
+    void effect(GameUnit target);
 
     int getCyclesLeft();
 

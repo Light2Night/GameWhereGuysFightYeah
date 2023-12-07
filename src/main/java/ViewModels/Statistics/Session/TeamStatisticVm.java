@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 public class TeamStatisticVm {
     public int Damage;
+    public int Heal;
     public ArrayList<GameUnit> DeadUnits;
 
     public int DeadUnitsCount() {
@@ -19,13 +20,14 @@ public class TeamStatisticVm {
         return ImposedEffects.size();
     }
 
-    public TeamStatisticVm(int damage, ArrayList<GameUnit> deadUnits, ArrayList<EffectTypes> imposedEffects) {
-        Damage = damage;
-        this.DeadUnits = deadUnits;
-        ImposedEffects = imposedEffects;
+    public TeamStatisticVm() {
+        this(0, 0, new ArrayList<>(), new ArrayList<>());
     }
 
-    public TeamStatisticVm() {
-        this(0, new ArrayList<>(), new ArrayList<>());
+    public TeamStatisticVm(int damage, int heal, ArrayList<GameUnit> deadUnits, ArrayList<EffectTypes> imposedEffects) {
+        Damage = damage;
+        Heal = heal;
+        this.DeadUnits = deadUnits;
+        ImposedEffects = imposedEffects;
     }
 }

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 public class UnitStatisticVm {
     public int Damage;
+    public int Heal;
     public boolean IdDied;
     public ArrayList<EffectTypes> ImposedEffects;
 
@@ -14,19 +15,21 @@ public class UnitStatisticVm {
         return ImposedEffects.size();
     }
 
-    public UnitStatisticVm(int damage, boolean idDied, ArrayList<EffectTypes> imposedEffects) {
+    public UnitStatisticVm(int damage, int heal, boolean idDied, ArrayList<EffectTypes> imposedEffects) {
         Damage = damage;
+        Heal = heal;
         IdDied = idDied;
         ImposedEffects = imposedEffects;
     }
 
     public UnitStatisticVm() {
-        this(0, false, new ArrayList<>());
+        this(0, 0, false, new ArrayList<>());
     }
 
     public UnitStatisticVm(UnitStatisticCollector unitStatisticCollector) {
         this(
                 unitStatisticCollector.getDamage(),
+                unitStatisticCollector.getHeal(),
                 unitStatisticCollector.getDied(),
                 unitStatisticCollector.getImposedEffects()
         );

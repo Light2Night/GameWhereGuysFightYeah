@@ -76,10 +76,13 @@ public abstract class GameUnit {
         return damageLeft;
     }
 
-    public void heal(int newHp) {
-        if (!isAlive()) return;
+    public int heal(int newHp) {
+        if (!isAlive()) return 0;
 
-        hp = Math.min(maxHp, hp + newHp);
+        int healed = Math.min(maxHp, hp + newHp) - hp;
+        hp += healed;
+
+        return healed;
     }
 
     public Boolean isAlive() {

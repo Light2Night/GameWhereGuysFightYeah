@@ -16,7 +16,7 @@ public class UnitsManager {
         this.sessionStatisticBuilder = sessionStatisticBuilder;
     }
 
-    public void removeUnit(GameUnit unit) {
+    public void removeDeadUnit(GameUnit unit) {
         units.remove(unit);
         gameCycle.removeUnitFromQueue(unit);
 

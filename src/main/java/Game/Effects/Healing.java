@@ -8,8 +8,8 @@ public class Healing extends Effect {
     private final int durationInCycles;
     public final int heal;
 
-    public Healing(EffectSharedData sharedData) {
-        super(sharedData);
+    public Healing(EffectSharedData sharedData, GameUnit creator) {
+        super(sharedData, creator);
 
         durationInCycles = cyclesLeft = 3;
         heal = 10;
@@ -21,14 +21,12 @@ public class Healing extends Effect {
     }
 
     @Override
-    public void effect(GameUnit unit) {
+    public void effect(GameUnit target) {
         if (cyclesLeft == 0) return;
-
         cyclesLeft--;
 
-        if (unit.getHp() == 0) return;
-
-        unit.heal(heal);
+        int hpHealed = target.heal(heal);
+        sharedData.StatisticCollector.addHeal(creator, hpHealed);
     }
 
     @Override

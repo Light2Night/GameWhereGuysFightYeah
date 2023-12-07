@@ -14,11 +14,11 @@ public class EffectFactory {
         this.sharedData = sharedData;
     }
 
-    public Effectable createPoisoning() {
-        return new Poisoning(sharedData);
+    public Effectable createPoisoning(GameUnit creator) {
+        return new Poisoning(sharedData, creator);
     }
 
-    public Effectable createHealing() {
-        return new Healing(sharedData);
+    public Effectable createHealing(GameUnit creator) {
+        return new Healing(sharedData, creator);
     }
 }

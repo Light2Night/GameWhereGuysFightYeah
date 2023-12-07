@@ -84,6 +84,6 @@ public class Magician extends GameUnit implements Attackable, Magicable {
 
     @Override
     public Effectable getMagicalEffect() {
-        return effectFactory.createPoisoning();
+        return effectFactory.createPoisoning(this);
     }
 }

@@ -45,9 +45,12 @@ public class Healer extends GameUnit implements Heallable {
 
     private ActionInfo instantHealing(GameUnit target) {
         int heal = getHeal();
-        target.heal(heal);
+        heal = target.heal(heal);
+        statisticCollector.addHeal(this, heal);
         ActionInfo actionInfo = new HealActionInfo(this, target, Actions.Healing, heal);
+
         events.ActionPerformedEvent.invoke(actionInfo);
+
         return actionInfo;
     }
 
@@ -56,7 +59,9 @@ public class Healer extends GameUnit implements Heallable {
         target.takeEffect(effect);
         statisticCollector.addImposedEffect(this, effect.getEffectType());
         ActionInfo actionInfo = new EffectActionInfo(this, target, Actions.Healing, effect);
+
         events.ActionPerformedEvent.invoke(actionInfo);
+
         return actionInfo;
     }
 
@@ -67,6 +72,6 @@ public class Healer extends GameUnit implements Heallable {
 
     @Override
     public Effectable getHealingEffect() {
-        return effectFactory.createHealing();
+        return effectFactory.createHealing(this);
     }
 }

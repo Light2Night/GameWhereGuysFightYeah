@@ -93,6 +93,12 @@ public class SessionStatisticBuilder implements ISessionStatisticBuilder {
     }
 
     @Override
+    public IUnitStatisticCollector addHeal(GameUnit unit, int heal) {
+        getStatistic(unit).addHeal(heal);
+        return this;
+    }
+
+    @Override
     public IUnitStatisticCollector setDied(GameUnit unit) {
         getStatistic(unit).setDied();
         return this;

@@ -8,8 +8,8 @@ public class Poisoning extends Effect {
     private final int durationInCycles;
     public final int damage;
 
-    public Poisoning(EffectSharedData sharedData) {
-        super(sharedData);
+    public Poisoning(EffectSharedData sharedData, GameUnit creator) {
+        super(sharedData, creator);
 
         durationInCycles = cyclesLeft = 2;
         damage = 15;
@@ -21,12 +21,12 @@ public class Poisoning extends Effect {
     }
 
     @Override
-    public void effect(GameUnit unit) {
+    public void effect(GameUnit target) {
         if (cyclesLeft == 0) return;
         cyclesLeft--;
 
-        int damageTakenByEnemy = unit.takeDamage(damage);
-        sharedData.StatisticCollector.addDamage(unit, damageTakenByEnemy);
+        int damageTaken = target.takeDamage(damage);
+        sharedData.StatisticCollector.addDamage(creator, damageTaken);
     }
 
     @Override

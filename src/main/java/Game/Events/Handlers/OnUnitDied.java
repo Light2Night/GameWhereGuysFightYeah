@@ -13,6 +13,6 @@ public class OnUnitDied extends HandlerGeneric<DeadUnitInfo> {
 
     @Override
     public void handle(DeadUnitInfo deadUnitInfo) {
-        unitsManager.removeUnit(deadUnitInfo.Unit);
+        unitsManager.removeDeadUnit(deadUnitInfo.Unit);
     }
 }

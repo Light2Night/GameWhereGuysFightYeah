@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 public class SessionStatisticVm {
     public int Damage;
+    public int Heal;
     public ArrayList<GameUnit> DeadUnits;
 
     public int DeadUnitsCount() {
@@ -21,14 +22,15 @@ public class SessionStatisticVm {
 
     public int CyclesCount;
 
-    public SessionStatisticVm(int damage, ArrayList<GameUnit> deadUnits, ArrayList<EffectTypes> imposedEffects, int cyclesCount) {
-        Damage = damage;
-        DeadUnits = deadUnits;
-        ImposedEffects = imposedEffects;
-        this.CyclesCount = cyclesCount;
+    public SessionStatisticVm() {
+        this(0, 0, new ArrayList<>(), new ArrayList<>(), 0);
     }
 
-    public SessionStatisticVm() {
-        this(0, new ArrayList<>(), new ArrayList<>(), 0);
+    public SessionStatisticVm(int damage, int heal, ArrayList<GameUnit> deadUnits, ArrayList<EffectTypes> imposedEffects, int cyclesCount) {
+        Damage = damage;
+        Heal = heal;
+        DeadUnits = deadUnits;
+        ImposedEffects = imposedEffects;
+        CyclesCount = cyclesCount;
     }
 }

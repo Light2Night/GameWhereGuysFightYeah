@@ -26,7 +26,7 @@ import properties.user.chest.Chest
 import properties.user.recruit.Recruit
 import properties.user.recruit.RecruitFactory
 import ui.screens.GameScreen
-import ui.screens.MainMenu
+import ui.screens.mainMenu.MainMenu
 import ui.screens.ResultsScreen
 import ui.Screen
 import ui.screens.ChestScreen

@@ -275,7 +275,7 @@ private fun UnitCard(
     modifier: Modifier = Modifier,
 ) {
     val animatedOffset by animateDpAsState(
-        targetValue = if (isCurrent) 0.dp else if (side == Side.Down) (iconSize + padding) else -(iconSize + padding),
+        targetValue = if (isCurrent) if (side == Side.Down) (iconSize + padding) else -(iconSize + padding) else 0.dp,
         animationSpec = tween(
             durationMillis = normalAnimationDuration,
         )

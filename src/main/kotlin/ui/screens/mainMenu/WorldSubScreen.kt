@@ -206,8 +206,8 @@ private fun WorldMap(
                     val scaledImageHeight = mapImage.height * density
                     drawImage(mapImage, dstSize = IntSize(scaledImageWidth.toInt(), scaledImageHeight.toInt()))
 
-                    minX = -(mapImage.width - size.width).dp
-                    minY = -(mapImage.height - size.height).dp
+                    minX = -(mapImage.width * density - size.width * density).dp
+                    minY = -(mapImage.height * density - size.height * density).dp
                 }
         ) {
             worldMap.locations.forEach { location ->

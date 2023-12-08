@@ -274,6 +274,13 @@ private fun UnitCard(
     onSelect: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val animatedOffset by animateDpAsState(
+        targetValue = if (isCurrent) 0.dp else if (side == Side.Down) (iconSize + padding) else -(iconSize + padding),
+        animationSpec = tween(
+            durationMillis = normalAnimationDuration,
+        )
+    )
+
     Row(
         modifier = modifier
             .background(StandardBackgroundBrush(), MedievalShape(smallCorners), transparencySecond)
@@ -287,7 +294,7 @@ private fun UnitCard(
     ) {
         Box(
             modifier = Modifier
-                .offset(0.dp, if (isCurrent) if (side == Side.Down) (iconSize + padding) else -(iconSize + padding) else 0.dp)
+                .offset(0.dp, animatedOffset)
                 .clickable { onSelect() }
                 .fillMaxHeight()
                 .aspectRatio(imageWidth / imageHeight)

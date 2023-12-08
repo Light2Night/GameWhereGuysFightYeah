@@ -2,10 +2,7 @@ package ui.screens.mainMenu
 
 import Game.Units.Characters.UnitTypes
 import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.onDrag
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
@@ -15,10 +12,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.platform.Font
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
 import androidx.compose.ui.unit.min
@@ -178,6 +177,7 @@ private fun WorldMap(
     onSelect: (Location) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val density = LocalDensity.current.density
     val mapImage by remember { mutableStateOf(getImageBitmap("textures/background/map.png") ?: emptyImageBitmap) }
 
     var offsetX by remember { mutableStateOf(0.dp) }
@@ -193,8 +193,8 @@ private fun WorldMap(
             .border(border, colorBorder, MedievalShape(corners))
             .clip(MedievalShape(corners))
             .onDrag {
-                offsetX = max(minX, min(0.dp, offsetX + it.x.dp))
-                offsetY = max(minY, min(0.dp, offsetY + it.y.dp))
+                offsetX = max(minX, min(0.dp, offsetX + (it.x * density).dp))
+                offsetY = max(minY, min(0.dp, offsetY + (it.y * density).dp))
             },
     ) {
         Box(
@@ -202,7 +202,9 @@ private fun WorldMap(
                 .fillMaxSize()
                 .offset(offsetX, offsetY)
                 .drawBehind {
-                    drawImage(mapImage)
+                    val scaledImageWidth = mapImage.width * density
+                    val scaledImageHeight = mapImage.height * density
+                    drawImage(mapImage, dstSize = IntSize(scaledImageWidth.toInt(), scaledImageHeight.toInt()))
 
                     minX = -(mapImage.width - size.width).dp
                     minY = -(mapImage.height - size.height).dp

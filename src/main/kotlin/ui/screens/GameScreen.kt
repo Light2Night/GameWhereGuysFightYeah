@@ -7,6 +7,8 @@ import Game.Units.Characters.Magician
 import Game.Effects.Effectable
 import Game.Effects.Healing
 import Game.Effects.Poisoning
+import Game.Events.Arguments.Actions.ActionInfo
+import Game.Actions
 import Game.Game
 import Game.PlayerTypes
 import gamedata.GameData
@@ -20,12 +22,12 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
@@ -46,7 +48,9 @@ import iconSize
 import imageHeight
 import imageWidth
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import lang
+import longAnimationDuration
 import normalAnimationDuration
 import normalText
 import org.jetbrains.skiko.currentNanoTime
@@ -64,6 +68,7 @@ import ui.Side
 import ui.composable.*
 import ui.composable.shaders.MedievalShape
 import ui.composable.shaders.StandardBackgroundBrush
+import ui.screens.gameScreen.BeamArea
 import kotlin.random.Random
 import kotlin.random.nextInt
 
@@ -74,14 +79,18 @@ fun GameScreen(
     onEnd: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val coroutineScope = rememberCoroutineScope()
+
     var actions by remember { mutableStateOf(ActionFabric(game, gameData).createActions()) }
+    var executedAction by remember { mutableStateOf<ActionInfo?>(null) }
 
     LaunchedEffect(gameData.currentUnit) {
         actions = ActionFabric(game, gameData).createActions()
 
         if (gameData.currentUnit?.team?.playerType == PlayerTypes.AI) {
-            gameData.currentUnit?.moveAI()
+            executedAction = gameData.currentUnit?.moveAI()
             delay(normalAnimationDuration.toLong() * 2 + 1000L)
+            executedAction = null
 
             game.next()
             gameData.gameResult?.let { onEnd() }
@@ -144,17 +153,41 @@ fun GameScreen(
             if (unit != null) {
                 Actions(
                     actions = actions,
-                    onAction = {
-                        game.next()
-                        gameData.gameResult?.let { onEnd() }
+                    onAction = { action ->
+                        coroutineScope.launch {
+                            executedAction = action.action()
+                            delay(normalAnimationDuration.toLong() * 2 + 1000L)
+                            executedAction = null
 
-                        if (game.getUnitById(gameData.selectedUnit?.id ?: 0) == null) {
-                            game.setSelectedUnitIndex(
-                                gameData.enemies.lastOrNull()?.id ?: gameData.allies.firstOrNull()?.id ?: 0
-                            )
+                            game.next()
+                            gameData.gameResult?.let { onEnd() }
+
+                            if (game.getUnitById(gameData.selectedUnit?.id ?: 0) == null) {
+                                game.setSelectedUnitIndex(
+                                    gameData.enemies.lastOrNull()?.id ?: gameData.allies.firstOrNull()?.id ?: 0
+                                )
+                            }
                         }
                     },
                 )
+            }
+        }
+
+        executedAction?.let { action ->
+            when(action.action) {
+                Actions.Attack -> {
+                    if (action.actor is Magician) {
+                        BeamArea(
+                            startPoint = Offset(10F, 10F),
+                            endPoint = Offset(500F, 500F),
+                            duration = longAnimationDuration,
+                            modifier = Modifier.fillMaxWidth(),
+                        )
+                    } else {
+                        MedievalText("NO!", fontSize = hugeText)
+                    }
+                }
+                else -> MedievalText("NO!", fontSize = hugeText)
             }
         }
     }
@@ -488,7 +521,6 @@ private fun EffectsInfo(
     }
 }
 
-@OptIn(ExperimentalTextApi::class)
 @Composable
 private fun EffectIcon(
     effect: Effectable,
@@ -534,7 +566,7 @@ private fun EffectIcon(
 @Composable
 private fun Actions(
     actions: List<Action>,
-    onAction: () -> Unit,
+    onAction: (Action) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -547,10 +579,7 @@ private fun Actions(
                 MedievalButton(
                     icon = action.image ?: emptyImageBitmap,
                     text = action.name,
-                    onClick = {
-                        action.action()
-                        onAction()
-                    },
+                    onClick = { onAction(action) },
                     modifier = Modifier.padding(start = padding, bottom = padding),
                 )
             }

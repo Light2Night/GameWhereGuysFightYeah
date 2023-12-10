@@ -23,28 +23,28 @@ class ActionFabric(
         return when (currentUnit) {
             is Barbarian -> listOf(
                 Action(Actions.Attack.text, Actions.Attack) {
-                    val selectedUnit = gameData.selectedUnit ?: return@Action
-                    currentUnit.move(Move(Actions.Attack, selectedUnit.id))
+                    val selectedUnit = gameData.selectedUnit ?: return@Action null
+                    return@Action currentUnit.move(Move(Actions.Attack, selectedUnit.id))
                 },
             )
             is Magician -> listOf(
                 Action(Actions.Attack.text, Actions.Attack) {
-                    val selectedUnit = gameData.selectedUnit ?: return@Action
-                    currentUnit.move(Move(Actions.Attack, selectedUnit.id))
+                    val selectedUnit = gameData.selectedUnit ?: return@Action null
+                    return@Action currentUnit.move(Move(Actions.Attack, selectedUnit.id))
                 },
                 Action(Actions.Poisoning.text, Actions.Poisoning) {
-                    val selectedUnit = gameData.selectedUnit ?: return@Action
-                    currentUnit.move(Move(Actions.Poisoning, selectedUnit.id))
+                    val selectedUnit = gameData.selectedUnit ?: return@Action null
+                    return@Action currentUnit.move(Move(Actions.Poisoning, selectedUnit.id))
                 },
             )
             is Healer -> listOf(
                 Action(Actions.InstantHealing.text, Actions.InstantHealing) {
-                    val selectedUnit = gameData.selectedUnit ?: return@Action
-                    currentUnit.move(Move(Actions.InstantHealing, selectedUnit.id))
+                    val selectedUnit = gameData.selectedUnit ?: return@Action null
+                    return@Action currentUnit.move(Move(Actions.InstantHealing, selectedUnit.id))
                 },
                 Action(Actions.Healing.text, Actions.Healing) {
-                    val selectedUnit = gameData.selectedUnit ?: return@Action
-                    currentUnit.move(Move(Actions.Healing, selectedUnit.id))
+                    val selectedUnit = gameData.selectedUnit ?: return@Action null
+                    return@Action currentUnit.move(Move(Actions.Healing, selectedUnit.id))
                 },
             )
             else -> listOf()

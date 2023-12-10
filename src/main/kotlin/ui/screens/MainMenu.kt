@@ -1,4 +1,4 @@
-package ui.screens.mainMenu
+package ui.screens
 
 import Game.Units.Characters.UnitTypes
 import androidx.compose.animation.Crossfade
@@ -40,6 +40,10 @@ import properties.user.worldMap.Location
 import ui.CheckManager
 import ui.CheckValue
 import ui.MainMenuTab
+import ui.screens.mainMenu.GuildSubScreen
+import ui.screens.mainMenu.PartySubScreen
+import ui.screens.mainMenu.SettingsSubScreen
+import ui.screens.mainMenu.WorldSubScreen
 import user
 
 @Composable

@@ -105,7 +105,10 @@ private fun Chests(
                     },
                     modifier = Modifier.weight(1F).padding(padding)
                 )
-            } ?: Column(Modifier.weight(1F).padding(padding)) {
+            } ?: Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.weight(1F).padding(padding),
+            ) {
                 MedievalBox(modifier = Modifier.fillMaxWidth().aspectRatio(1F).padding(padding))
                 MedievalText(
                     lang.empty_chest_slot.replaceFirstChar { it.uppercaseChar() },

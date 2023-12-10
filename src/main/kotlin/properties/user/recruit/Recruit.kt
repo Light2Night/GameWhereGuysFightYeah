@@ -15,30 +15,30 @@ data class Recruit(
     val stars: Int,
     var level: Int,
     val profileImage: String,
-    val data: RecruitData,
+    val rawData: RecruitData,
     var cost: Cost? = null,
 ) : HasID {
     fun toViewModel(): BaseUnitViewModel {
-        return when (data) {
+        return when (val absoluteData = rawData.absoluteData(level)) {
             is BarbarianData -> BarbarianViewModel(
                 name,
-                data.maxHP,
-                data.maxHP,
-                data.damage,
-                data.damageDelta,
+                absoluteData.maxHP,
+                absoluteData.maxHP,
+                absoluteData.damage,
+                absoluteData.damageDelta,
             )
             is MageData -> MageViewModel(
                 name,
-                data.maxHP,
-                data.maxHP,
-                data.damage,
-                data.damageDelta,
+                absoluteData.maxHP,
+                absoluteData.maxHP,
+                absoluteData.damage,
+                absoluteData.damageDelta,
             )
             is HealerData -> HealerViewModel(
                 name,
-                data.maxHP,
-                data.maxHP,
-                data.heal,
+                absoluteData.maxHP,
+                absoluteData.maxHP,
+                absoluteData.heal,
             )
             else -> throw Exception("Unknown Recruit Data")
         }

@@ -92,7 +92,7 @@ fun RecruitCard(
             )
 
             MedievalText(
-                text = when (recruit.data.type) {
+                text = when (recruit.rawData.type) {
                     UnitTypes.BARBARIAN -> lang.barbarian_name.replaceFirstChar { it.uppercaseChar() }
                     UnitTypes.MAGICIAN -> lang.magician_name.replaceFirstChar { it.uppercaseChar() }
                     UnitTypes.HEALER -> lang.healer_name.replaceFirstChar { it.uppercaseChar() }
@@ -101,7 +101,7 @@ fun RecruitCard(
             )
 
             RecruitUnitTextData(
-                recruitData = recruit.data,
+                recruitData = recruit.rawData,
                 modifier = Modifier,
             )
 

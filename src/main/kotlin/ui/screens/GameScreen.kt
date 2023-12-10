@@ -150,7 +150,7 @@ fun GameScreen(
             animationSpec = tween(normalAnimationDuration),
             modifier = Modifier.align(Alignment.Center),
         ) { unit ->
-            if (unit != null) {
+            if (unit != null && executedAction == null) {
                 Actions(
                     actions = actions,
                     onAction = { action ->

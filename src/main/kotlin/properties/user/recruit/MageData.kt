@@ -9,4 +9,15 @@ data class MageData(
     val damageDelta: Int = 20,
     val magicalEffectDamage: Int = 15,
     val magicalEffectTurns: Int = 2,
-) : RecruitData
+) : RecruitData {
+    override fun absoluteData(level: Int): RecruitData {
+        val multiplier = multiplier(level)
+
+        return copy(
+            maxHP = (maxHP * multiplier).toInt(),
+            damage = (damage * multiplier).toInt(),
+            damageDelta = (damageDelta * multiplier).toInt(),
+            magicalEffectDamage = (magicalEffectDamage * multiplier).toInt(),
+        )
+    }
+}

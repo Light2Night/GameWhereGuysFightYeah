@@ -53,7 +53,7 @@ class RecruitFactory {
         val preset = presets.random()
 
         val name = if (preset.stars == 1) {
-            when (preset.data.type) {
+            when (preset.rawData.type) {
                 UnitTypes.BARBARIAN -> mobBarbarianNames.random()
                 UnitTypes.MAGICIAN -> mobMagicianNames.random()
                 UnitTypes.HEALER -> mobHealerNames.random()
@@ -81,10 +81,10 @@ class RecruitFactory {
         costCoins: IntRange = 1..1,
         costCrystals: IntRange = 1..1
     ): Recruit {
-        val preset = presets.filter { it.data.type == type }.random()
+        val preset = presets.filter { it.rawData.type == type }.random()
 
         val name = if (preset.stars == 1) {
-            when (preset.data.type) {
+            when (preset.rawData.type) {
                 UnitTypes.BARBARIAN -> mobBarbarianNames.random()
                 UnitTypes.MAGICIAN -> mobMagicianNames.random()
                 UnitTypes.HEALER -> mobHealerNames.random()

@@ -8,4 +8,14 @@ data class HealerData(
     val heal: Int = 15,
     val healingEffectHeal: Int = 7,
     val healingEffectTurns: Int = 3,
-) : RecruitData
+) : RecruitData {
+    override fun absoluteData(level: Int): RecruitData {
+        val multiplier = multiplier(level)
+
+        return copy(
+            maxHP = (maxHP * multiplier).toInt(),
+            heal = (heal * multiplier).toInt(),
+            healingEffectHeal = (healingEffectHeal * multiplier).toInt(),
+        )
+    }
+}

@@ -79,7 +79,7 @@ fun main() = application {
                     gameData.location = location
 
                     user.recruits.selectedList.forEach {
-                        val newUnit = when (it.data.type) {
+                        val newUnit = when (it.rawData.type) {
                             UnitTypes.BARBARIAN -> game.alliesFactory.createBarbarian(it.toViewModel() as BarbarianViewModel)
                             UnitTypes.MAGICIAN -> game.alliesFactory.createMagician(it.toViewModel() as MageViewModel)
                             UnitTypes.HEALER -> game.alliesFactory.createHealer(it.toViewModel() as HealerViewModel)
@@ -98,7 +98,7 @@ fun main() = application {
 
                         createdEnemies.add(enemyRecruit)
 
-                        val newUnit = when (enemyRecruit.data.type) {
+                        val newUnit = when (enemyRecruit.rawData.type) {
                             UnitTypes.BARBARIAN -> game.enemyFactory.createBarbarian(enemyRecruit.toViewModel() as BarbarianViewModel)
                             UnitTypes.MAGICIAN -> game.enemyFactory.createMagician(enemyRecruit.toViewModel() as MageViewModel)
                             UnitTypes.HEALER -> game.enemyFactory.createHealer(enemyRecruit.toViewModel() as HealerViewModel)

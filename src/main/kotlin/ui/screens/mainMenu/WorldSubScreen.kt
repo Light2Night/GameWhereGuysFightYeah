@@ -101,13 +101,13 @@ private fun LocationInfo(
         val randomEnemies = mutableStateListOf<UnitTypes>()
 
         repeat(Random(currentNanoTime()).nextInt(1, 5)) {
-            recruitFactory.getPreset(location.enemyTypes.random())?.let { randomEnemies.add(it.data.type) }
+            recruitFactory.getPreset(location.enemyTypes.random())?.let { randomEnemies.add(it.rawData.type) }
         }
 
         if (randomEnemies.all { it == UnitTypes.HEALER }) {
             val replacement = recruitFactory.getPreset(location.enemyTypes.filterNot { it == 2 }.random())
 
-            replacement?.let { randomEnemies.set(Random(currentNanoTime()).nextInt(0, randomEnemies.size), it.data.type) }
+            replacement?.let { randomEnemies.set(Random(currentNanoTime()).nextInt(0, randomEnemies.size), it.rawData.type) }
         }
 
         randomEnemies

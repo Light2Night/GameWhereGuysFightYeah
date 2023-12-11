@@ -28,7 +28,7 @@ public class Healer extends GameUnit implements Heallable {
         GameUnit target = accessor.getEnemiesAccessor().getUnitByIndex(index);
         Actions action;
         if (selectedAction == 1) action = Actions.InstantHealing;
-        else action = Actions.Healing;
+        else action = Actions.HealingEffect;
 
         return act(target, action);
     }
@@ -36,7 +36,7 @@ public class Healer extends GameUnit implements Heallable {
     protected ActionInfo act(GameUnit target, Actions action) throws InvalidActionException {
         if (action.equals(Actions.InstantHealing)) {
             return instantHealing(target);
-        } else if (action.equals(Actions.Healing)) {
+        } else if (action.equals(Actions.HealingEffect)) {
             return healingEffect(target);
         }
 
@@ -58,7 +58,7 @@ public class Healer extends GameUnit implements Heallable {
         Effectable effect = getHealingEffect();
         target.takeEffect(effect);
         statisticCollector.addImposedEffect(this, effect.getType());
-        ActionInfo actionInfo = new EffectActionInfo(this, target, Actions.Healing, effect);
+        ActionInfo actionInfo = new EffectActionInfo(this, target, Actions.HealingEffect, effect);
 
         events.ActionPerformedEvent.invoke(actionInfo);
 

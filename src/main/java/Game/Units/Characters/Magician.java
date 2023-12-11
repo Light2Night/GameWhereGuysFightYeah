@@ -31,7 +31,7 @@ public class Magician extends GameUnit implements Attackable, Magicable {
         GameUnit target = accessor.getAlliesAccessor().getUnitByIndex(index);
         Actions action;
         if (selectedAction == 1) action = Actions.Attack;
-        else action = Actions.Poisoning;
+        else action = Actions.PoisoningEffect;
 
         return act(target, action);
     }
@@ -39,7 +39,7 @@ public class Magician extends GameUnit implements Attackable, Magicable {
     protected ActionInfo act(GameUnit target, Actions action) throws InvalidActionException {
         if (action.equals(Actions.Attack)) {
             return attack(target);
-        } else if (action.equals(Actions.Poisoning)) {
+        } else if (action.equals(Actions.PoisoningEffect)) {
             return poisoning(target);
         }
 
@@ -61,7 +61,7 @@ public class Magician extends GameUnit implements Attackable, Magicable {
         Effectable effect = getMagicalEffect();
         target.takeEffect(effect);
         statisticCollector.addImposedEffect(this, effect.getType());
-        ActionInfo actionInfo = new EffectActionInfo(this, target, Actions.Poisoning, effect);
+        ActionInfo actionInfo = new EffectActionInfo(this, target, Actions.PoisoningEffect, effect);
 
         events.ActionPerformedEvent.invoke(actionInfo);
 

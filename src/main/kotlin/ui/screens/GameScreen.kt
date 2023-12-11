@@ -209,7 +209,7 @@ fun GameScreen(
                         modifier = Modifier.fillMaxSize(),
                     )
                 }
-                Actions.Healing -> {
+                Actions.HealingEffect -> {
                     FlyingText(
                         startPoint = positions[action.target.id] ?: Offset(0F, 0F),
                         text = "+${(action as HealActionInfo).healed}",

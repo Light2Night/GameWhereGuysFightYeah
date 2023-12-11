@@ -12,10 +12,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Window
-import androidx.compose.ui.window.WindowPosition
-import androidx.compose.ui.window.application
-import androidx.compose.ui.window.rememberWindowState
+import androidx.compose.ui.window.*
 import gamedata.GameData
 import gamedata.event.CurrentUnitChangedEvent
 import gamedata.event.GameEndedEvent
@@ -68,7 +65,8 @@ fun main() = application {
     val windowState = rememberWindowState(
         width = 1400.dp,
         height = 700.dp,
-        position = WindowPosition.Aligned(Alignment.Center)
+        position = WindowPosition.Aligned(Alignment.Center),
+        placement = WindowPlacement.Maximized,
     )
 
     Window(onCloseRequest = ::exitApplication, state = windowState) {

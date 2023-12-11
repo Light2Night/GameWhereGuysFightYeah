@@ -17,6 +17,7 @@ import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -28,6 +29,9 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInRoot
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
@@ -83,6 +87,7 @@ fun GameScreen(
 
     var actions by remember { mutableStateOf(ActionFabric(game, gameData).createActions()) }
     var executedAction by remember { mutableStateOf<ActionInfo?>(null) }
+    val positions = remember { mutableStateMapOf<Int, Offset>() }
 
     LaunchedEffect(gameData.currentUnit) {
         actions = ActionFabric(game, gameData).createActions()
@@ -115,6 +120,7 @@ fun GameScreen(
         UnitList(
             gameData = gameData,
             units = gameData.enemies,
+            positions = positions,
             selectedUnitID = gameData.selectedUnit?.id ?: 0,
             currentUnitID = gameData.currentUnit?.id ?: 0,
             side = Side.Down,
@@ -135,6 +141,7 @@ fun GameScreen(
         UnitList(
             gameData = gameData,
             units = gameData.allies,
+            positions = positions,
             selectedUnitID = gameData.selectedUnit?.id ?: 0,
             currentUnitID = gameData.currentUnit?.id ?: 0,
             side = Side.Up,
@@ -178,8 +185,8 @@ fun GameScreen(
                 Actions.Attack -> {
                     if (action.actor is Magician) {
                         BeamArea(
-                            startPoint = Offset(10F, 10F),
-                            endPoint = Offset(500F, 500F),
+                            startPoint = positions[action.actor.id] ?: Offset(0F, 0F),
+                            endPoint = positions[action.target.id] ?: Offset(0F, 0F),
                             duration = longAnimationDuration,
                             modifier = Modifier.fillMaxWidth(),
                         )
@@ -273,6 +280,7 @@ private fun UnitList(
     selectedUnitID: Int,
     currentUnitID: Int,
     units: List<GameUnit>,
+    positions: SnapshotStateMap<Int, Offset>,
     side: Side,
     onSelect: (Int) -> Unit,
     modifier: Modifier
@@ -290,6 +298,9 @@ private fun UnitList(
                 isCurrent = unit.id == currentUnitID,
                 isSelected = unit.id == selectedUnitID,
                 onSelect = { onSelect(unit.id) },
+                onPositionChanged = { pos ->
+                    positions[unit.id] = pos
+                },
                 modifier = Modifier.fillMaxHeight(),
             )
         }
@@ -305,8 +316,11 @@ private fun UnitCard(
     isCurrent: Boolean,
     isSelected: Boolean,
     onSelect: () -> Unit,
+    onPositionChanged: (Offset) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val density = LocalDensity.current.density
+
     val animatedOffset by animateDpAsState(
         targetValue = if (isCurrent) if (side == Side.Down) (iconSize + padding) else -(iconSize + padding) else 0.dp,
         animationSpec = tween(
@@ -338,7 +352,13 @@ private fun UnitCard(
                     if (isSelected) colorSelectedBorder else colorBorder,
                     MedievalShape(smallCorners)
                 )
-                .clip(MedievalShape(smallCorners)),
+                .clip(MedievalShape(smallCorners))
+                .onGloballyPositioned {
+                    onPositionChanged(it.positionInRoot().copy(
+                        y = (it.positionInRoot().y + (it.size.height / 2)) * density,
+                        x = (it.positionInRoot().x + (it.size.width / 2)) * density,
+                    ))
+                },
         ) {
             Box(
                 modifier = Modifier

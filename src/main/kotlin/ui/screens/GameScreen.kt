@@ -33,7 +33,6 @@ import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInRoot
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
@@ -88,7 +87,6 @@ fun GameScreen(
     onEnd: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val density = LocalDensity.current.density
     val coroutineScope = rememberCoroutineScope()
 
     var actions by remember { mutableStateOf(ActionFabric(game, gameData).createActions()) }
@@ -203,7 +201,7 @@ fun GameScreen(
                     }
 
                     FlyingText(
-                        startPoint = positions[action.target.id]?.times(density) ?: Offset(0F, 0F),
+                        startPoint = positions[action.target.id] ?: Offset(0F, 0F),
                         text = "-${(action as AttackActionInfo).damage}",
                         color = colorTextError,
                         duration = longAnimationDuration,
@@ -212,7 +210,7 @@ fun GameScreen(
                 }
                 Actions.InstantHealing -> {
                     FlyingText(
-                        startPoint = positions[action.target.id]?.times(density) ?: Offset(0F, 0F),
+                        startPoint = positions[action.target.id] ?: Offset(0F, 0F),
                         text = "+${(action as HealActionInfo).healed}",
                         color = colorTextSuccess,
                         duration = longAnimationDuration,

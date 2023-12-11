@@ -88,6 +88,7 @@ fun GameScreen(
     onEnd: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val density = LocalDensity.current.density
     val coroutineScope = rememberCoroutineScope()
 
     var actions by remember { mutableStateOf(ActionFabric(game, gameData).createActions()) }
@@ -202,16 +203,16 @@ fun GameScreen(
                     }
 
                     FlyingText(
-                        startPoint = positions[action.target.id] ?: Offset(0F, 0F),
+                        startPoint = positions[action.target.id]?.times(density) ?: Offset(0F, 0F),
                         text = "-${(action as AttackActionInfo).damage}",
                         color = colorTextError,
                         duration = longAnimationDuration,
                         modifier = Modifier.fillMaxSize(),
                     )
                 }
-                Actions.HealingEffect -> {
+                Actions.InstantHealing -> {
                     FlyingText(
-                        startPoint = positions[action.target.id] ?: Offset(0F, 0F),
+                        startPoint = positions[action.target.id]?.times(density) ?: Offset(0F, 0F),
                         text = "+${(action as HealActionInfo).healed}",
                         color = colorTextSuccess,
                         duration = longAnimationDuration,
@@ -343,8 +344,6 @@ private fun UnitCard(
     onPositionChanged: (Offset) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val density = LocalDensity.current.density
-
     val animatedOffset by animateDpAsState(
         targetValue = if (isCurrent) if (side == Side.Down) (iconSize + padding) else -(iconSize + padding) else 0.dp,
         animationSpec = tween(
@@ -386,8 +385,8 @@ private fun UnitCard(
                 .clip(MedievalShape(smallCorners))
                 .onGloballyPositioned {
                     onPositionChanged(it.positionInRoot().copy(
-                        y = (it.positionInRoot().y + (it.size.height / 2)) * density,
-                        x = (it.positionInRoot().x + (it.size.width / 2)) * density,
+                        y = (it.positionInRoot().y + (it.size.height / 2)),
+                        x = (it.positionInRoot().x + (it.size.width / 2)),
                     ))
                 },
         ) {

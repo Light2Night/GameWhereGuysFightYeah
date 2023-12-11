@@ -161,11 +161,11 @@ private fun RecruitUnitTextData(
 
         when (recruitData) {
             is BarbarianData -> {
-                MedievalText("DMG: ${recruitData.damage - recruitData.damageDelta}-${recruitData.damage}")
+                MedievalText("DMG: ${recruitData.damage - recruitData.damageDelta}-${recruitData.damage + recruitData.damageDelta}")
             }
 
             is MageData -> {
-                MedievalText("DMG: ${recruitData.damage - recruitData.damageDelta}-${recruitData.damage}")
+                MedievalText("DMG: ${recruitData.damage - recruitData.damageDelta}-${recruitData.damage + recruitData.damageDelta}")
                 MedievalText("EFF: ${recruitData.magicalEffectDamage} (${recruitData.magicalEffectTurns} turns)")
             }
 

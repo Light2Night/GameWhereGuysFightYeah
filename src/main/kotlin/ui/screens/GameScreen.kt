@@ -209,7 +209,7 @@ fun GameScreen(
                         modifier = Modifier.fillMaxSize(),
                     )
                 }
-                Actions.Healing -> {
+                Actions.InstantHealing -> {
                     FlyingText(
                         startPoint = positions[action.target.id] ?: Offset(0F, 0F),
                         text = "+${(action as HealActionInfo).healed}",
@@ -518,14 +518,14 @@ private fun UnitTextData(
         when (unit) {
             is Barbarian -> {
                 val damageText = lang.damage
-                    .replace("<amount>", "${unit.damage - unit.damageDelta}-${unit.damage}")
+                    .replace("<amount>", "${unit.damage - unit.damageDelta}-${unit.damage + unit.damageDelta}")
                     .replaceFirstChar { it.uppercaseChar() }
                 MedievalText(damageText)
             }
 
             is Magician -> {
                 val damageText = lang.damage
-                    .replace("<amount>", "${unit.damage - unit.damageDelta}-${unit.damage}")
+                    .replace("<amount>", "${unit.damage - unit.damageDelta}-${unit.damage + unit.damageDelta}")
                     .replaceFirstChar { it.uppercaseChar() }
                 MedievalText(damageText)
 

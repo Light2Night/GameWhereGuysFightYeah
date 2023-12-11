@@ -9,7 +9,7 @@ data class Action(
     val type: Actions,
     val action: () -> ActionInfo?,
 ) {
-    val image get() = when (this.type) {
+    val image = when (this.type) {
         Actions.Attack -> getImageBitmap("textures/assets/attack.png")
         Actions.PoisoningEffect -> getImageBitmap("textures/assets/poison.png")
         Actions.InstantHealing -> getImageBitmap("textures/assets/instant_healing.png")

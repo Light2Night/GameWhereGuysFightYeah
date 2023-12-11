@@ -61,7 +61,7 @@ public class Magician extends GameUnit implements Attackable, Magicable {
         Effectable effect = getMagicalEffect();
         target.takeEffect(effect);
         statisticCollector.addImposedEffect(this, effect.getType());
-        ActionInfo actionInfo = new EffectActionInfo(this, target, Actions.Effect, effect);
+        ActionInfo actionInfo = new EffectActionInfo(this, target, Actions.PoisoningEffect, effect);
 
         events.ActionPerformedEvent.invoke(actionInfo);
 

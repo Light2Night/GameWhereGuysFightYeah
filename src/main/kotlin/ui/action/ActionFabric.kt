@@ -32,9 +32,9 @@ class ActionFabric(
                     val selectedUnit = gameData.selectedUnit ?: return@Action null
                     return@Action currentUnit.move(Move(Actions.Attack, selectedUnit.id))
                 },
-                Action(Actions.Poisoning.text, Actions.Poisoning) {
+                Action(Actions.PoisoningEffect.text, Actions.PoisoningEffect) {
                     val selectedUnit = gameData.selectedUnit ?: return@Action null
-                    return@Action currentUnit.move(Move(Actions.Poisoning, selectedUnit.id))
+                    return@Action currentUnit.move(Move(Actions.PoisoningEffect, selectedUnit.id))
                 },
             )
             is Healer -> listOf(
@@ -42,9 +42,9 @@ class ActionFabric(
                     val selectedUnit = gameData.selectedUnit ?: return@Action null
                     return@Action currentUnit.move(Move(Actions.InstantHealing, selectedUnit.id))
                 },
-                Action(Actions.Healing.text, Actions.Healing) {
+                Action(Actions.HealingEffect.text, Actions.HealingEffect) {
                     val selectedUnit = gameData.selectedUnit ?: return@Action null
-                    return@Action currentUnit.move(Move(Actions.Healing, selectedUnit.id))
+                    return@Action currentUnit.move(Move(Actions.HealingEffect, selectedUnit.id))
                 },
             )
             else -> listOf()

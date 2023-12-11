@@ -185,6 +185,8 @@ fun GameScreen(
                 Actions.Attack -> {
                     if (action.actor is Magician) {
                         BeamArea(
+                            color = Color.White,
+                            particleColor = Color.LightGray,
                             startPoint = positions[action.actor.id] ?: Offset(0F, 0F),
                             endPoint = positions[action.target.id] ?: Offset(0F, 0F),
                             duration = longAnimationDuration,

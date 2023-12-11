@@ -9,6 +9,8 @@ import Game.Effects.Healing
 import Game.Effects.Poisoning
 import Game.Events.Arguments.Actions.ActionInfo
 import Game.Actions
+import Game.Events.Arguments.Actions.AttackActionInfo
+import Game.Events.Arguments.Actions.HealActionInfo
 import Game.Game
 import Game.PlayerTypes
 import gamedata.GameData
@@ -43,8 +45,10 @@ import border
 import colorBackground
 import colorBorder
 import colorSelectedBorder
+import colorTextError
 import colorTextLight
 import colorTextLighter
+import colorTextSuccess
 import emptyImageBitmap
 import getImageBitmap
 import hugeText
@@ -73,6 +77,7 @@ import ui.composable.*
 import ui.composable.shaders.MedievalShape
 import ui.composable.shaders.StandardBackgroundBrush
 import ui.screens.gameScreen.BeamArea
+import ui.screens.gameScreen.FlyingText
 import kotlin.random.Random
 import kotlin.random.nextInt
 
@@ -195,6 +200,23 @@ fun GameScreen(
                     } else {
                         MedievalText("NO!", fontSize = hugeText)
                     }
+
+                    FlyingText(
+                        startPoint = positions[action.target.id] ?: Offset(0F, 0F),
+                        text = "-${(action as AttackActionInfo).damage}",
+                        color = colorTextError,
+                        duration = longAnimationDuration,
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                }
+                Actions.Healing -> {
+                    FlyingText(
+                        startPoint = positions[action.target.id] ?: Offset(0F, 0F),
+                        text = "+${(action as HealActionInfo).healed}",
+                        color = colorTextSuccess,
+                        duration = longAnimationDuration,
+                        modifier = Modifier.fillMaxSize(),
+                    )
                 }
                 else -> MedievalText("NO!", fontSize = hugeText)
             }
@@ -330,6 +352,13 @@ private fun UnitCard(
         )
     )
 
+    val animatedHP by animateIntAsState(
+        targetValue = unit.hp,
+        animationSpec = tween(
+            durationMillis = normalAnimationDuration,
+        )
+    )
+
     Row(
         modifier = modifier
             .background(StandardBackgroundBrush(), MedievalShape(smallCorners), transparencySecond)
@@ -449,7 +478,7 @@ private fun UnitCard(
                         contentAlignment = Alignment.Center,
                     ) {
                         MedievalProgressbar(
-                            value = unit.hp,
+                            value = animatedHP,
                             min = 0,
                             max = unit.maxHp,
                             modifier = Modifier
@@ -458,7 +487,7 @@ private fun UnitCard(
                         )
 
                         MedievalText(
-                            text = "${unit.hp}/${unit.maxHp}",
+                            text = "${animatedHP}/${unit.maxHp}",
                             fontSize = smallText,
                             color = colorTextLight,
                         )

@@ -2,7 +2,6 @@ package Game;
 
 public enum Actions {
     Attack,
-    PoisoningEffect,
-    HealingEffect,
+    Effect,
     InstantHealing,
 }

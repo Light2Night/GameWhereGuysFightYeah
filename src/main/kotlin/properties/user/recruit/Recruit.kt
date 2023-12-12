@@ -4,6 +4,7 @@ import Game.Units.Factories.ViewModels.BarbarianViewModel
 import Game.Units.Factories.ViewModels.BaseUnitViewModel
 import Game.Units.Factories.ViewModels.HealerViewModel
 import Game.Units.Factories.ViewModels.MageViewModel
+import getImageBitmap
 import utilities.HasID
 import properties.resources.Cost
 
@@ -18,6 +19,10 @@ data class Recruit(
     val rawData: RecruitData,
     var cost: Cost? = null,
 ) : HasID {
+    val image = getImageBitmap(profileImage)
+
+    val absoluteData get() = rawData.absoluteData(level)
+
     fun toViewModel(): BaseUnitViewModel {
         return when (val absoluteData = rawData.absoluteData(level)) {
             is BarbarianData -> BarbarianViewModel(

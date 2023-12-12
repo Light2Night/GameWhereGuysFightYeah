@@ -397,15 +397,8 @@ private fun UnitCard(
                     .clip(MedievalShape(smallCorners)),
             ) {
                 Image(
-                    bitmap = getImageBitmap(
-                        when (unit) {
-                            is Barbarian -> "textures/characters/barbarian_placeholder.png"
-                            is Magician -> "textures/characters/magician_placeholder.png"
-                            is Healer -> "textures/characters/healer_placeholder.png"
-                            else -> ""
-                        }
-                    ) ?: emptyImageBitmap,
-                    contentDescription = unit.name,
+                    bitmap = recruit.image ?: emptyImageBitmap,
+                    contentDescription = recruit.name,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -574,15 +567,21 @@ private fun EffectIcon(
     effect: Effectable,
     modifier: Modifier = Modifier,
 ) {
+    val image by remember {
+        mutableStateOf(
+            when (effect) {
+                is Healing -> getImageBitmap("textures/effect/healing.png")
+                is Poisoning -> getImageBitmap("textures/effect/poison.png")
+                else -> emptyImageBitmap
+            } ?: emptyImageBitmap
+        )
+    }
+
     MedievalBox(
         modifier = modifier,
     ) {
         Image(
-            bitmap = when (effect) {
-                is Healing -> getImageBitmap("textures/effect/healing.png")
-                is Poisoning -> getImageBitmap("textures/effect/poison.png")
-                else -> emptyImageBitmap
-            } ?: emptyImageBitmap,
+            bitmap = image,
             contentDescription = "effect icon",
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxWidth(),

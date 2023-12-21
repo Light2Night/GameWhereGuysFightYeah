@@ -100,7 +100,7 @@ private fun LocationInfo(
         val recruitFactory = RecruitFactory()
         val randomEnemies = mutableStateListOf<UnitTypes>()
 
-        repeat(Random(currentNanoTime()).nextInt(1, 5)) {
+        repeat(Random(currentNanoTime()).nextInt(1, 6)) {
             recruitFactory.getPreset(location.enemyTypes.random())?.let { randomEnemies.add(it.rawData.type) }
         }
 

@@ -77,6 +77,8 @@ import ui.composable.shaders.MedievalShape
 import ui.composable.shaders.StandardBackgroundBrush
 import ui.screens.gameScreen.BeamArea
 import ui.screens.gameScreen.FlyingText
+import ui.screens.gameScreen.SlashArea
+import ui.screens.gameScreen.ThrowArea
 import kotlin.random.Random
 import kotlin.random.nextInt
 
@@ -187,8 +189,8 @@ fun GameScreen(
         executedAction?.let { action ->
             when(action.action) {
                 Actions.Attack -> {
-                    if (action.actor is Magician) {
-                        BeamArea(
+                    when (action.actor) {
+                        is Magician -> BeamArea(
                             color = Color.White,
                             particleColor = Color.LightGray,
                             startPoint = positions[action.actor.id] ?: Offset(0F, 0F),
@@ -196,8 +198,14 @@ fun GameScreen(
                             duration = longAnimationDuration,
                             modifier = Modifier.fillMaxWidth(),
                         )
-                    } else {
-                        MedievalText("NO!", fontSize = hugeText)
+
+                        is Barbarian -> SlashArea(
+                            texture = getImageBitmap("textures/assets/slash.png") ?: emptyImageBitmap,
+                            startPoint = positions[action.actor.id] ?: Offset(0F, 0F),
+                            endPoint = positions[action.target.id] ?: Offset(0F, 0F),
+                            duration = longAnimationDuration,
+                            modifier = Modifier.fillMaxWidth(),
+                        )
                     }
 
                     FlyingText(
@@ -209,6 +217,17 @@ fun GameScreen(
                     )
                 }
                 Actions.InstantHealing -> {
+                    if (action.actor is Healer) {
+                        BeamArea(
+                            color = Color.Red,
+                            particleColor = Color(240, 0, 0),
+                            startPoint = positions[action.actor.id] ?: Offset(0F, 0F),
+                            endPoint = positions[action.target.id] ?: Offset(0F, 0F),
+                            duration = longAnimationDuration,
+                            modifier = Modifier.fillMaxWidth(),
+                        )
+                    }
+
                     FlyingText(
                         startPoint = positions[action.target.id] ?: Offset(0F, 0F),
                         text = "+${(action as HealActionInfo).healed}",
@@ -217,7 +236,25 @@ fun GameScreen(
                         modifier = Modifier.fillMaxSize(),
                     )
                 }
-                else -> MedievalText("NO!", fontSize = hugeText)
+                Actions.HealingEffect -> {
+                    ThrowArea(
+                        texture = getImageBitmap("textures/assets/healing_potion.png") ?: emptyImageBitmap,
+                        startPoint = positions[action.actor.id] ?: Offset(0F, 0F),
+                        endPoint = positions[action.target.id] ?: Offset(0F, 0F),
+                        duration = longAnimationDuration,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                }
+                Actions.PoisoningEffect -> {
+                    ThrowArea(
+                        texture = getImageBitmap("textures/assets/poison_potion.png") ?: emptyImageBitmap,
+                        startPoint = positions[action.actor.id] ?: Offset(0F, 0F),
+                        endPoint = positions[action.target.id] ?: Offset(0F, 0F),
+                        duration = longAnimationDuration,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                }
+                null -> {}
             }
         }
     }

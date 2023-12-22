@@ -54,10 +54,14 @@ fun ThrowArea(
             val flyHeight = abs(startPoint.x - endPoint.x) / 3
             val endY1 = min(startPoint.y, endPoint.y) - max(20.0F, flyHeight)
 
+            val fullHeight = abs(endY1 - startPoint.y)
+            val durationUp = (((fullHeight - flyHeight) / fullHeight) * duration).toInt()
+            val durationDown = ((flyHeight / fullHeight) * duration).toInt()
+
             animatedY.animateTo(
                 endY1,
                 tween(
-                    duration / 3 * 2,
+                    durationUp,
                     easing = EaseIn,
                 ),
             )
@@ -65,7 +69,7 @@ fun ThrowArea(
             animatedY.animateTo(
                 endPoint.y,
                 tween(
-                    duration / 3,
+                    durationDown,
                     easing = EaseIn,
                 )
             )

@@ -1,5 +1,5 @@
 package ui
 
 enum class Screen {
-    Main, Game, Results, Chest;
+    Loading, Main, Game, Results, Chest;
 }

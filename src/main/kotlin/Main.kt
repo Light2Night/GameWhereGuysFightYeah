@@ -5,10 +5,7 @@ import Game.Units.Factories.ViewModels.HealerViewModel
 import Game.Units.Factories.ViewModels.MageViewModel
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -18,39 +15,57 @@ import gamedata.event.CurrentUnitChangedEvent
 import gamedata.event.GameEndedEvent
 import gamedata.event.MoveCompletedEvent
 import gamedata.event.SelectEvent
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import properties.Properties
 import properties.textures.Textures
 import properties.user.chest.Chest
 import properties.user.recruit.Recruit
 import properties.user.recruit.RecruitFactory
-import ui.screens.GameScreen
-import ui.screens.MainMenu
-import ui.screens.ResultsScreen
 import ui.Screen
-import ui.screens.ChestScreen
+import ui.screens.*
 
 fun main() = application {
+    val coroutineScope = rememberCoroutineScope()
+    var screen by remember { mutableStateOf(Screen.Loading) }
+    var loadingProgress by remember { mutableStateOf(0) }
+
     var firstTime by remember { mutableStateOf(true) }
     if (firstTime) {
-        Textures.load()
-
+        Textures.loadLoadingScreen()
         Properties.loadStyle()
-        Properties.loadSettings()
-        Properties.loadLanguage(settings.language)
-        Properties.loadUser()
+        loadingProgress++
 
-        while (user.recruits.guildList.size < 3) {
-            user.recruits.createNewRecruitToGuild()
-        }
+        coroutineScope.launch {
+            withContext(Dispatchers.IO) {
+                Textures.load()
+                loadingProgress++
 
-        while (user.quests.list.size < 6) {
-            user.quests.createQuest()
+                Properties.loadSettings()
+                loadingProgress++
+                Properties.loadLanguage(settings.language)
+                loadingProgress++
+                Properties.loadUser()
+                loadingProgress++
+
+                while (user.recruits.guildList.size < 3) {
+                    user.recruits.createNewRecruitToGuild()
+                }
+                loadingProgress++
+
+                while (user.quests.list.size < 6) {
+                    user.quests.createQuest()
+                }
+                loadingProgress++
+
+                screen = Screen.Main
+            }
         }
 
         firstTime = false
     }
 
-    var screen by remember { mutableStateOf(Screen.Main) }
     val game by remember { mutableStateOf(Game()) }
     val gameData by remember {
         val newGameData = GameData(game)
@@ -74,6 +89,12 @@ fun main() = application {
 
     Window(onCloseRequest = ::exitApplication, state = windowState) {
         when (screen) {
+            Screen.Loading -> LoadingScreen(
+                progress = loadingProgress,
+                target = 6,
+                modifier = Modifier
+                    .fillMaxSize(),
+            )
             Screen.Main -> MainMenu(
                 onStart = { enemies, location ->
                     game.reset()

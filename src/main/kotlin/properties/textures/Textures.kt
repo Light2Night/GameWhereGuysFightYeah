@@ -6,10 +6,10 @@ import getImageBitmap
 import java.io.File
 
 object Textures {
+    private val folder = File("textures")
     private val textures = mutableMapOf<String, ImageBitmap?>()
 
     fun load() {
-        val folder = File("textures")
         if (!folder.exists()) return
 
         val files = folder
@@ -18,12 +18,24 @@ object Textures {
             .toList()
 
         files.forEach {
-            println(it.path.substringAfter("\\"))
             textures[it.path.substringAfter("\\")] = getImageBitmap(it)
         }
     }
 
     operator fun get(path: String): ImageBitmap = run {
         textures[path.replace("/", "\\")] ?: emptyImageBitmap
+    }
+
+    fun loadLoadingScreen() {
+        val background = File("textures/background/2.png")
+        val progressBar = File("textures/background/button.png")
+
+        if (background.exists()) {
+            textures["background/2.png"] = getImageBitmap(background)
+        }
+
+        if (progressBar.exists()) {
+            textures["background/button.png"] = getImageBitmap(progressBar)
+        }
     }
 }

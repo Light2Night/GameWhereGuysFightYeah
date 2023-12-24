@@ -2,14 +2,13 @@ package ui.composable.shaders
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.*
-import emptyImageBitmap
-import getImageBitmap
+import properties.textures.Textures
 
 @Composable
 fun ButtonBrush(): Brush {
     return ShaderBrush(
         ImageShader(
-            getImageBitmap("textures/background/button.png") ?: emptyImageBitmap,
+            Textures["background/button.png"],
             TileMode.Repeated,
             TileMode.Repeated,
         )

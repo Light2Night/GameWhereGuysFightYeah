@@ -28,12 +28,11 @@ import colorSelectedBorder
 import colorText
 import colorTextError
 import corners
-import emptyImageBitmap
-import getImageBitmap
 import iconSize
 import lang
 import org.jetbrains.skiko.currentNanoTime
 import padding
+import properties.textures.Textures
 import properties.user.recruit.RecruitFactory
 import properties.user.worldMap.Location
 import properties.user.worldMap.WorldMap
@@ -57,7 +56,7 @@ fun WorldSubScreen(
 ) {
     Row(
         modifier = modifier
-            .background(getImageBitmap("textures/background/worldmap1.png") ?: emptyImageBitmap)
+            .background(Textures["background/worldmap1.png"])
     ) {
         var selected by remember { mutableStateOf<Location?>(null) }
 
@@ -178,7 +177,7 @@ private fun WorldMap(
     modifier: Modifier = Modifier,
 ) {
     val density = LocalDensity.current.density
-    val mapImage by remember { mutableStateOf(getImageBitmap("textures/background/map.png") ?: emptyImageBitmap) }
+    val mapImage by remember { mutableStateOf(Textures["background/map.png"]) }
 
     var offsetX by remember { mutableStateOf(0.dp) }
     var offsetY by remember { mutableStateOf(0.dp) }
@@ -189,7 +188,7 @@ private fun WorldMap(
     Box(
         modifier = modifier
             .padding(reallyHugePadding)
-            .texture(getImageBitmap("textures/background/4.png") ?: emptyImageBitmap, MedievalShape(corners))
+            .texture(Textures["background/4.png"], MedievalShape(corners))
             .border(border, colorBorder, MedievalShape(corners))
             .clip(MedievalShape(corners))
             .onDrag {
@@ -230,7 +229,7 @@ private fun LocationMark(
     modifier: Modifier = Modifier,
 ) {
     MedievalIcon(
-        icon = getImageBitmap(location.image) ?: emptyImageBitmap,
+        icon = Textures[location.image],
         modifier = modifier
             .size(iconSize)
             .border(8.dp, if (selected) colorSelectedBorder else Color.Transparent, MedievalShape(smallCorners))

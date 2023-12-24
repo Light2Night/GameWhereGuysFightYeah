@@ -18,12 +18,11 @@ import androidx.compose.ui.text.platform.Font
 import bigIconSize
 import bigText
 import colorTextError
-import emptyImageBitmap
-import getImageBitmap
 import hugeText
 import lang
 import padding
 import properties.resources.Reward
+import properties.textures.Textures
 import properties.user.chest.Chest
 import properties.user.worldMap.Location
 import smallIconSize
@@ -136,7 +135,7 @@ private fun Reward(
                 horizontalArrangement = Arrangement.spacedBy(padding),
             ) {
                 Image(
-                    bitmap = getImageBitmap("textures/assets/coin.png") ?: emptyImageBitmap,
+                    bitmap = Textures["assets/coin.png"],
                     contentDescription = "coin icon",
                     modifier = Modifier.size(smallIconSize),
                 )
@@ -155,7 +154,7 @@ private fun Reward(
                 horizontalArrangement = Arrangement.spacedBy(padding),
             ) {
                 Image(
-                    bitmap = getImageBitmap("textures/assets/crystal.png") ?: emptyImageBitmap,
+                    bitmap = Textures["assets/crystal.png"],
                     contentDescription = "crystal icon",
                     modifier = Modifier.size(smallIconSize),
                 )
@@ -174,7 +173,7 @@ private fun Reward(
                 horizontalArrangement = Arrangement.spacedBy(padding),
             ) {
                 Image(
-                    bitmap = getImageBitmap("textures/assets/crystal.png") ?: emptyImageBitmap,
+                    bitmap = Textures["assets/crystal.png"],
                     contentDescription = "experience icon",
                     modifier = Modifier.size(smallIconSize),
                 )

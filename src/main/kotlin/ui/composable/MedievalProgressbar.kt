@@ -10,8 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import colorBackgroundDarker
-import emptyImageBitmap
-import getImageBitmap
+import properties.textures.Textures
 import transparencySecond
 import ui.composable.shaders.repeatableTexture
 
@@ -26,8 +25,8 @@ fun MedievalProgressbar(
     val textureBitmap by remember {
         mutableStateOf(
             when (orientation) {
-                Orientation.Vertical -> getImageBitmap("textures/background/divider.png") ?: emptyImageBitmap
-                Orientation.Horizontal -> getImageBitmap("textures/background/divider_h.png") ?: emptyImageBitmap
+                Orientation.Vertical -> Textures["background/divider.png"]
+                Orientation.Horizontal -> Textures["background/divider_h.png"]
             }
         )
     }

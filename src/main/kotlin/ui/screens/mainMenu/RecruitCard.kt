@@ -23,13 +23,12 @@ import colorBorder
 import colorText
 import colorTextError
 import colorTextSecond
-import emptyImageBitmap
-import getImageBitmap
 import imageHeight
 import imageWidth
 import lang
 import padding
 import properties.resources.Cost
+import properties.textures.Textures
 import properties.user.recruit.*
 import smallBorder
 import smallCorners
@@ -64,7 +63,7 @@ fun RecruitCard(
                 .clip(MedievalShape(smallCorners)),
         ) {
             Image(
-                bitmap = getImageBitmap(recruit.profileImage) ?: emptyImageBitmap,
+                bitmap = Textures[recruit.profileImage],
                 contentDescription = recruit.name,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize(),
@@ -192,7 +191,7 @@ private fun Cost(
                 horizontalArrangement = Arrangement.spacedBy(padding),
             ) {
                 Image(
-                    bitmap = getImageBitmap("textures/assets/coin.png") ?: emptyImageBitmap,
+                    bitmap = Textures["assets/coin.png"],
                     contentDescription = "coin icon",
                     modifier = Modifier.size(smallIconSize),
                 )
@@ -212,7 +211,7 @@ private fun Cost(
                 horizontalArrangement = Arrangement.spacedBy(padding),
             ) {
                 Image(
-                    bitmap = getImageBitmap("textures/assets/crystal.png") ?: emptyImageBitmap,
+                    bitmap = Textures["assets/crystal.png"],
                     contentDescription = "crystal icon",
                     modifier = Modifier.size(smallIconSize),
                 )

@@ -1,8 +1,7 @@
 package properties.user.chest
 
-import emptyImageBitmap
-import getImageBitmap
 import lang
+import properties.textures.Textures
 
 enum class ChestType {
     Wooden, Stone, Iron, Gold, Crystal, Legendary, Dragon;
@@ -18,13 +17,13 @@ enum class ChestType {
     }
 
     val image get() = when (this) {
-        Wooden -> getImageBitmap("textures/assets/chest1.png") ?: emptyImageBitmap
-        Stone -> getImageBitmap("textures/assets/chest1.png") ?: emptyImageBitmap
-        Iron -> getImageBitmap("textures/assets/chest1.png") ?: emptyImageBitmap
-        Gold -> getImageBitmap("textures/assets/chest1.png") ?: emptyImageBitmap
-        Crystal -> getImageBitmap("textures/assets/chest1.png") ?: emptyImageBitmap
-        Legendary -> getImageBitmap("textures/assets/chest1.png") ?: emptyImageBitmap
-        Dragon -> getImageBitmap("textures/assets/chest1.png") ?: emptyImageBitmap
+        Wooden -> Textures["assets/chest1.png"]
+        Stone -> Textures["assets/chest1.png"]
+        Iron -> Textures["assets/chest1.png"]
+        Gold -> Textures["assets/chest1.png"]
+        Crystal -> Textures["assets/chest1.png"]
+        Legendary -> Textures["assets/chest1.png"]
+        Dragon -> Textures["assets/chest1.png"]
     }
 
     val rewardSheet get() = when (this) {

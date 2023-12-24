@@ -6,8 +6,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import emptyImageBitmap
-import getImageBitmap
+import properties.textures.Textures
 import ui.composable.Divider
 import ui.composable.shaders.StandardBackgroundBrush
 import ui.composable.shaders.background
@@ -21,7 +20,7 @@ fun PartySubScreen(
     Row(
         modifier = modifier
             .fillMaxSize()
-            .background(getImageBitmap("textures/background/party1.png") ?: emptyImageBitmap)
+            .background(Textures["background/party1.png"])
     ) {
         PartyList(modifier = Modifier
             .fillMaxWidth(0.33F)

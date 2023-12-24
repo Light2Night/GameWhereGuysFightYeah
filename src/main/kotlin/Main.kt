@@ -19,6 +19,7 @@ import gamedata.event.GameEndedEvent
 import gamedata.event.MoveCompletedEvent
 import gamedata.event.SelectEvent
 import properties.Properties
+import properties.textures.Textures
 import properties.user.chest.Chest
 import properties.user.recruit.Recruit
 import properties.user.recruit.RecruitFactory
@@ -31,6 +32,8 @@ import ui.screens.ChestScreen
 fun main() = application {
     var firstTime by remember { mutableStateOf(true) }
     if (firstTime) {
+        Textures.load()
+
         Properties.loadStyle()
         Properties.loadSettings()
         Properties.loadLanguage(settings.language)

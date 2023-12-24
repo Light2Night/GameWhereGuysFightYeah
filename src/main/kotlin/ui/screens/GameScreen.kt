@@ -48,10 +48,9 @@ import colorTextError
 import colorTextLight
 import colorTextLighter
 import colorTextSuccess
-import emptyImageBitmap
-import getImageBitmap
 import hugeText
 import iconSize
+import image
 import imageHeight
 import imageWidth
 import kotlinx.coroutines.delay
@@ -62,6 +61,7 @@ import normalAnimationDuration
 import normalText
 import org.jetbrains.skiko.currentNanoTime
 import padding
+import properties.textures.Textures
 import properties.user.recruit.Recruit
 import smallBorder
 import smallCorners
@@ -200,7 +200,7 @@ fun GameScreen(
                         )
 
                         is Barbarian -> SlashArea(
-                            texture = getImageBitmap("textures/assets/slash.png") ?: emptyImageBitmap,
+                            texture = Textures["assets/slash.png"],
                             startPoint = positions[action.actor.id] ?: Offset(0F, 0F),
                             endPoint = positions[action.target.id] ?: Offset(0F, 0F),
                             duration = longAnimationDuration,
@@ -238,7 +238,7 @@ fun GameScreen(
                 }
                 Actions.HealingEffect -> {
                     ThrowArea(
-                        texture = getImageBitmap("textures/assets/healing_potion.png") ?: emptyImageBitmap,
+                        texture = Textures["assets/healing_potion.png"],
                         startPoint = positions[action.actor.id] ?: Offset(0F, 0F),
                         endPoint = positions[action.target.id] ?: Offset(0F, 0F),
                         duration = longAnimationDuration,
@@ -247,7 +247,7 @@ fun GameScreen(
                 }
                 Actions.PoisoningEffect -> {
                     ThrowArea(
-                        texture = getImageBitmap("textures/assets/poison_potion.png") ?: emptyImageBitmap,
+                        texture = Textures["assets/poison_potion.png"],
                         startPoint = positions[action.actor.id] ?: Offset(0F, 0F),
                         endPoint = positions[action.target.id] ?: Offset(0F, 0F),
                         duration = longAnimationDuration,
@@ -294,15 +294,15 @@ private fun SmokeArea(
     val backgroundImage by remember {
         mutableStateOf(
             if (Random(currentNanoTime().toInt()).nextBoolean()) {
-                getImageBitmap("textures/background/forest1.png") ?: emptyImageBitmap
+                Textures["background/forest1.png"]
             } else {
-                getImageBitmap("textures/background/forest2.png") ?: emptyImageBitmap
+                Textures["background/forest2.png"]
             }
         )
     }
 
     val smokeImage by remember {
-        mutableStateOf(getImageBitmap("textures/assets/fog.png") ?: emptyImageBitmap)
+        mutableStateOf(Textures["assets/fog.png"])
     }
 
     Canvas(
@@ -434,7 +434,7 @@ private fun UnitCard(
                     .clip(MedievalShape(smallCorners)),
             ) {
                 Image(
-                    bitmap = recruit.image ?: emptyImageBitmap,
+                    bitmap = recruit.image,
                     contentDescription = recruit.name,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -604,21 +604,11 @@ private fun EffectIcon(
     effect: Effectable,
     modifier: Modifier = Modifier,
 ) {
-    val image by remember {
-        mutableStateOf(
-            when (effect) {
-                is Healing -> getImageBitmap("textures/effect/healing.png")
-                is Poisoning -> getImageBitmap("textures/effect/poison.png")
-                else -> emptyImageBitmap
-            } ?: emptyImageBitmap
-        )
-    }
-
     MedievalBox(
         modifier = modifier,
     ) {
         Image(
-            bitmap = image,
+            bitmap = effect.image,
             contentDescription = "effect icon",
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxWidth(),
@@ -661,7 +651,7 @@ private fun Actions(
                 horizontalArrangement = Arrangement.spacedBy(padding),
             ) {
                 MedievalButton(
-                    icon = action.image ?: emptyImageBitmap,
+                    icon = action.image,
                     text = action.name,
                     onClick = { onAction(action) },
                     modifier = Modifier.padding(start = padding, bottom = padding),

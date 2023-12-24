@@ -13,8 +13,7 @@ import androidx.compose.ui.graphics.ImageShader
 import androidx.compose.ui.graphics.ShaderBrush
 import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.unit.dp
-import emptyImageBitmap
-import getImageBitmap
+import properties.textures.Textures
 
 @Composable
 fun Divider(
@@ -24,8 +23,8 @@ fun Divider(
     val texture by remember {
         mutableStateOf(
             when (orientation) {
-                Orientation.Vertical -> getImageBitmap("textures/background/divider.png") ?: emptyImageBitmap
-                Orientation.Horizontal -> getImageBitmap("textures/background/divider_h.png") ?: emptyImageBitmap
+                Orientation.Vertical -> Textures["background/divider.png"]
+                Orientation.Horizontal -> Textures["background/divider_h.png"]
             }
         )
     }

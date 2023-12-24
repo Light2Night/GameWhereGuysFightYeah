@@ -1,3 +1,6 @@
+import Game.Effects.Effectable
+import Game.Effects.Healing
+import Game.Effects.Poisoning
 import Game.Units.Characters.Barbarian
 import Game.Units.Characters.GameUnit
 import Game.Units.Characters.Healer
@@ -13,6 +16,7 @@ import properties.language.Language
 import properties.style.Style
 import properties.user.User
 import properties.settings.Settings
+import properties.textures.Textures
 import java.awt.image.BufferedImage
 import java.io.File
 import java.io.IOException
@@ -204,4 +208,10 @@ fun GameUnit.isType(type: UnitTypes): Boolean {
         is Healer -> UnitTypes.HEALER
         else -> null
     }
+}
+
+val Effectable.image get() = when (this) {
+    is Poisoning -> Textures["assets/poison.png"]
+    is Healing -> Textures["assets/healing.png"]
+    else -> emptyImageBitmap
 }

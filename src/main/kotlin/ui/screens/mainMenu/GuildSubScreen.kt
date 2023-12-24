@@ -13,12 +13,11 @@ import androidx.compose.ui.unit.dp
 import border
 import colorBorder
 import corners
-import emptyImageBitmap
-import getImageBitmap
 import hugePadding
 import lang
 import org.jetbrains.skiko.currentNanoTime
 import padding
+import properties.textures.Textures
 import properties.user.chest.Chest
 import properties.user.quest.Quest
 import reallyHugePadding
@@ -38,7 +37,7 @@ fun GuildSubScreen(
 ) {
     Row(
         modifier = modifier
-            .background(getImageBitmap("textures/background/guild1.png") ?: emptyImageBitmap)
+            .background(Textures["background/guild1.png"])
     ) {
         Recruits(
             onChestOpen = onChestOpen,
@@ -149,7 +148,7 @@ private fun QuestBoard(
 ) {
     Box(
         modifier = modifier
-            .texture(getImageBitmap("textures/background/3.png") ?: emptyImageBitmap, MedievalShape(corners))
+            .texture(Textures["background/3.png"], MedievalShape(corners))
             .border(border, colorBorder, MedievalShape(corners))
             .clip(MedievalShape(corners)),
     ) {
@@ -195,10 +194,7 @@ private fun QuestCard(
                 background = SolidColor(Color.Transparent),
                 modifier = Modifier
                     .fillMaxSize()
-                    .texture(
-                        getImageBitmap("textures/background/4.png") ?: emptyImageBitmap,
-                        MedievalShape(smallCorners),
-                    )
+                    .texture(Textures["background/4.png"], MedievalShape(smallCorners))
             ) {
                 Column {
                     MedievalText(request.name)

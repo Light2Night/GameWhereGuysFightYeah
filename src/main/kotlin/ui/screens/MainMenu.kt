@@ -23,11 +23,11 @@ import colorTextLight
 import colorTextLighter
 import colorTextSecond
 import emptyImageBitmap
-import getImageBitmap
 import iconSize
 import lang
 import longAnimationDuration
 import padding
+import properties.textures.Textures
 import properties.user.chest.Chest
 import resourceWidth
 import smallBorder
@@ -258,7 +258,7 @@ private fun UserResourcesInfo(
             modifier = Modifier.width(resourceWidth),
         ) {
             Image(
-                bitmap = getImageBitmap("textures/assets/coin.png") ?: emptyImageBitmap,
+                bitmap = Textures["assets/coin.png"],
                 contentDescription = "coin icon",
                 modifier = Modifier.size(smallIconSize),
             )
@@ -276,7 +276,7 @@ private fun UserResourcesInfo(
             modifier = Modifier.width(resourceWidth),
         ) {
             Image(
-                bitmap = getImageBitmap("textures/assets/crystal.png") ?: emptyImageBitmap,
+                bitmap = Textures["assets/crystal.png"],
                 contentDescription = "crystal icon",
                 modifier = Modifier.size(smallIconSize),
             )

@@ -4,9 +4,9 @@ import Game.Units.Factories.ViewModels.BarbarianViewModel
 import Game.Units.Factories.ViewModels.BaseUnitViewModel
 import Game.Units.Factories.ViewModels.HealerViewModel
 import Game.Units.Factories.ViewModels.MageViewModel
-import getImageBitmap
 import utilities.HasID
 import properties.resources.Cost
+import properties.textures.Textures
 
 data class Recruit(
     override val id: Int,
@@ -19,7 +19,7 @@ data class Recruit(
     val rawData: RecruitData,
     var cost: Cost? = null,
 ) : HasID {
-    val image = getImageBitmap(profileImage)
+    val image get() = Textures[profileImage]
 
     val absoluteData get() = rawData.absoluteData(level)
 

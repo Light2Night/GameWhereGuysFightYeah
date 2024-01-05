@@ -49,16 +49,6 @@ fun main() = application {
                 Properties.loadUser()
                 loadingProgress++
 
-                while (user.recruits.guildList.size < 3) {
-                    user.recruits.createNewRecruitToGuild()
-                }
-                loadingProgress++
-
-                while (user.quests.list.size < 6) {
-                    user.quests.createQuest()
-                }
-                loadingProgress++
-
                 screen = Screen.Main
             }
         }
@@ -91,7 +81,7 @@ fun main() = application {
         when (screen) {
             Screen.Loading -> LoadingScreen(
                 progress = loadingProgress,
-                target = 6,
+                target = 5,
                 modifier = Modifier
                     .fillMaxSize(),
             )
@@ -160,6 +150,8 @@ fun main() = application {
                 onBack = {
                     user.quests.updateAllQuests(gameData)
                     user.quests.checkAllQuests()
+                    Properties.saveUser()
+
                     gameData.reset()
                     screen = Screen.Main
                 },
@@ -172,6 +164,7 @@ fun main() = application {
                 chest = chest!!,
                 onClose = {
                     chest = null
+                    Properties.saveUser()
                     screen = Screen.Main
                 },
                 modifier = Modifier

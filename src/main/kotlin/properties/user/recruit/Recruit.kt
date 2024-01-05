@@ -4,10 +4,13 @@ import Game.Units.Factories.ViewModels.BarbarianViewModel
 import Game.Units.Factories.ViewModels.BaseUnitViewModel
 import Game.Units.Factories.ViewModels.HealerViewModel
 import Game.Units.Factories.ViewModels.MageViewModel
+import kotlinx.serialization.Serializable
 import utilities.HasID
 import properties.resources.Cost
 import properties.textures.Textures
+import properties.user.recruit.serializers.RecruitSerializer
 
+@Serializable(with = RecruitSerializer::class)
 data class Recruit(
     override val id: Int,
     val charID: Int,

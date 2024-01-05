@@ -1,7 +1,10 @@
 package properties.user.chest
 
 import androidx.compose.runtime.mutableStateListOf
+import kotlinx.serialization.Serializable
+import properties.user.chest.serializers.RewardSheetSerializer
 
+@Serializable(with = RewardSheetSerializer::class)
 class RewardSheet(
     val amount: Int,
     val coins: RewardSheetEntry = RewardSheetEntry(SheetEntryType.Coins),

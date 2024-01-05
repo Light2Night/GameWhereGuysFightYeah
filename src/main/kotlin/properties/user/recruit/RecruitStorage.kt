@@ -2,9 +2,16 @@ package properties.user.recruit
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import kotlinx.serialization.Serializable
+import properties.user.recruit.serializers.RecruitStorageSerializer
 import user
 
-class RecruitStorage {
+@Serializable(with = RecruitStorageSerializer::class)
+class RecruitStorage(
+    guildRecruits: List<Recruit>? = null,
+    recruits: List<Recruit>? = null,
+    selectedRecruits: List<Recruit>? = null,
+) {
     private val factory = RecruitFactory()
     val maxSelections = 5
 
@@ -15,6 +22,16 @@ class RecruitStorage {
     val guildList: List<Recruit> get() = guildRecruitList
     val list: List<Recruit> get() = recruitsList
     val selectedList: List<Recruit> get() = selectedRecruitsList
+
+    init {
+        guildRecruits?.let { guildRecruitList.addAll(it) }
+        recruits?.let { recruitsList.addAll(it) }
+        selectedRecruits?.let { selectedRecruitsList.addAll(it) }
+
+        while (guildRecruitList.size < 3) {
+            createNewRecruitToGuild()
+        }
+    }
 
     fun createNewRecruitToGuild(): Recruit {
         val newRecruit = factory.createRandomUnique(

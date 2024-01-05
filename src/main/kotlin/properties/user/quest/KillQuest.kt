@@ -7,36 +7,41 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import gamedata.GameData
 import isType
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import lang
 import properties.resources.Reward
+import properties.user.quest.serializers.KillQuestSerializer
 
+@Serializable(with = KillQuestSerializer::class)
+@SerialName("KillQuest")
 class KillQuest(
     override val id: Int,
     override val x: Int,
     override val y: Int,
-    name: String,
+    override val name: String,
     override val description: String,
     override val icon: String,
     override val requiredLevel: Int,
     override val reward: Reward,
+    override val target: Double,
+    current: Double = 0.0,
     val unitType: UnitTypes,
-    val amount: Int,
 ) : Quest {
 
-    private val _name = name
-    override val name: String get() = run {
-        _name.ifBlank {
+    override val langName: String get() = run {
+        name.ifBlank {
             lang.kill_quest_name
                 .replaceFirstChar { it.uppercaseChar() }
-                .replace("<amount>", amount.toString())
+                .replace("<amount>", target.toInt().toString())
                 .replace("<name>", lang.getUnitName(unitType))
         }
     }
 
-    var count by mutableStateOf(0)
+    override var current by mutableStateOf(current)
         private set
 
-    override val progressString: String get() = "$count/$amount"
+    override val progressString: String get() = "${current.toInt()}/${target.toInt()}"
 
     override fun update(gameData: GameData) {
         val endInfo = gameData.gameResult ?: return
@@ -48,12 +53,12 @@ class KillQuest(
             count?.let { deadUnits += it }
         }
 
-        count += deadUnits
+        current += deadUnits
     }
 
     override fun forceComplete() {
-        count = amount
+        current = target
     }
 
-    override fun isCompleted(): Boolean = count >= amount
+    override fun isCompleted(): Boolean = current >= target
 }

@@ -1,0 +1,340 @@
+{
+    "name": "Test_Name",
+    "resources": {
+        "coins": 7,
+        "crystals": 3,
+        "exp": 5
+    },
+    "level": 1,
+    "quests": {
+        "quests": [
+            {
+                "type": "killNameQuest",
+                "id": 0,
+                "x": 0,
+                "y": 0,
+                "name": "",
+                "description": "",
+                "icon": "Test_Icon",
+                "requiredLevel": 1,
+                "reward": {
+                    "coins": 10,
+                    "crystals": 1,
+                    "exp": 7
+                },
+                "target": 5.0,
+                "current": 0.0,
+                "additional": "Giotto"
+            },
+            {
+                "type": "killCharacterQuest",
+                "id": 1,
+                "x": 0,
+                "y": 1,
+                "name": "",
+                "description": "",
+                "icon": "Test_Icon",
+                "requiredLevel": 1,
+                "reward": {
+                    "coins": 21,
+                    "crystals": 0,
+                    "exp": 10
+                },
+                "target": 6.0,
+                "current": 0.0,
+                "additional": "0"
+            },
+            {
+                "type": "killQuest",
+                "id": 2,
+                "x": 1,
+                "y": 0,
+                "name": "",
+                "description": "",
+                "icon": "Test_Icon",
+                "requiredLevel": 1,
+                "reward": {
+                    "coins": 32,
+                    "crystals": 2,
+                    "exp": 15
+                },
+                "target": 7.0,
+                "current": 1.0,
+                "additional": "MAGICIAN"
+            },
+            {
+                "type": "killCharacterQuest",
+                "id": 3,
+                "x": 1,
+                "y": 1,
+                "name": "",
+                "description": "",
+                "icon": "Test_Icon",
+                "requiredLevel": 1,
+                "reward": {
+                    "coins": 24,
+                    "crystals": 0,
+                    "exp": 13
+                },
+                "target": 6.0,
+                "current": 1.0,
+                "additional": "1"
+            },
+            {
+                "type": "killCharacterQuest",
+                "id": 4,
+                "x": 2,
+                "y": 0,
+                "name": "",
+                "description": "",
+                "icon": "Test_Icon",
+                "requiredLevel": 1,
+                "reward": {
+                    "coins": 22,
+                    "crystals": 4,
+                    "exp": 16
+                },
+                "target": 10.0,
+                "current": 0.0,
+                "additional": "2"
+            },
+            {
+                "type": "killCharacterQuest",
+                "id": 5,
+                "x": 2,
+                "y": 1,
+                "name": "",
+                "description": "",
+                "icon": "Test_Icon",
+                "requiredLevel": 1,
+                "reward": {
+                    "coins": 14,
+                    "crystals": 0,
+                    "exp": 3
+                },
+                "target": 3.0,
+                "current": 0.0,
+                "additional": "0"
+            }
+        ]
+    },
+    "recruits": {
+        "guildRecruits": [
+            {
+                "id": 1,
+                "charID": 1,
+                "name": "Arthur",
+                "description": "description_test1",
+                "stars": 1,
+                "level": 1,
+                "profileImage": "characters/magician_placeholder.png",
+                "rawData": {
+                    "type": "MAGICIAN",
+                    "maxHP": 100,
+                    "damage": 25,
+                    "damageDelta": 20,
+                    "magicalEffectDamage": 15,
+                    "magicalEffectTurns": 2
+                },
+                "cost": {
+                    "coins": 47,
+                    "crystals": 0,
+                    "exp": 0
+                }
+            },
+            {
+                "id": 4,
+                "charID": 2,
+                "name": "Athena",
+                "description": "description_test2",
+                "stars": 1,
+                "level": 1,
+                "profileImage": "characters/healer_placeholder.png",
+                "rawData": {
+                    "type": "HEALER",
+                    "maxHP": 125,
+                    "heal": 15,
+                    "healingEffectHeal": 7,
+                    "healingEffectTurns": 3
+                },
+                "cost": {
+                    "coins": 23,
+                    "crystals": 2,
+                    "exp": 0
+                }
+            },
+            {
+                "id": 5,
+                "charID": 0,
+                "name": "Raphael",
+                "description": "description_test0",
+                "stars": 1,
+                "level": 1,
+                "profileImage": "characters/barbarian_placeholder.png",
+                "rawData": {
+                    "type": "BARBARIAN",
+                    "maxHP": 200,
+                    "damage": 20,
+                    "damageDelta": 10
+                },
+                "cost": {
+                    "coins": 6,
+                    "crystals": 3,
+                    "exp": 0
+                }
+            }
+        ],
+        "recruits": [
+            {
+                "id": 0,
+                "charID": 1,
+                "name": "Mordred",
+                "description": "description_test1",
+                "stars": 1,
+                "level": 1,
+                "profileImage": "characters/magician_placeholder.png",
+                "rawData": {
+                    "type": "MAGICIAN",
+                    "maxHP": 100,
+                    "damage": 25,
+                    "damageDelta": 20,
+                    "magicalEffectDamage": 15,
+                    "magicalEffectTurns": 2
+                },
+                "cost": null
+            },
+            {
+                "id": 2,
+                "charID": 1,
+                "name": "Arthur",
+                "description": "description_test1",
+                "stars": 1,
+                "level": 1,
+                "profileImage": "characters/magician_placeholder.png",
+                "rawData": {
+                    "type": "MAGICIAN",
+                    "maxHP": 100,
+                    "damage": 25,
+                    "damageDelta": 20,
+                    "magicalEffectDamage": 15,
+                    "magicalEffectTurns": 2
+                },
+                "cost": null
+            },
+            {
+                "id": 3,
+                "charID": 0,
+                "name": "Michelangelo",
+                "description": "description_test0",
+                "stars": 1,
+                "level": 1,
+                "profileImage": "characters/barbarian_placeholder.png",
+                "rawData": {
+                    "type": "BARBARIAN",
+                    "maxHP": 200,
+                    "damage": 20,
+                    "damageDelta": 10
+                },
+                "cost": null
+            }
+        ],
+        "selectedRecruits": [
+            {
+                "id": 0,
+                "charID": 1,
+                "name": "Mordred",
+                "description": "description_test1",
+                "stars": 1,
+                "level": 1,
+                "profileImage": "characters/magician_placeholder.png",
+                "rawData": {
+                    "type": "MAGICIAN",
+                    "maxHP": 100,
+                    "damage": 25,
+                    "damageDelta": 20,
+                    "magicalEffectDamage": 15,
+                    "magicalEffectTurns": 2
+                },
+                "cost": null
+            },
+            {
+                "id": 2,
+                "charID": 1,
+                "name": "Arthur",
+                "description": "description_test1",
+                "stars": 1,
+                "level": 1,
+                "profileImage": "characters/magician_placeholder.png",
+                "rawData": {
+                    "type": "MAGICIAN",
+                    "maxHP": 100,
+                    "damage": 25,
+                    "damageDelta": 20,
+                    "magicalEffectDamage": 15,
+                    "magicalEffectTurns": 2
+                },
+                "cost": null
+            },
+            {
+                "id": 3,
+                "charID": 0,
+                "name": "Michelangelo",
+                "description": "description_test0",
+                "stars": 1,
+                "level": 1,
+                "profileImage": "characters/barbarian_placeholder.png",
+                "rawData": {
+                    "type": "BARBARIAN",
+                    "maxHP": 200,
+                    "damage": 20,
+                    "damageDelta": 10
+                },
+                "cost": null
+            }
+        ]
+    },
+    "worldMap": {
+        "test": "Da?"
+    },
+    "chests": {
+        "chests": {
+            "0": {
+                "id": 0,
+                "type": "Wooden",
+                "sheet": {
+                    "amount": 2,
+                    "coins": {
+                        "type": "Coins",
+                        "weight": 5,
+                        "from": 10,
+                        "to": 50
+                    },
+                    "crystals": {
+                        "type": "Crystals",
+                        "weight": 1,
+                        "from": 1,
+                        "to": 3
+                    },
+                    "oneStar": {
+                        "type": "OneStar",
+                        "weight": 0,
+                        "from": 0,
+                        "to": 0
+                    },
+                    "twoStar": {
+                        "type": "TwoStar",
+                        "weight": 0,
+                        "from": 0,
+                        "to": 0
+                    },
+                    "threeStar": {
+                        "type": "ThreeStar",
+                        "weight": 0,
+                        "from": 0,
+                        "to": 0
+                    }
+                }
+            }
+        }
+    }
+}

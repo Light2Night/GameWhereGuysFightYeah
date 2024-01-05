@@ -17,6 +17,7 @@ import hugePadding
 import lang
 import org.jetbrains.skiko.currentNanoTime
 import padding
+import properties.Properties
 import properties.textures.Textures
 import properties.user.chest.Chest
 import properties.user.quest.Quest
@@ -78,6 +79,7 @@ private fun Recruits(
                         onClick = {
                             if (recruit.cost?.isAvailableToBuy == true) {
                                 user.recruits.buyRecruit(recruit)
+                                Properties.saveUser()
                             }
                         },
                         modifier = Modifier.fillMaxWidth()
@@ -197,7 +199,7 @@ private fun QuestCard(
                     .texture(Textures["background/4.png"], MedievalShape(smallCorners))
             ) {
                 Column {
-                    MedievalText(request.name)
+                    MedievalText(request.langName)
                     MedievalText(request.description)
                     MedievalText(request.progressString)
                 }

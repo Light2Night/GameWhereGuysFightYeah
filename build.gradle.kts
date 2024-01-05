@@ -22,6 +22,12 @@ dependencies {
     // With compose.desktop.common you will also lose @Preview functionality
     implementation(compose.desktop.currentOs)
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+
+    testImplementation("org.jetbrains.kotlin:kotlin-test:1.8.10")
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 compose.desktop {

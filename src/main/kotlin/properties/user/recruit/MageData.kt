@@ -1,7 +1,10 @@
 package properties.user.recruit
 
 import Game.Units.Characters.UnitTypes
+import kotlinx.serialization.Serializable
+import properties.user.recruit.serializers.MageDataSerializer
 
+@Serializable(with = MageDataSerializer::class)
 data class MageData(
     override val type: UnitTypes = UnitTypes.MAGICIAN,
     override val maxHP: Int = 100,

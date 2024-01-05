@@ -1,7 +1,10 @@
 package properties.user.chest
 
+import kotlinx.serialization.Serializable
+import properties.user.chest.serializers.RewardSheetEntrySerializer
 import user
 
+@Serializable(with = RewardSheetEntrySerializer::class)
 class RewardSheetEntry(
     val type: SheetEntryType,
     val weight: Int = 0,

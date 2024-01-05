@@ -1,7 +1,10 @@
 package properties.user.recruit
 
 import Game.Units.Characters.UnitTypes
+import kotlinx.serialization.Serializable
+import properties.user.recruit.serializers.BarbarianDataSerializer
 
+@Serializable(with = BarbarianDataSerializer::class)
 data class BarbarianData(
     override val type: UnitTypes = UnitTypes.BARBARIAN,
     override val maxHP: Int = 200,

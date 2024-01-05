@@ -5,37 +5,42 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import gamedata.GameData
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import lang
 import properties.resources.Reward
+import properties.user.quest.serializers.KillNameQuestSerializer
 import kotlin.math.min
 
+@Serializable(with = KillNameQuestSerializer::class)
+@SerialName("KillNameQuest")
 class KillNameQuest(
     override val id: Int,
     override val x: Int,
     override val y: Int,
-    name: String,
+    override val name: String,
     override val description: String,
     override val icon: String,
     override val requiredLevel: Int,
     override val reward: Reward,
+    override val target: Double,
+    current: Double = 0.0,
     val charName: String,
-    val amount: Int,
 ) : Quest {
 
-    private val _name = name
-    override val name: String get() = run {
-        _name.ifBlank {
+    override val langName: String get() = run {
+        name.ifBlank {
             lang.kill_quest_name
                 .replaceFirstChar { it.uppercaseChar() }
-                .replace("<amount>", amount.toString())
+                .replace("<amount>", target.toInt().toString())
                 .replace("<name>", charName)
         }
     }
 
-    var count by mutableStateOf(0)
+    override var current by mutableStateOf(current)
         private set
 
-    override val progressString: String get() = "$count/$amount"
+    override val progressString: String get() = "${current.toInt()}/${target.toInt()}"
 
     override fun update(gameData: GameData) {
         val endInfo = gameData.gameResult ?: return
@@ -48,12 +53,12 @@ class KillNameQuest(
             deadCount += recruits.filter { it.name == charName }.size
         }
 
-        count = min(amount, count + deadCount)
+        current = min(target, current + deadCount)
     }
 
     override fun forceComplete() {
-        count = amount
+        current = target
     }
 
-    override fun isCompleted(): Boolean = count >= amount
+    override fun isCompleted(): Boolean = current >= target
 }

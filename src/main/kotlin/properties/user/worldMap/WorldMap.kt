@@ -1,8 +1,11 @@
 package properties.user.worldMap
 
+import kotlinx.serialization.Serializable
 import properties.resources.Reward
 import properties.user.chest.ChestType
+import properties.user.worldMap.serializers.WorldMapSerializer
 
+@Serializable(with = WorldMapSerializer::class)
 class WorldMap {
     val locations: List<Location> = listOf(
         Location(

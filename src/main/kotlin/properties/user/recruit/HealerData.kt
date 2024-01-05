@@ -1,7 +1,10 @@
 package properties.user.recruit
 
 import Game.Units.Characters.UnitTypes
+import kotlinx.serialization.Serializable
+import properties.user.recruit.serializers.HealerDataSerializer
 
+@Serializable(with = HealerDataSerializer::class)
 data class HealerData(
     override val type: UnitTypes = UnitTypes.HEALER,
     override val maxHP: Int = 125,

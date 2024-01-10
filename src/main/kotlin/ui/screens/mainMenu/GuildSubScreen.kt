@@ -21,6 +21,7 @@ import properties.Properties
 import properties.textures.Textures
 import properties.user.chest.Chest
 import properties.user.quest.Quest
+import properties.user.recruit.Recruit
 import reallyHugePadding
 import smallCorners
 import ui.composable.*
@@ -69,22 +70,22 @@ private fun Recruits(
 
             Divider(orientation = Orientation.Horizontal, modifier = Modifier.fillMaxWidth())
 
-            Column(
-                modifier = Modifier
-                    .verticalScroll(rememberScrollState())
+            Grid(
+                user.recruits.guildList,
+                columns = 2,
+                modifier = Modifier.verticalScroll(rememberScrollState()),
             ) {
-                user.recruits.guildList.forEach { recruit ->
-                    RecruitCard(
-                        recruit = recruit,
-                        onClick = {
-                            if (recruit.cost?.isAvailableToBuy == true) {
-                                user.recruits.buyRecruit(recruit)
-                                Properties.saveUser()
-                            }
-                        },
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
+                val recruit = it as Recruit
+                RecruitCard(
+                    recruit = recruit,
+                    onClick = {
+                        if (recruit.cost?.isAvailableToBuy == true) {
+                            user.recruits.buyRecruit(recruit)
+                            Properties.saveUser()
+                        }
+                    },
+                    modifier = Modifier,
+                )
             }
         }
     }

@@ -23,6 +23,7 @@
   "magician_name": "маг",
   "healer_name": "цілитель",
 
+  "hp": "здоров'я: <amount>",
   "damage": "урон: <amount>",
   "heal": "лікування: <amount>",
   "poison": "отруєння: <amount> (<turns> хвилин)",

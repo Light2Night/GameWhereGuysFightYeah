@@ -7,11 +7,12 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import properties.textures.Textures
+import properties.user.recruit.Recruit
 import ui.composable.Divider
+import ui.composable.Grid
 import ui.composable.shaders.StandardBackgroundBrush
 import ui.composable.shaders.background
 import user
-import kotlin.math.ceil
 
 @Composable
 fun PartySubScreen(
@@ -36,19 +37,19 @@ fun PartySubScreen(
 private fun PartyList(
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier
-            .verticalScroll(rememberScrollState())
+    Grid(
+        user.recruits.selectedList,
+        columns = 2,
+        modifier = modifier.verticalScroll(rememberScrollState()),
     ) {
-        user.recruits.selectedList.forEach { recruit ->
-            RecruitCard(
-                recruit = recruit,
-                onClick = {
-                    user.recruits.deselectRecruit(recruit)
-                },
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
+        val recruit = it as Recruit
+        RecruitCard(
+            recruit = recruit,
+            onClick = {
+                user.recruits.deselectRecruit(recruit)
+            },
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }
 
@@ -56,30 +57,18 @@ private fun PartyList(
 private fun RecruitedList(
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier
-            .verticalScroll(rememberScrollState())
+    Grid(
+        user.recruits.list,
+        columns = 4,
+        modifier = modifier.verticalScroll(rememberScrollState()),
     ) {
-        val recruits = user.recruits.list
-
-        repeat(ceil(recruits.size / 2.0).toInt()) { index1 ->
-            Row {
-                repeat(2) { index2 ->
-                    if (index1 * 2 + index2 < recruits.size) {
-                        RecruitCard(
-                            recruit = recruits[index1 * 2 + index2],
-                            onClick = {
-                                user.recruits.selectRecruit(recruits[index1 * 2 + index2])
-                            },
-                            modifier = Modifier.weight(1F)
-                        )
-                    }
-
-                    if (index1 * 2 + index2 == recruits.lastIndex && recruits.size % 2 == 1) {
-                        Box(modifier = Modifier.weight(1F))
-                    }
-                }
-            }
-        }
+        val recruit = it as Recruit
+        RecruitCard(
+            recruit = recruit,
+            onClick = {
+                user.recruits.selectRecruit(recruit)
+            },
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }

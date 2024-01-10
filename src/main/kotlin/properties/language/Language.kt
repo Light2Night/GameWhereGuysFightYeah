@@ -29,6 +29,7 @@ data class Language(
     val magician_name: String,
     val healer_name: String,
 
+    val hp: String,
     val damage: String,
     val heal: String,
     val poison: String,

@@ -1,31 +1,36 @@
 package ui.screens.mainMenu
 
-import Game.Units.Characters.UnitTypes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.input.pointer.PointerEventType
+import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import bigText
+import biggerPadding
 import colorBackground
 import colorBorder
 import colorText
 import colorTextError
+import colorTextLighter
 import colorTextSecond
 import imageHeight
 import imageWidth
 import lang
+import normalText
 import padding
 import properties.resources.Cost
 import properties.textures.Textures
@@ -33,79 +38,181 @@ import properties.user.recruit.*
 import smallBorder
 import smallCorners
 import smallIconSize
+import transparency
 import transparencySecond
+import ui.composable.AppearDisappearAnimation
+import ui.composable.MedievalBox
 import ui.composable.MedievalText
 import ui.composable.shaders.MedievalShape
 import ui.composable.shaders.StandardBackgroundBrush
 import user
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun RecruitCard(
     recruit: Recruit,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Row(
-        modifier = modifier
-            .clickable(onClick = onClick)
-            .padding(padding)
-            .background(StandardBackgroundBrush(), MedievalShape(smallCorners))
-            .border(smallBorder, colorBorder, MedievalShape(smallCorners))
-            .clip(MedievalShape(smallCorners)),
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier,
     ) {
         Box(
             modifier = Modifier
-                .height(imageHeight)
-                .width(imageWidth)
+                .clickable(onClick = onClick)
+                .fillMaxWidth()
+                .aspectRatio(imageWidth / imageHeight)
                 .padding(padding)
-                .background(colorBackground, MedievalShape(smallCorners))
+                .background(StandardBackgroundBrush(), MedievalShape(smallCorners))
                 .border(smallBorder, colorBorder, MedievalShape(smallCorners))
                 .clip(MedievalShape(smallCorners)),
         ) {
-            Image(
-                bitmap = Textures[recruit.profileImage],
-                contentDescription = recruit.name,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize(),
-            )
-
-            Stars(
-                amount = recruit.stars,
+            Box(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .background(
-                        Brush.verticalGradient(listOf(
-                        Color.Transparent,
-                        colorBackground.copy(alpha = transparencySecond),
-                        colorBackground,
-                    )))
-                    .align(Alignment.BottomCenter),
-            )
+                    .fillMaxHeight()
+                    .aspectRatio(imageWidth / imageHeight)
+                    .padding(padding)
+                    .border(smallBorder, colorBorder, MedievalShape(smallCorners))
+                    .clip(MedievalShape(smallCorners)),
+            ) {
+                Image(
+                    bitmap = recruit.image,
+                    contentDescription = recruit.name,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(colorBackground, MedievalShape(smallCorners))
+                        .border(smallBorder, colorBorder, MedievalShape(smallCorners))
+                        .clip(MedievalShape(smallCorners)),
+                )
+
+                var showInfo by remember { mutableStateOf(false) }
+                Column(
+                    verticalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .onPointerEvent(PointerEventType.Enter) {
+                            showInfo = true
+                        }
+                        .onPointerEvent(PointerEventType.Exit) {
+                            showInfo = false
+                        },
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(StandardBackgroundBrush(), MedievalShape(smallCorners), alpha = transparency)
+                    ) {
+                        MedievalBox(
+                            background = StandardBackgroundBrush(),
+                            modifier = Modifier
+                                .fillMaxWidth(0.2F)
+                                .aspectRatio(1F)
+                                .align(Alignment.TopStart),
+                        ) {
+                            MedievalText(
+                                text = recruit.level.toString(),
+                                fontSize = bigText,
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier
+                                    .align(Alignment.Center)
+                            )
+                        }
+
+                        MedievalText(
+                            text = recruit.name.replaceFirstChar { it.uppercaseChar() },
+                            fontSize = normalText,
+                            color = colorTextLighter,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier
+                                .padding(start = padding)
+                                .fillMaxWidth(0.8F)
+                                .align(Alignment.CenterEnd)
+                        )
+                    }
+
+                    AppearDisappearAnimation(
+                        showInfo,
+                    ) {
+                        UnitTextData(
+                            data = recruit.absoluteData,
+                            modifier = Modifier
+                                .background(StandardBackgroundBrush(), alpha = transparency)
+                                .padding(start = padding, end = padding, top = biggerPadding, bottom = biggerPadding)
+                                .fillMaxWidth(),
+                        )
+                    }
+
+                    Stars(
+                        amount = recruit.stars,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(
+                                Brush.verticalGradient(listOf(
+                                    Color.Transparent,
+                                    colorBackground.copy(alpha = transparencySecond),
+                                    colorBackground,
+                                ))),
+                    )
+                }
+            }
         }
 
-        Column {
-            MedievalText(
-                text = recruit.name,
-                fontSize = bigText,
-                fontWeight = FontWeight.Bold,
+        recruit.cost?.let {
+            Cost(
+                cost = it,
+                modifier = Modifier
             )
+        }
+    }
+}
 
-            MedievalText(
-                text = when (recruit.rawData.type) {
-                    UnitTypes.BARBARIAN -> lang.barbarian_name.replaceFirstChar { it.uppercaseChar() }
-                    UnitTypes.MAGICIAN -> lang.magician_name.replaceFirstChar { it.uppercaseChar() }
-                    UnitTypes.HEALER -> lang.healer_name.replaceFirstChar { it.uppercaseChar() }
-                },
-                fontWeight = FontWeight.Bold,
-            )
+@Composable
+private fun UnitTextData(
+    data: RecruitData,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier,
+    ) {
+        val hpText = lang.hp
+            .replace("<amount>", data.maxHP.toString())
+            .replaceFirstChar { it.uppercaseChar() }
+        MedievalText(hpText)
 
-            RecruitUnitTextData(
-                recruitData = recruit.rawData,
-                modifier = Modifier,
-            )
+        when (data) {
+            is BarbarianData -> {
+                val damageText = lang.damage
+                    .replace("<amount>", "${data.damage - data.damageDelta}-${data.damage + data.damageDelta}")
+                    .replaceFirstChar { it.uppercaseChar() }
+                MedievalText(damageText)
+            }
 
-            recruit.cost?.let { cost ->
-                Cost(cost)
+            is MageData -> {
+                val damageText = lang.damage
+                    .replace("<amount>", "${data.damage - data.damageDelta}-${data.damage + data.damageDelta}")
+                    .replaceFirstChar { it.uppercaseChar() }
+                MedievalText(damageText)
+
+                val effectText = lang.poison
+                    .replace("<amount>", data.magicalEffectDamage.toString())
+                    .replace("<turns>", data.magicalEffectTurns.toString())
+                    .replaceFirstChar { it.uppercaseChar() }
+                MedievalText(effectText)
+            }
+
+            is HealerData -> {
+                val healText = lang.heal
+                    .replace("<amount>", data.heal.toString())
+                    .replaceFirstChar { it.uppercaseChar() }
+                MedievalText(healText)
+
+                val effectText = lang.poison
+                    .replace("<amount>", data.healingEffectHeal.toString())
+                    .replace("<turns>", data.healingEffectTurns.toString())
+                    .replaceFirstChar { it.uppercaseChar() }
+                MedievalText(effectText)
             }
         }
     }
@@ -145,32 +252,6 @@ private fun Stars(
                     ),
                     modifier = Modifier.align(Alignment.Center)
                 )
-            }
-        }
-    }
-}
-
-@Composable
-private fun RecruitUnitTextData(
-    recruitData: RecruitData,
-    modifier: Modifier = Modifier,
-) {
-    Column(modifier = modifier) {
-        MedievalText("HP: ${recruitData.maxHP}")
-
-        when (recruitData) {
-            is BarbarianData -> {
-                MedievalText("DMG: ${recruitData.damage - recruitData.damageDelta}-${recruitData.damage + recruitData.damageDelta}")
-            }
-
-            is MageData -> {
-                MedievalText("DMG: ${recruitData.damage - recruitData.damageDelta}-${recruitData.damage + recruitData.damageDelta}")
-                MedievalText("EFF: ${recruitData.magicalEffectDamage} (${recruitData.magicalEffectTurns} turns)")
-            }
-
-            is HealerData -> {
-                MedievalText("HEAL: ${recruitData.heal}")
-                MedievalText("EFF: ${recruitData.healingEffectHeal} (${recruitData.healingEffectTurns} turns)")
             }
         }
     }

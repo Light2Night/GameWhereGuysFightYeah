@@ -23,6 +23,7 @@
   "magician_name": "mage",
   "healer_name": "healer",
 
+  "hp": "hp: <amount>",
   "damage": "damage: <amount>",
   "heal": "heal: <amount>",
   "poison": "poison: <amount> (<turns> turns)",

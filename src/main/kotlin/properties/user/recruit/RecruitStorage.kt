@@ -13,6 +13,7 @@ class RecruitStorage(
     selectedRecruits: List<Recruit>? = null,
 ) {
     private val factory = RecruitFactory()
+    val maxGuildRecruits = 4
     val maxSelections = 5
 
     private val guildRecruitList: SnapshotStateList<Recruit> = mutableStateListOf()
@@ -28,7 +29,7 @@ class RecruitStorage(
         recruits?.let { recruitsList.addAll(it) }
         selectedRecruits?.let { selectedRecruitsList.addAll(it) }
 
-        while (guildRecruitList.size < 3) {
+        while (guildRecruitList.size < maxGuildRecruits) {
             createNewRecruitToGuild()
         }
     }

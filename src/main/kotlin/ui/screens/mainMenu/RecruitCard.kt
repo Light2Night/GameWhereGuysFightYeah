@@ -208,7 +208,7 @@ private fun UnitTextData(
                     .replaceFirstChar { it.uppercaseChar() }
                 MedievalText(healText)
 
-                val effectText = lang.poison
+                val effectText = lang.healing
                     .replace("<amount>", data.healingEffectHeal.toString())
                     .replace("<turns>", data.healingEffectTurns.toString())
                     .replaceFirstChar { it.uppercaseChar() }

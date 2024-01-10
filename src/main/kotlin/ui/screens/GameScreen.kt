@@ -571,7 +571,7 @@ private fun UnitTextData(
                 MedievalText(healText)
 
                 val effect = unit.healingEffect as Healing
-                val effectText = lang.poison
+                val effectText = lang.healing
                     .replace("<amount>", effect.heal.toString())
                     .replace("<turns>", effect.durationInCycles.toString())
                     .replaceFirstChar { it.uppercaseChar() }

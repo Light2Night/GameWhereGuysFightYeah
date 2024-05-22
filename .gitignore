@@ -5,7 +5,7 @@ build/
 !**/src/test/**/build/
 
 data/settings.json
-data/user
+data/user/user.json
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
@@ -19,6 +19,8 @@ data/user
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
+
+.idea/shelf
 
 ### Eclipse ###
 .apt_generated

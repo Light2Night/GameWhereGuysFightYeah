@@ -18,11 +18,12 @@ import ui.composable.shaders.StandardBackgroundBrush
 @Composable
 fun MedievalBox(
     background: Brush = StandardBackgroundBrush(),
+    contentAlignment: Alignment = Alignment.Center,
     modifier: Modifier = Modifier,
     content: @Composable BoxScope.() -> Unit = {},
 ) {
     Box(
-        contentAlignment = Alignment.Center,
+        contentAlignment = contentAlignment,
         modifier = modifier
             .background(background, MedievalShape(smallCorners))
             .border(smallBorder, colorBorder, MedievalShape(smallCorners))

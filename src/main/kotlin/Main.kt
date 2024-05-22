@@ -25,6 +25,11 @@ import properties.user.recruit.Recruit
 import properties.user.recruit.RecruitFactory
 import ui.Screen
 import ui.screens.*
+import ui.screens.cutsceneScreen.Cutscene
+import ui.screens.cutsceneScreen.CutsceneDirection
+import ui.screens.cutsceneScreen.CutscenePosition
+import ui.screens.cutsceneScreen.event.AppearEvent
+import ui.screens.cutsceneScreen.event.SpeakEvent
 
 fun main() = application {
     val coroutineScope = rememberCoroutineScope()
@@ -49,7 +54,8 @@ fun main() = application {
                 Properties.loadUser()
                 loadingProgress++
 
-                screen = Screen.Main
+                //screen = Screen.Main
+                screen = Screen.Cutscene
             }
         }
 
@@ -85,6 +91,7 @@ fun main() = application {
                 modifier = Modifier
                     .fillMaxSize(),
             )
+
             Screen.Main -> MainMenu(
                 onStart = { enemies, location ->
                     game.reset()
@@ -167,6 +174,53 @@ fun main() = application {
                     Properties.saveUser()
                     screen = Screen.Main
                 },
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(colorBackground),
+            )
+
+            Screen.Cutscene -> CutsceneScreen(
+                cutscene = Cutscene(
+                    name = "test",
+                    characterIDs = listOf(0, 1, 2),
+                    background = "",
+                    eventSequence = listOf(
+                        AppearEvent(
+                            0,
+                            true,
+                            false,
+                            CutscenePosition.Left,
+                            CutsceneDirection.InPlace,
+                        ),
+                        SpeakEvent(
+                            0,
+                            true,
+                            false,
+                            "blah blah blah",
+                        ),
+                        AppearEvent(
+                            1,
+                            true,
+                            false,
+                            CutscenePosition.Center,
+                            CutsceneDirection.InPlace,
+                        ),
+                        AppearEvent(
+                            2,
+                            true,
+                            false,
+                            CutscenePosition.Right,
+                            CutsceneDirection.InPlace,
+                        ),
+                        SpeakEvent(
+                            1,
+                            true,
+                            false,
+                            "blah blah blah 2",
+                        ),
+                    ),
+                ),
+                onEnd = { screen = Screen.Main },
                 modifier = Modifier
                     .fillMaxSize()
                     .background(colorBackground),

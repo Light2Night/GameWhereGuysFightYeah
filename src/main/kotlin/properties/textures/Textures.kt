@@ -22,9 +22,9 @@ object Textures {
         }
     }
 
-    operator fun get(path: String): ImageBitmap = run {
-        textures[path.replace("/", "\\")] ?: emptyImageBitmap
-    }
+    operator fun get(path: String): ImageBitmap = textures[path.replace("/", "\\")] ?: emptyImageBitmap
+
+    fun getOrNull(path: String): ImageBitmap? = textures[path.replace("/", "\\")]
 
     fun loadLoadingScreen() {
         val background = File("textures/background/2.png")

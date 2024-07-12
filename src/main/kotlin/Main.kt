@@ -194,7 +194,7 @@ fun main() = application {
                         ),
                         SpeakEvent(
                             0,
-                            clickRequired = true,
+                            clickRequired = false,
                             wait = false,
                             text = "blah blah blah",
                         ),

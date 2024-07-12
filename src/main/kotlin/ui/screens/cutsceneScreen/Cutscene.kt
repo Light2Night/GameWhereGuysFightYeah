@@ -20,14 +20,19 @@ class Cutscene(
         currentEventIndex = -1
     }
 
-    fun next(): CutsceneEvent? {
+    fun isFinished() = currentEventIndex >= eventSequence.size
+
+    fun next() {
         currentEventIndex++
         val next = eventSequence.getOrNull(currentEventIndex)
         next?.let {
             state = it.newState(state)
             stateHistory.add(state)
         }
-        return next
+
+        if (eventSequence.getOrNull(currentEventIndex + 1)?.clickRequired == false) {
+            next()
+        }
     }
 
     fun back(): CutsceneEvent? {

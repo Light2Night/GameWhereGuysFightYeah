@@ -88,8 +88,8 @@ fun CutsceneScreen(
             name = recruits.find { cutscene.state.speakingChar == it?.charID }?.name ?: "",
             text = cutscene.state.speakingText,
             onNext = {
-                val next = cutscene.next()
-                if (next == null) {
+                cutscene.next()
+                if (cutscene.isFinished()) {
                     onEnd()
                 }
             },

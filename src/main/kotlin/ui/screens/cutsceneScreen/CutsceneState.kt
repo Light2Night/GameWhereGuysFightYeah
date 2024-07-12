@@ -8,9 +8,9 @@ class CutsceneState(
     leftSlot: Int? = null,
     centralSlot: Int? = null,
     rightSlot: Int? = null,
-    leftExpression: Expression = Expression.Neutral,
-    centralExpression: Expression = Expression.Neutral,
-    rightExpression: Expression = Expression.Neutral,
+    leftExpression: String = "Neutral",
+    centralExpression: String = "Neutral",
+    rightExpression: String = "Neutral",
     speakingChar: Int? = null,
     speakingText: String = "",
 ) {
@@ -27,9 +27,9 @@ class CutsceneState(
         leftSlot: Int? = this.leftSlot,
         centralSlot: Int? = this.centralSlot,
         rightSlot: Int? = this.rightSlot,
-        leftExpression: Expression = this.leftExpression,
-        centralExpression: Expression = this.centralExpression,
-        rightExpression: Expression = this.rightExpression,
+        leftExpression: String = this.leftExpression,
+        centralExpression: String = this.centralExpression,
+        rightExpression: String = this.rightExpression,
         speakingChar: Int? = this.speakingChar,
         speakingText: String = this.speakingText
     ): CutsceneState = CutsceneState(

@@ -3,6 +3,7 @@ package properties.user.recruit.serializers
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
+import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.element
@@ -13,6 +14,7 @@ import kotlinx.serialization.encoding.encodeStructure
 import properties.resources.Cost
 import properties.user.recruit.Recruit
 import properties.user.recruit.RecruitData
+import ui.screens.cutsceneScreen.Expression
 
 class RecruitSerializer : KSerializer<Recruit> {
     override val descriptor: SerialDescriptor = buildClassSerialDescriptor("recruit") {
@@ -23,6 +25,7 @@ class RecruitSerializer : KSerializer<Recruit> {
         element<Int>("stars")
         element<Int>("level")
         element<String>("profileImage")
+        element<List<Expression>>("expressions")
         element<RecruitData>("rawData")
         element<Cost?>("cost")
     }
@@ -36,6 +39,7 @@ class RecruitSerializer : KSerializer<Recruit> {
         var stars: Int? = null
         var level: Int? = null
         var profileImage: String? = null
+        var expressions: List<Expression>? = null
         var rawData: RecruitData? = null
         var cost: Cost? = null
 
@@ -49,8 +53,9 @@ class RecruitSerializer : KSerializer<Recruit> {
                 4 -> stars = decodeIntElement(descriptor, 4)
                 5 -> level = decodeIntElement(descriptor, 5)
                 6 -> profileImage = decodeStringElement(descriptor, 6)
-                7 -> rawData = decodeSerializableElement(descriptor, 7, RecruitDataSerializer)
-                8 -> cost = decodeNullableSerializableElement(descriptor, 8, Cost.serializer())
+                7 -> expressions = decodeSerializableElement(descriptor, 7, ListSerializer(Expression.serializer()))
+                8 -> rawData = decodeSerializableElement(descriptor, 8, RecruitDataSerializer)
+                9 -> cost = decodeNullableSerializableElement(descriptor, 9, Cost.serializer())
                 else -> throw SerializationException("Unexpected index $index")
             }
         }
@@ -63,6 +68,7 @@ class RecruitSerializer : KSerializer<Recruit> {
             stars ?: throw SerializationException("Missing stars"),
             level ?: throw SerializationException("Missing level"),
             profileImage ?: throw SerializationException("Missing profileImage"),
+            expressions ?: throw SerializationException("Missing expressions"),
             rawData ?: throw SerializationException("Missing rawData"),
             cost,
         )
@@ -77,7 +83,8 @@ class RecruitSerializer : KSerializer<Recruit> {
         encodeIntElement(descriptor, 4, value.stars)
         encodeIntElement(descriptor, 5, value.level)
         encodeStringElement(descriptor, 6, value.profileImage)
-        encodeSerializableElement(descriptor, 7, RecruitDataSerializer, value.rawData)
-        encodeNullableSerializableElement(descriptor, 8, Cost.serializer(), value.cost)
+        encodeSerializableElement(descriptor, 7, ListSerializer(Expression.serializer()), value.expressions)
+        encodeSerializableElement(descriptor, 8, RecruitDataSerializer, value.rawData)
+        encodeNullableSerializableElement(descriptor, 9, Cost.serializer(), value.cost)
     }
 }

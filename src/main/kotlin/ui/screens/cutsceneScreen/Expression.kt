@@ -1,13 +1,9 @@
 package ui.screens.cutsceneScreen
 
-enum class Expression {
-    Neutral,
-    Sad,
-    Angry,
-    Confused,
-    Happy,
-    Surprised,
-    Crying,
-    Disappointed,
-    Disgusted,
-}
+import kotlinx.serialization.Serializable
+
+@Serializable(with = ExpressionSerializer::class)
+data class Expression(
+    val name: String,
+    val image: String,
+)

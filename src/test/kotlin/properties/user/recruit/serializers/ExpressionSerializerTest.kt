@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import properties.user.recruit.*
 
-class RecruitSerializerTest {
+class ExpressionSerializerTest {
     @Test
     fun `test list recruits serializer`() {
         val json = """[{"id":0,"charID":0,"name":"test0","description":"description_test0","stars":1,"level":1,"profileImage":"characters/barbarian_placeholder.png","rawData":{"type":"BARBARIAN","maxHP":200,"damage":20,"damageDelta":10},"cost":null},{"id":1,"charID":1,"name":"test1","description":"description_test1","stars":1,"level":1,"profileImage":"characters/magician_placeholder.png","rawData":{"type":"MAGICIAN","maxHP":100,"damage":25,"damageDelta":20,"magicalEffectDamage":15,"magicalEffectTurns":2},"cost":null},{"id":2,"charID":2,"name":"test2","description":"description_test2","stars":1,"level":1,"profileImage":"characters/healer_placeholder.png","rawData":{"type":"HEALER","maxHP":125,"heal":15,"healingEffectHeal":7,"healingEffectTurns":3},"cost":null}]"""

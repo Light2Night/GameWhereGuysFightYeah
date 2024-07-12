@@ -35,14 +35,16 @@ class RecruitFactory {
     val randomName get() = (mobBarbarianNames + mobMagicianNames + mobHealerNames).random()
 
     private val presets: List<Recruit> = listOf(
-        Recruit(0, 0, "test0", "description_test0", 1, 1, "characters/barbarian_placeholder.png", BarbarianData()),
-        Recruit(1, 1, "test1", "description_test1", 1, 1, "characters/magician_placeholder.png", MageData()),
-        Recruit(2, 2, "test2", "description_test2", 1, 1, "characters/healer_placeholder.png", HealerData()),
+        Recruit(0, 0, "test0", "description_test0", 1, 1, "characters/barbarian_placeholder.png", listOf(), BarbarianData()),
+        Recruit(1, 1, "test1", "description_test1", 1, 1, "characters/magician_placeholder.png", listOf(), MageData()),
+        Recruit(2, 2, "test2", "description_test2", 1, 1, "characters/healer_placeholder.png", listOf(), HealerData()),
     )
 
     val randomPreset get() = presets.random()
 
     fun getPreset(charID: Int) = presets.find { it.charID == charID }
+
+    fun getCharIDs() = presets.map { it.charID }
 
     fun createRandomUnique(
         list: List<Recruit>,

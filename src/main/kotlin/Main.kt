@@ -88,8 +88,7 @@ fun main() = application {
             Screen.Loading -> LoadingScreen(
                 progress = loadingProgress,
                 target = 5,
-                modifier = Modifier
-                    .fillMaxSize(),
+                modifier = Modifier.fillMaxSize(),
             )
 
             Screen.Main -> MainMenu(
@@ -187,36 +186,36 @@ fun main() = application {
                     eventSequence = listOf(
                         AppearEvent(
                             0,
-                            true,
-                            false,
-                            CutscenePosition.Left,
-                            CutsceneDirection.InPlace,
+                            clickRequired = true,
+                            wait = false,
+                            position = CutscenePosition.Left,
+                            direction = CutsceneDirection.InPlace,
                         ),
                         SpeakEvent(
                             0,
-                            true,
-                            false,
-                            "blah blah blah",
+                            clickRequired = true,
+                            wait = false,
+                            text = "blah blah blah",
                         ),
                         AppearEvent(
                             1,
-                            true,
-                            false,
-                            CutscenePosition.Center,
-                            CutsceneDirection.InPlace,
+                            clickRequired = true,
+                            wait = false,
+                            position = CutscenePosition.Center,
+                            direction = CutsceneDirection.InPlace,
                         ),
                         AppearEvent(
                             2,
-                            true,
-                            false,
-                            CutscenePosition.Right,
-                            CutsceneDirection.InPlace,
+                            clickRequired = true,
+                            wait = false,
+                            position = CutscenePosition.Right,
+                            direction = CutsceneDirection.InPlace,
                         ),
                         SpeakEvent(
                             1,
-                            true,
-                            false,
-                            "blah blah blah 2",
+                            clickRequired = true,
+                            wait = false,
+                            text = "blah blah blah 2",
                         ),
                     ),
                 ),

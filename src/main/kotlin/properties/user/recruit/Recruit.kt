@@ -9,6 +9,7 @@ import utilities.HasID
 import properties.resources.Cost
 import properties.textures.Textures
 import properties.user.recruit.serializers.RecruitSerializer
+import ui.screens.cutsceneScreen.Expression
 
 @Serializable(with = RecruitSerializer::class)
 data class Recruit(
@@ -19,6 +20,7 @@ data class Recruit(
     val stars: Int,
     var level: Int,
     val profileImage: String,
+    val expressions: List<Expression>,
     val rawData: RecruitData,
     var cost: Cost? = null,
 ) : HasID {

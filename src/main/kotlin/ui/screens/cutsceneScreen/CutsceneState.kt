@@ -8,9 +8,9 @@ class CutsceneState(
     leftSlot: Int? = null,
     centralSlot: Int? = null,
     rightSlot: Int? = null,
-    leftExpression: String = "Neutral",
-    centralExpression: String = "Neutral",
-    rightExpression: String = "Neutral",
+    leftExpression: String = "neutral",
+    centralExpression: String = "neutral",
+    rightExpression: String = "neutral",
     speakingChar: Int? = null,
     speakingText: String = "",
 ) {

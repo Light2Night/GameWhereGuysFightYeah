@@ -16,9 +16,9 @@ class DisappearEvent(
             leftSlot = if (position == CutscenePosition.Left) null else state.leftSlot,
             centralSlot = if (position == CutscenePosition.Center) null else state.centralSlot,
             rightSlot = if (position == CutscenePosition.Right) null else state.rightSlot,
-            leftExpression = "Neutral",
-            centralExpression = "Neutral",
-            rightExpression = "Neutral",
+            leftExpression = "neutral",
+            centralExpression = "neutral",
+            rightExpression = "neutral",
         )
     }
 }

@@ -29,6 +29,7 @@ import ui.screens.cutsceneScreen.Cutscene
 import ui.screens.cutsceneScreen.CutsceneDirection
 import ui.screens.cutsceneScreen.CutscenePosition
 import ui.screens.cutsceneScreen.event.AppearEvent
+import ui.screens.cutsceneScreen.event.ChangeExpressionEvent
 import ui.screens.cutsceneScreen.event.SpeakEvent
 
 fun main() = application {
@@ -216,6 +217,12 @@ fun main() = application {
                             clickRequired = true,
                             wait = false,
                             text = "blah blah blah 2",
+                        ),
+                        ChangeExpressionEvent(
+                            2,
+                            clickRequired = false,
+                            wait = false,
+                            "sad",
                         ),
                     ),
                 ),

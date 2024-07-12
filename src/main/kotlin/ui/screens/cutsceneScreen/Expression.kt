@@ -7,3 +7,5 @@ data class Expression(
     val name: String,
     val image: String,
 )
+
+fun Collection<Expression>.getByNameOrNull(name: String): Expression? = find { it.name == name }

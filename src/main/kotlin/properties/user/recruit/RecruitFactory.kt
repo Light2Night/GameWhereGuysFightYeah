@@ -2,6 +2,7 @@ package properties.user.recruit
 
 import Game.Units.Characters.UnitTypes
 import properties.resources.Cost
+import ui.screens.cutsceneScreen.Expression
 import utilities.uniqueId
 
 class RecruitFactory {
@@ -35,16 +36,51 @@ class RecruitFactory {
     val randomName get() = (mobBarbarianNames + mobMagicianNames + mobHealerNames).random()
 
     private val presets: List<Recruit> = listOf(
-        Recruit(0, 0, "test0", "description_test0", 1, 1, "characters/barbarian_placeholder.png", listOf(), BarbarianData()),
-        Recruit(1, 1, "test1", "description_test1", 1, 1, "characters/magician_placeholder.png", listOf(), MageData()),
-        Recruit(2, 2, "test2", "description_test2", 1, 1, "characters/healer_placeholder.png", listOf(), HealerData()),
+        Recruit(
+            id = 0,
+            charID = 0,
+            name = "test0",
+            description = "description_test0",
+            stars = 1,
+            level = 1,
+            profileImage = "characters/barbarian_placeholder.png",
+            expressions = listOf(
+                Expression("neutral", "characters/barbarian_placeholder.png")
+            ),
+            rawData = BarbarianData(),
+        ),
+        Recruit(
+            id = 1,
+            charID = 1,
+            name = "test1",
+            description = "description_test1",
+            stars = 1,
+            level = 1,
+            profileImage = "characters/magician_placeholder.png",
+            expressions = listOf(
+                Expression("neutral", "characters/magician_placeholder.png")
+            ),
+            rawData = MageData(),
+        ),
+        Recruit(
+            id = 2,
+            charID = 2,
+            name = "test2",
+            description = "description_test2",
+            stars = 1,
+            level = 1,
+            profileImage = "characters/healer_placeholder.png",
+            expressions = listOf(
+                Expression("neutral", "characters/healer_placeholder.png"),
+                Expression("sad", "characters/healer_expressions/healer_placeholder_sad.png")
+            ),
+            rawData = HealerData(),
+        ),
     )
 
     val randomPreset get() = presets.random()
 
     fun getPreset(charID: Int) = presets.find { it.charID == charID }
-
-    fun getCharIDs() = presets.map { it.charID }
 
     fun createRandomUnique(
         list: List<Recruit>,

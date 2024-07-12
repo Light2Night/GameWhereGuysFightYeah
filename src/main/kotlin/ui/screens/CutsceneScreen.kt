@@ -28,6 +28,7 @@ import properties.user.recruit.RecruitFactory
 import ui.composable.MedievalBox
 import ui.composable.MedievalText
 import ui.screens.cutsceneScreen.Cutscene
+import ui.screens.cutsceneScreen.getByNameOrNull
 
 @Composable
 fun CutsceneScreen(
@@ -53,7 +54,8 @@ fun CutsceneScreen(
             )
 
             val leftCharacter = recruits.find { it?.charID == cutscene.state.leftSlot }
-            val leftImage = leftCharacter?.image ?: emptyImageBitmap
+            val leftImageName = leftCharacter?.expressions?.getByNameOrNull(cutscene.state.leftExpression)?.image
+            val leftImage = leftImageName?.let { imgName -> Textures[imgName] } ?: emptyImageBitmap
             val scale = (size.height * 0.8) / leftImage.height
             drawImage(
                 image = leftImage,
@@ -62,7 +64,8 @@ fun CutsceneScreen(
             )
 
             val centralCharacter = recruits.find { it?.charID == cutscene.state.centralSlot }
-            val centralImage = centralCharacter?.image ?: emptyImageBitmap
+            val centralImageName = centralCharacter?.expressions?.getByNameOrNull(cutscene.state.centralExpression)?.image
+            val centralImage = centralImageName?.let { imgName -> Textures[imgName] } ?: emptyImageBitmap
             val scale2 = (size.height * 0.8) / centralImage.height
             drawImage(
                 image = centralImage,
@@ -71,7 +74,8 @@ fun CutsceneScreen(
             )
 
             val rightCharacter = recruits.find { it?.charID == cutscene.state.rightSlot }
-            val rightImage = rightCharacter?.image ?: emptyImageBitmap
+            val rightImageName = rightCharacter?.expressions?.getByNameOrNull(cutscene.state.rightExpression)?.image
+            val rightImage = rightImageName?.let { imgName -> Textures[imgName] } ?: emptyImageBitmap
             val scale3 = (size.height * 0.8) / rightImage.height
             drawImage(
                 image = rightImage,

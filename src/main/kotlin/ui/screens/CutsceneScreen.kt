@@ -8,10 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
@@ -23,7 +20,9 @@ import colorText
 import corners
 import emptyImageBitmap
 import hugeText
+import kotlinx.coroutines.delay
 import longAnimationDuration
+import normalAnimationDuration
 import padding
 import properties.textures.Textures
 import properties.user.recruit.RecruitFactory
@@ -87,7 +86,7 @@ fun CutsceneScreen(
         }
 
         DialogWindow(
-            name = recruits.find { cutscene.state.speakingChar == it?.charID }?.name ?: "",
+            name = cutscene.state.speakingName ?: recruits.find { cutscene.state.speakingChar == it?.charID }?.name ?: "",
             text = cutscene.state.speakingText,
             onNext = {
                 cutscene.next()
@@ -137,22 +136,39 @@ private fun DialogWindow(
     Box(
         modifier = modifier,
     ) {
+        var isRunning by remember { mutableStateOf(false) }
+        var content by remember { mutableStateOf("") }
+
+        LaunchedEffect(text) {
+            if (isRunning) return@LaunchedEffect
+
+            if (text.isBlank()) {
+                content = ""
+                return@LaunchedEffect
+            }
+
+            isRunning = true
+            runTextAnimation(
+                content = text,
+                onNewContent = { content = it },
+            )
+            isRunning = false
+        }
+
         MedievalBox(
             contentAlignment = Alignment.TopStart,
             modifier = Modifier
                 .fillMaxSize()
-                .clickable(onClick = onNext),
+                .clickable(onClick = {
+                    isRunning = false
+                    onNext()
+                }),
         ) {
-            Crossfade(
-                targetState = text,
-                animationSpec = tween(longAnimationDuration),
-            ) { txt ->
-                MedievalText(
-                    text = txt,
-                    fontSize = bigText,
-                    modifier = Modifier.padding(top = 24.dp, start = biggerPadding, end = padding, bottom = padding),
-                )
-            }
+            MedievalText(
+                text = content,
+                fontSize = bigText,
+                modifier = Modifier.padding(top = 24.dp, start = biggerPadding, end = padding, bottom = padding),
+            )
         }
 
         MedievalBox(
@@ -163,7 +179,7 @@ private fun DialogWindow(
         ) {
             Crossfade(
                 targetState = name,
-                animationSpec = tween(longAnimationDuration),
+                animationSpec = tween(normalAnimationDuration),
             ) { nm ->
                 MedievalText(nm, fontSize = hugeText)
             }
@@ -177,7 +193,24 @@ private fun DialogWindow(
                 .size(bigIconSize)
                 .align(Alignment.BottomEnd)
                 .padding(padding)
-                .clickable(onClick = onBack),
+                .clickable(onClick = {
+                    isRunning = false
+                    onBack()
+                }),
         )
+    }
+}
+
+private suspend fun runTextAnimation(
+    content: String,
+    onNewContent: (String) -> Unit,
+    interval: Long = 30,
+) {
+    var newContent = ""
+
+    content.forEach {
+        newContent += it
+        onNewContent(newContent)
+        delay(interval)
     }
 }

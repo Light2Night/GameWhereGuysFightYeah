@@ -12,6 +12,7 @@ class CutsceneState(
     centralExpression: String = "neutral",
     rightExpression: String = "neutral",
     speakingChar: Int? = null,
+    speakingName: String? = null,
     speakingText: String = "",
 ) {
     var leftSlot by mutableStateOf(leftSlot)
@@ -21,6 +22,7 @@ class CutsceneState(
     var centralExpression by mutableStateOf(centralExpression)
     var rightExpression by mutableStateOf(rightExpression)
     var speakingChar by mutableStateOf(speakingChar)
+    var speakingName by mutableStateOf(speakingName)
     var speakingText by mutableStateOf(speakingText)
 
     fun copy(
@@ -31,6 +33,7 @@ class CutsceneState(
         centralExpression: String = this.centralExpression,
         rightExpression: String = this.rightExpression,
         speakingChar: Int? = this.speakingChar,
+        speakingName: String? = this.speakingName,
         speakingText: String = this.speakingText
     ): CutsceneState = CutsceneState(
         leftSlot,
@@ -40,6 +43,7 @@ class CutsceneState(
         centralExpression,
         rightExpression,
         speakingChar,
+        speakingName,
         speakingText
     )
 }

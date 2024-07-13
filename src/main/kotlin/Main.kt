@@ -28,9 +28,7 @@ import ui.screens.*
 import ui.screens.cutsceneScreen.Cutscene
 import ui.screens.cutsceneScreen.CutsceneDirection
 import ui.screens.cutsceneScreen.CutscenePosition
-import ui.screens.cutsceneScreen.event.AppearEvent
-import ui.screens.cutsceneScreen.event.ChangeExpressionEvent
-import ui.screens.cutsceneScreen.event.SpeakEvent
+import ui.screens.cutsceneScreen.event.*
 
 fun main() = application {
     val coroutineScope = rememberCoroutineScope()
@@ -205,6 +203,11 @@ fun main() = application {
                             position = CutscenePosition.Center,
                             direction = CutsceneDirection.InPlace,
                         ),
+                        SpeakStopEvent(
+                            1,
+                            clickRequired = false,
+                            wait = false,
+                        ),
                         AppearEvent(
                             2,
                             clickRequired = true,
@@ -216,7 +219,7 @@ fun main() = application {
                             1,
                             clickRequired = true,
                             wait = false,
-                            text = "blah blah blah 2",
+                            text = "long blah blah blah to test the text animation. Yeah...",
                         ),
                         ChangeExpressionEvent(
                             2,
@@ -224,6 +227,13 @@ fun main() = application {
                             wait = false,
                             "sad",
                         ),
+                        SpeakCustomEvent(
+                            2,
+                            clickRequired = true,
+                            wait = false,
+                            name = "-test-",
+                            text = "-test- blah blah blah",
+                        )
                     ),
                 ),
                 onEnd = { screen = Screen.Main },

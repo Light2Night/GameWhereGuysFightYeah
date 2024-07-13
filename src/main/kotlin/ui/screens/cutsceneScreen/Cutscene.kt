@@ -35,10 +35,15 @@ class Cutscene(
         }
     }
 
-    fun back(): CutsceneEvent? {
+    fun back() {
+        if (stateHistory.isEmpty()) return
+
         currentEventIndex--
         stateHistory.removeLast()
-        state = stateHistory.last()
-        return eventSequence.getOrNull(currentEventIndex)
+        state = stateHistory.lastOrNull() ?: CutsceneState()
+
+        if (eventSequence.getOrNull(currentEventIndex + 1)?.clickRequired == false) {
+            back()
+        }
     }
 }

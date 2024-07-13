@@ -1,6 +1,8 @@
 package ui.screens
 
-import androidx.compose.foundation.Canvas
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
@@ -12,8 +14,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.unit.dp
 import bigIconSize
 import bigText
@@ -22,11 +23,13 @@ import colorText
 import corners
 import emptyImageBitmap
 import hugeText
+import longAnimationDuration
 import padding
 import properties.textures.Textures
 import properties.user.recruit.RecruitFactory
 import ui.composable.MedievalBox
 import ui.composable.MedievalText
+import ui.composable.shaders.background
 import ui.screens.cutsceneScreen.Cutscene
 import ui.screens.cutsceneScreen.getByNameOrNull
 
@@ -42,45 +45,44 @@ fun CutsceneScreen(
     }
 
     Box(
-        modifier = modifier,
+        modifier = modifier
+            .background(Textures.getOrNull(cutscene.background) ?: Textures["background/forest1.png"]),
     ) {
-        Canvas(
-            modifier = Modifier.fillMaxSize()
+        Box(
+            modifier = Modifier
+                .fillMaxHeight(0.8F)
+                .fillMaxWidth(0.9F)
+                .align(Alignment.BottomCenter),
         ) {
-            drawImage(
-                image = Textures.getOrNull(cutscene.background) ?: Textures["background/forest1.png"],
-                dstOffset = IntOffset.Zero,
-                dstSize = IntSize(size.width.toInt(), size.height.toInt()),
-            )
-
             val leftCharacter = recruits.find { it?.charID == cutscene.state.leftSlot }
             val leftImageName = leftCharacter?.expressions?.getByNameOrNull(cutscene.state.leftExpression)?.image
             val leftImage = leftImageName?.let { imgName -> Textures[imgName] } ?: emptyImageBitmap
-            val scale = (size.height * 0.8) / leftImage.height
-            drawImage(
+            CharacterImage(
                 image = leftImage,
-                dstOffset = IntOffset(((size.width * 0.2) - (leftImage.width * scale / 2)).toInt(), (size.height * 0.2).toInt()),
-                dstSize = IntSize((leftImage.width * scale).toInt(), (size.height * 0.8).toInt()),
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .align(Alignment.BottomStart),
             )
 
             val centralCharacter = recruits.find { it?.charID == cutscene.state.centralSlot }
-            val centralImageName = centralCharacter?.expressions?.getByNameOrNull(cutscene.state.centralExpression)?.image
+            val centralImageName =
+                centralCharacter?.expressions?.getByNameOrNull(cutscene.state.centralExpression)?.image
             val centralImage = centralImageName?.let { imgName -> Textures[imgName] } ?: emptyImageBitmap
-            val scale2 = (size.height * 0.8) / centralImage.height
-            drawImage(
+            CharacterImage(
                 image = centralImage,
-                dstOffset = IntOffset(((size.width * 0.5) - (leftImage.width * scale / 2)).toInt(), (size.height * 0.2).toInt()),
-                dstSize = IntSize((centralImage.width * scale2).toInt(), (size.height * 0.8).toInt()),
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .align(Alignment.BottomCenter),
             )
 
             val rightCharacter = recruits.find { it?.charID == cutscene.state.rightSlot }
             val rightImageName = rightCharacter?.expressions?.getByNameOrNull(cutscene.state.rightExpression)?.image
             val rightImage = rightImageName?.let { imgName -> Textures[imgName] } ?: emptyImageBitmap
-            val scale3 = (size.height * 0.8) / rightImage.height
-            drawImage(
+            CharacterImage(
                 image = rightImage,
-                dstOffset = IntOffset(((size.width * 0.8) - (leftImage.width * scale / 2)).toInt(), (size.height * 0.2).toInt()),
-                dstSize = IntSize((rightImage.width * scale3).toInt(), (size.height * 0.8).toInt()),
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .align(Alignment.BottomEnd),
             )
         }
 
@@ -106,6 +108,25 @@ fun CutsceneScreen(
 }
 
 @Composable
+private fun CharacterImage(
+    image: ImageBitmap,
+    modifier: Modifier = Modifier,
+) {
+    Crossfade(
+        targetState = image,
+        animationSpec = tween(longAnimationDuration),
+        modifier = modifier,
+    ) { img ->
+        Image(
+            img,
+            contentDescription = null,
+            alignment = Alignment.BottomStart,
+            modifier = Modifier.fillMaxHeight(),
+        )
+    }
+}
+
+@Composable
 private fun DialogWindow(
     name: String,
     text: String,
@@ -122,11 +143,16 @@ private fun DialogWindow(
                 .fillMaxSize()
                 .clickable(onClick = onNext),
         ) {
-            MedievalText(
-                text = text,
-                fontSize = bigText,
-                modifier = Modifier.padding(top = 24.dp, start = biggerPadding, end = padding, bottom = padding),
-            )
+            Crossfade(
+                targetState = text,
+                animationSpec = tween(longAnimationDuration),
+            ) { txt ->
+                MedievalText(
+                    text = txt,
+                    fontSize = bigText,
+                    modifier = Modifier.padding(top = 24.dp, start = biggerPadding, end = padding, bottom = padding),
+                )
+            }
         }
 
         MedievalBox(
@@ -135,7 +161,12 @@ private fun DialogWindow(
                 .height(48.dp)
                 .offset(16.dp, (-24).dp),
         ) {
-            MedievalText(name, fontSize = hugeText)
+            Crossfade(
+                targetState = name,
+                animationSpec = tween(longAnimationDuration),
+            ) { nm ->
+                MedievalText(nm, fontSize = hugeText)
+            }
         }
 
         Icon(
